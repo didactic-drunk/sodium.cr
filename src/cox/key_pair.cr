@@ -1,6 +1,5 @@
 require "./lib_sodium"
 
-
 module Cox
   class KeyPair
     property public : PublicKey
