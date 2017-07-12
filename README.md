@@ -7,6 +7,8 @@ receipt, they can decrypt and authenticate the message as having come from you.
 
 ## Installation
 
+**[Install libsodium](https://download.libsodium.org/doc/installation/)**, then:
+
 Add this to your application's `shard.yml`:
 
 ```yaml
