@@ -3,21 +3,21 @@ module Cox
   lib LibSodium
     fun sodium_init() : LibC::Int
 
-    fun crypto_box_publickeybytes() : LibC::SizeT
-    fun crypto_box_secretkeybytes() : LibC::SizeT
-    fun crypto_box_noncebytes()     : LibC::SizeT
-    fun crypto_box_macbytes()       : LibC::SizeT
+    fun crypto_box_publickeybytes()  : LibC::SizeT
+    fun crypto_box_secretkeybytes()  : LibC::SizeT
+    fun crypto_box_noncebytes()      : LibC::SizeT
+    fun crypto_box_macbytes()        : LibC::SizeT
     fun crypto_sign_publickeybytes() : LibC::SizeT
     fun crypto_sign_secretkeybytes() : LibC::SizeT
-    fun crypto_sign_bytes()         : LibC::SizeT
+    fun crypto_sign_bytes()          : LibC::SizeT
 
-    PUBLIC_KEY_BYTES = crypto_box_publickeybytes()
-    SECRET_KEY_BYTES = crypto_box_secretkeybytes()
-    NONCE_BYTES      = crypto_box_macbytes()
-    MAC_BYTES        = crypto_box_macbytes()
+    PUBLIC_KEY_BYTES  = crypto_box_publickeybytes()
+    SECRET_KEY_BYTES  = crypto_box_secretkeybytes()
+    NONCE_BYTES       = crypto_box_macbytes()
+    MAC_BYTES         = crypto_box_macbytes()
     PUBLIC_SIGN_BYTES = crypto_sign_publickeybytes()
     SECRET_SIGN_BYTES = crypto_sign_secretkeybytes()
-    SIGNATURE_BYTES  = crypto_sign_bytes()
+    SIGNATURE_BYTES   = crypto_sign_bytes()
 
     fun crypto_box_keypair(
       public_key_output : Pointer(LibC::UChar),
