@@ -3,7 +3,7 @@ require "./spec_helper"
 describe Cox do
   # TODO: Write tests
 
-  it "works" do
+  it "works for encrypting" do
     data = "Hello World!"
 
     # Alice is the sender
@@ -21,5 +21,19 @@ describe Cox do
     decrypted = Cox.decrypt(encrypted, nonce, alice.public, bob.secret)
 
     String.new(decrypted).should eq(data)
+  end
+
+  it "works for signing" do
+    message = "test"
+
+    signing_pair = Cox::SignKeyPair.new
+    
+    # Create signature using the secret key
+    signature = Cox.sign(message, signing_pair.secret)
+
+    # Verify the signature on the message
+    verified = Cox.verify(signature, message, signing_pair.public)
+
+    verified.should eq(true)
   end
 end
