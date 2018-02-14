@@ -48,10 +48,10 @@ message = "Hello World!"
 signing_pair = Cox::SignKeyPair.new
 
 # Sign the message
-signature = Cox.sign(message, signing_pair.secret)
+signature = Cox.sign_detached(message, signing_pair.secret)
 
 # And verify
-Cox.verify(signature, message, signing_pair.public) # => true
+Cox.verify_detached(signature, message, signing_pair.public) # => true
 ```
 
 ## Contributing
