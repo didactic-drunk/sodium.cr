@@ -27,12 +27,12 @@ describe Cox do
     message = "test"
 
     signing_pair = Cox::SignKeyPair.new
-    
+
     # Create signature using the secret key
-    signature = Cox.sign(message, signing_pair.secret)
+    signature = Cox.sign_detached(message, signing_pair.secret)
 
     # Verify the signature on the message
-    verified = Cox.verify(signature, message, signing_pair.public)
+    verified = Cox.verify_detached(signature, message, signing_pair.public)
 
     verified.should eq(true)
   end

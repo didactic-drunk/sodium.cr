@@ -23,7 +23,7 @@ module Cox
     output_buffer
   end
 
-  def self.sign(message, secret_key : SignSecretKey)
+  def self.sign_detached(message, secret_key : SignSecretKey)
     message_buffer = message.to_slice
     message_buffer_size = message_buffer.bytesize
     signature_output_buffer = Bytes.new(LibSodium::SIGNATURE_BYTES)
@@ -32,7 +32,7 @@ module Cox
     signature_output_buffer
   end
 
-  def self.verify(signature, message, public_key : SignPublicKey)
+  def self.verify_detached(signature, message, public_key : SignPublicKey)
     signature_buffer = signature.to_slice
     message_buffer = message.to_slice
     message_buffer_size = message_buffer.bytesize
