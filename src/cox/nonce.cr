@@ -1,5 +1,5 @@
 require "./lib_sodium"
-require "secure_random"
+require "random/secure"
 
 module Cox
   class Nonce
@@ -14,7 +14,7 @@ module Cox
     end
 
     def self.new
-      new(SecureRandom.random_bytes(NONCE_LENGTH))
+      new(Random::Secure.random_bytes(NONCE_LENGTH))
     end
 
     def pointer

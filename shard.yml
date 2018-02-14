@@ -4,6 +4,6 @@ version: 0.1.0
 authors:
   - Andrew Hamon <andrew@hamon.cc>
 
-crystal: 0.23.0
+crystal: 0.24.1
 
 license: MIT

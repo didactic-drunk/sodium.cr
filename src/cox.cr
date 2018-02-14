@@ -1,5 +1,4 @@
 require "./cox/*"
-require "secure_random"
 
 module Cox
   def self.encrypt(data, nonce : Nonce, recipient_public_key : PublicKey, sender_secret_key : SecretKey)
