@@ -1,1 +1,6 @@
+sudo: true
 language: crystal
+install:
+  - ./travis-install-lib-sodium.sh
+before_script:
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib

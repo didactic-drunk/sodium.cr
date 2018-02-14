@@ -1,4 +1,5 @@
 # cox
+[![Build Status](https://travis-ci.org/andrewhamon/cox.svg?branch=master)](https://travis-ci.org/andrewhamon/cox)
 
 Crystal bindings for the [libsodium box API](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html)
 
