@@ -40,6 +40,19 @@ nonce, encrypted = Cox.encrypt(data, bob.public, alice.secret)
 decrypted = Cox.decrypt(encrypted, nonce, alice.public, bob.secret)
 
 String.new(decrypted) # => "Hello World!"
+
+
+# Public key signing
+
+message = "Hello World!"
+
+signing_pair = Cox::SignKeyPair.new
+
+# Sign the message
+signature = Cox.sign_detached(message, signing_pair.secret)
+
+# And verify
+Cox.verify_detached(signature, message, signing_pair.public) # => true
 ```
 
 ## Contributing
@@ -53,3 +66,4 @@ String.new(decrypted) # => "Hello World!"
 ## Contributors
 
 - [andrewhamon](https://github.com/andrewhamon) Andrew Hamon - creator, maintainer
+- [dorkrawk](https://github.com/dorkrawk) Dave Schwantes - contributor
