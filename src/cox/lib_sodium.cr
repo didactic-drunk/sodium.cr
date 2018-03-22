@@ -13,7 +13,7 @@ module Cox
 
     PUBLIC_KEY_BYTES  = crypto_box_publickeybytes()
     SECRET_KEY_BYTES  = crypto_box_secretkeybytes()
-    NONCE_BYTES       = crypto_box_macbytes()
+    NONCE_BYTES       = crypto_box_noncebytes()
     MAC_BYTES         = crypto_box_macbytes()
     PUBLIC_SIGN_BYTES = crypto_sign_publickeybytes()
     SECRET_SIGN_BYTES = crypto_sign_secretkeybytes()
