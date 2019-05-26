@@ -1,3 +1,15 @@
+require "random/secure"
+
+module Cox
+  class Error < ::Exception
+  end
+  class VerificationFailed < Error
+  end
+  class DecryptionFailed < Error
+  end
+end
+
+
 require "./cox/*"
 
 module Cox
@@ -5,7 +17,9 @@ module Cox
     data_buffer = data.to_slice
     data_size = data_buffer.bytesize
     output_buffer = Bytes.new(data_buffer.bytesize + LibSodium::MAC_BYTES)
-    LibSodium.crypto_box_easy(output_buffer.to_unsafe, data_buffer, data_size, nonce.pointer, recipient_public_key.pointer, sender_secret_key.pointer)
+    if LibSodium.crypto_box_easy(output_buffer.to_unsafe, data_buffer, data_size, nonce.pointer, recipient_public_key.pointer, sender_secret_key.pointer) != 0
+      raise Error.new("crypto_box_easy")
+    end
     output_buffer
   end
 
@@ -18,7 +32,9 @@ module Cox
     data_buffer = data.to_slice
     data_size = data_buffer.bytesize
     output_buffer = Bytes.new(data_buffer.bytesize - LibSodium::MAC_BYTES)
-    LibSodium.crypto_box_open_easy(output_buffer.to_unsafe, data_buffer.to_unsafe, data_size, nonce.pointer, sender_public_key.pointer, recipient_secret_key.pointer)
+    if LibSodium.crypto_box_open_easy(output_buffer.to_unsafe, data_buffer.to_unsafe, data_size, nonce.pointer, sender_public_key.pointer, recipient_secret_key.pointer) != 0
+      raise DecryptionFailed.new("crypto_box_open_easy")
+    end
     output_buffer
   end
 
@@ -27,7 +43,9 @@ module Cox
     message_buffer_size = message_buffer.bytesize
     signature_output_buffer = Bytes.new(LibSodium::SIGNATURE_BYTES)
 
-    LibSodium.crypto_sign_detached(signature_output_buffer.to_unsafe, 0, message_buffer.to_unsafe, message_buffer_size, secret_key.pointer)
+    if LibSodium.crypto_sign_detached(signature_output_buffer.to_unsafe, 0, message_buffer.to_unsafe, message_buffer_size, secret_key.pointer) != 0
+      raise Error.new("crypto_sign_detached")
+    end
     signature_output_buffer
   end
 
