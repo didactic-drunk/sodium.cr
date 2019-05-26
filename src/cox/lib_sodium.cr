@@ -10,6 +10,8 @@ module Cox
     fun crypto_sign_publickeybytes() : LibC::SizeT
     fun crypto_sign_secretkeybytes() : LibC::SizeT
     fun crypto_sign_bytes()          : LibC::SizeT
+    fun crypto_kdf_keybytes()        : LibC::SizeT
+    fun crypto_kdf_contextbytes()    : LibC::SizeT
 
     PUBLIC_KEY_BYTES  = crypto_box_publickeybytes()
     SECRET_KEY_BYTES  = crypto_box_secretkeybytes()
@@ -18,6 +20,8 @@ module Cox
     PUBLIC_SIGN_BYTES = crypto_sign_publickeybytes()
     SECRET_SIGN_BYTES = crypto_sign_secretkeybytes()
     SIGNATURE_BYTES   = crypto_sign_bytes()
+    KDF_KEY_BYTES     = crypto_kdf_keybytes()
+    KDF_CONTEXT_BYTES = crypto_kdf_contextbytes()
 
     fun crypto_box_keypair(
       public_key_output : Pointer(LibC::UChar),
@@ -60,6 +64,15 @@ module Cox
       message      : Pointer(LibC::UChar),
       message_size : LibC::ULongLong,
       public_key   : Pointer(LibC::UChar)
+    ) : LibC::Int
+
+
+    fun crypto_kdf_derive_from_key(
+      subkey    : Pointer(LibC::UChar),
+      subkey_len    : LibC::SizeT,
+      subkey_id    : UInt64,
+      ctx    : Pointer(LibC::UChar),
+      key    : Pointer(LibC::UChar)
     ) : LibC::Int
   end
 end
