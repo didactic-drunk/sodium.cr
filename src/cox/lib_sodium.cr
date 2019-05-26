@@ -10,6 +10,15 @@ module Cox
     fun crypto_sign_publickeybytes() : LibC::SizeT
     fun crypto_sign_secretkeybytes() : LibC::SizeT
     fun crypto_sign_bytes()          : LibC::SizeT
+    fun crypto_pwhash_memlimit_min()     : LibC::SizeT
+    fun crypto_pwhash_memlimit_interactive()     : LibC::SizeT
+    fun crypto_pwhash_memlimit_max()     : LibC::SizeT
+    fun crypto_pwhash_opslimit_min()     : LibC::SizeT
+    fun crypto_pwhash_opslimit_interactive()     : LibC::SizeT
+    fun crypto_pwhash_opslimit_moderate()     : LibC::SizeT
+    fun crypto_pwhash_opslimit_sensitive()     : LibC::SizeT
+    fun crypto_pwhash_opslimit_max()     : LibC::SizeT
+    fun crypto_pwhash_strbytes()     : LibC::SizeT
 
     PUBLIC_KEY_BYTES  = crypto_box_publickeybytes()
     SECRET_KEY_BYTES  = crypto_box_secretkeybytes()
@@ -18,6 +27,7 @@ module Cox
     PUBLIC_SIGN_BYTES = crypto_sign_publickeybytes()
     SECRET_SIGN_BYTES = crypto_sign_secretkeybytes()
     SIGNATURE_BYTES   = crypto_sign_bytes()
+    PWHASH_STR_BYTES  = crypto_pwhash_strbytes()
 
     fun crypto_box_keypair(
       public_key_output : Pointer(LibC::UChar),
@@ -60,6 +70,26 @@ module Cox
       message      : Pointer(LibC::UChar),
       message_size : LibC::ULongLong,
       public_key   : Pointer(LibC::UChar)
+    ) : LibC::Int
+
+    fun crypto_pwhash_str(
+      outstr    : Pointer(LibC::UChar),
+      pass    : Pointer(LibC::UChar),
+      pass_size    : LibC::ULongLong,
+      optslimit    : LibC::ULongLong,
+      memlimit    : LibC::SizeT,
+    ) : LibC::Int
+
+    fun crypto_pwhash_str_verify(
+      str    : Pointer(LibC::UChar),
+      pass    : Pointer(LibC::UChar),
+      pass_size    : LibC::ULongLong,
+    ) : LibC::Int
+
+    fun crypto_pwhash_str_needs_rehash(
+      str    : Pointer(LibC::UChar),
+      optslimit    : LibC::ULongLong,
+      memlimit    : LibC::SizeT,
     ) : LibC::Int
   end
 end
