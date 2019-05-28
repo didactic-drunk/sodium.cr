@@ -19,6 +19,22 @@ module Cox
     SECRET_SIGN_BYTES = crypto_sign_secretkeybytes()
     SIGNATURE_BYTES   = crypto_sign_bytes()
 
+    fun crypto_secretbox_easy(
+      output               : Pointer(LibC::UChar),
+      data                 : Pointer(LibC::UChar),
+      data_size            : LibC::ULongLong,
+      nonce                : Pointer(LibC::UChar),
+      key : Pointer(LibC::UChar),
+    ) : LibC::Int
+
+    fun crypto_secretbox_open_easy(
+      output               : Pointer(LibC::UChar),
+      data                 : Pointer(LibC::UChar),
+      data_size            : LibC::ULongLong,
+      nonce                : Pointer(LibC::UChar),
+      key : Pointer(LibC::UChar),
+    ) : LibC::Int
+
     fun crypto_box_keypair(
       public_key_output : Pointer(LibC::UChar),
       secret_key_output : Pointer(LibC::UChar)
