@@ -12,6 +12,15 @@ module Cox
     fun crypto_sign_bytes()          : LibC::SizeT
     fun crypto_kdf_keybytes()        : LibC::SizeT
     fun crypto_kdf_contextbytes()    : LibC::SizeT
+    fun crypto_pwhash_memlimit_min()     : LibC::SizeT
+    fun crypto_pwhash_memlimit_interactive()     : LibC::SizeT
+    fun crypto_pwhash_memlimit_max()     : LibC::SizeT
+    fun crypto_pwhash_opslimit_min()     : LibC::SizeT
+    fun crypto_pwhash_opslimit_interactive()     : LibC::SizeT
+    fun crypto_pwhash_opslimit_moderate()     : LibC::SizeT
+    fun crypto_pwhash_opslimit_sensitive()     : LibC::SizeT
+    fun crypto_pwhash_opslimit_max()     : LibC::SizeT
+    fun crypto_pwhash_strbytes()     : LibC::SizeT
 
     PUBLIC_KEY_BYTES  = crypto_box_publickeybytes()
     SECRET_KEY_BYTES  = crypto_box_secretkeybytes()
@@ -22,6 +31,7 @@ module Cox
     SIGNATURE_BYTES   = crypto_sign_bytes()
     KDF_KEY_BYTES     = crypto_kdf_keybytes()
     KDF_CONTEXT_BYTES = crypto_kdf_contextbytes()
+    PWHASH_STR_BYTES  = crypto_pwhash_strbytes()
 
     fun crypto_box_keypair(
       public_key_output : Pointer(LibC::UChar),
@@ -66,13 +76,32 @@ module Cox
       public_key   : Pointer(LibC::UChar)
     ) : LibC::Int
 
-
     fun crypto_kdf_derive_from_key(
       subkey    : Pointer(LibC::UChar),
       subkey_len    : LibC::SizeT,
       subkey_id    : UInt64,
       ctx    : Pointer(LibC::UChar),
       key    : Pointer(LibC::UChar)
+    ) : LibC::Int
+
+    fun crypto_pwhash_str(
+      outstr    : Pointer(LibC::UChar),
+      pass    : Pointer(LibC::UChar),
+      pass_size    : LibC::ULongLong,
+      optslimit    : LibC::ULongLong,
+      memlimit    : LibC::SizeT,
+    ) : LibC::Int
+
+    fun crypto_pwhash_str_verify(
+      str    : Pointer(LibC::UChar),
+      pass    : Pointer(LibC::UChar),
+      pass_size    : LibC::ULongLong,
+    ) : LibC::Int
+
+    fun crypto_pwhash_str_needs_rehash(
+      str    : Pointer(LibC::UChar),
+      optslimit    : LibC::ULongLong,
+      memlimit    : LibC::SizeT,
     ) : LibC::Int
   end
 end
