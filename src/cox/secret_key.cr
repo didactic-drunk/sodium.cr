@@ -5,6 +5,7 @@ module Cox
     property bytes : Bytes
 
     KEY_LENGTH = LibSodium::SECRET_KEY_BYTES
+    MAC_BYTES = LibSodium::MAC_BYTES
 
     def initialize(@bytes : Bytes)
       if bytes.bytesize != KEY_LENGTH
@@ -31,21 +32,35 @@ module Cox
     end
 
     def encrypt_easy(data : Bytes, nonce : Nonce) : Bytes
-      output = Bytes.new(data.bytesize + LibSodium::MAC_BYTES)
-      if LibSodium.crypto_secretbox_easy(output, data, data.bytesize, nonce.pointer, @bytes) != 0
+      output = Bytes.new(data.bytesize + MAC_BYTES)
+      encrypt_easy(data, output, nonce)
+    end
+
+    def encrypt_easy(src : Bytes, dst : Bytes, nonce : Nonce) : Bytes
+      if dst.bytesize != (src.bytesize + MAC_BYTES)
+        raise ArgumentError.new("dst.bytesize must be src.bytesize + MAC_BYTES, got #{dst.bytesize}")
+      end
+      if LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.pointer, @bytes) != 0
         raise Cox::Error.new("crypto_secretbox_easy")
       end
-      output
+      dst
     end
 
     def decrypt_easy(data : Bytes, nonce : Nonce) : Bytes
-      output_size = data.bytesize - LibSodium::MAC_BYTES
+      output_size = data.bytesize - MAC_BYTES
       raise Cox::DecryptionFailed.new("encrypted data too small #{data.bytesize}") if output_size <= 0
       output = Bytes.new output_size
-      if LibSodium.crypto_secretbox_open_easy(output, data, data.bytesize, nonce.pointer, @bytes) != 0
+      decrypt_easy(data, output, nonce)
+    end
+
+    def decrypt_easy(src : Bytes, dst : Bytes, nonce : Nonce) : Bytes
+      if dst.bytesize != (src.bytesize - MAC_BYTES)
+        raise ArgumentError.new("dst.bytesize must be src.bytesize - MAC_BYTES, got #{dst.bytesize}")
+      end
+      if LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.pointer, @bytes) != 0
         raise Cox::DecryptionFailed.new("crypto_secretbox_easy")
       end
-      output
+      dst
     end
 
     # TODO: encrypt_detached
