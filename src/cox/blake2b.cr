@@ -17,17 +17,20 @@ module Cox
     OUT_SIZE_MIN = LibSodium.crypto_generichash_blake2b_bytes_min.to_i32
     OUT_SIZE_MAX = LibSodium.crypto_generichash_blake2b_bytes_max.to_i32
 
+    getter digest_size
+
     @state = StaticArray(UInt8, 384).new 0
     @key_size = 0
     @have_salt = false
     @have_personal = false
+
 
     # implemented as static array's so clone works without jumping through hoops.
     @key = StaticArray(UInt8, 64).new 0
     @salt = StaticArray(UInt8, 16).new 0
     @personal = StaticArray(UInt8, 16).new 0
 
-    def initialize(@out_size : Int32 = OUT_SIZE, key : Bytes? = nil, salt : Bytes? = nil, personal : Bytes? = nil)
+    def initialize(@digest_size : Int32 = OUT_SIZE, key : Bytes? = nil, salt : Bytes? = nil, personal : Bytes? = nil)
       if k = key
         raise ArgumentError.new("key larger than KEY_SIZE_MAX, got #{k.bytesize}") if k.bytesize > KEY_SIZE_MAX
         @key_size = k.bytesize
@@ -54,7 +57,7 @@ module Cox
       salt = @have_salt ? @salt.to_unsafe : nil
       personal = @have_personal ? @personal.to_unsafe : nil
 
-      if LibSodium.crypto_generichash_blake2b_init_salt_personal(@state, key, @key_size, @out_size, salt, personal) != 0
+      if LibSodium.crypto_generichash_blake2b_init_salt_personal(@state, key, @key_size, @digest_size, salt, personal) != 0
         raise Cox::Error.new("blake2b_init_key_salt_personal")
       end
     end
@@ -67,12 +70,22 @@ module Cox
       self
     end
 
+    # Destructive operation.  Assumes you know what you are doing.
+    # Use .digest or .hexdigest instead.
     def finish
-      data = Bytes.new @out_size
-      if LibSodium.crypto_generichash_blake2b_final(@state, data, data.bytesize) != 0
+      dst = Bytes.new @digest_size
+      finish dst
+      dst
+    end
+
+    # Destructive operation.  Assumes you know what you are doing.
+    # Use .digest or .hexdigest instead.
+    def finish(dst : Bytes) : Bytes
+      if LibSodium.crypto_generichash_blake2b_final(@state, dst, dst.bytesize) != 0
         raise Cox::Error.new("crypto_generichash_blake2b_final")
       end
-      data
+
+      dst
     end
 
     def clone
