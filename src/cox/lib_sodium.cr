@@ -21,6 +21,15 @@ module Cox
     fun crypto_pwhash_opslimit_sensitive()     : LibC::SizeT
     fun crypto_pwhash_opslimit_max()     : LibC::SizeT
     fun crypto_pwhash_strbytes()     : LibC::SizeT
+    fun crypto_generichash_blake2b_statebytes : LibC::SizeT
+    fun crypto_generichash_blake2b_bytes : LibC::SizeT
+    fun crypto_generichash_blake2b_bytes_min : LibC::SizeT
+    fun crypto_generichash_blake2b_bytes_max : LibC::SizeT
+    fun crypto_generichash_blake2b_keybytes : LibC::SizeT
+    fun crypto_generichash_blake2b_keybytes_min : LibC::SizeT
+    fun crypto_generichash_blake2b_keybytes_max : LibC::SizeT
+    fun crypto_generichash_blake2b_saltbytes : LibC::SizeT
+    fun crypto_generichash_blake2b_personalbytes : LibC::SizeT
 
     PUBLIC_KEY_BYTES  = crypto_box_publickeybytes()
     SECRET_KEY_BYTES  = crypto_box_secretkeybytes()
@@ -118,6 +127,27 @@ module Cox
       str    : Pointer(LibC::UChar),
       optslimit    : LibC::ULongLong,
       memlimit    : LibC::SizeT,
+    ) : LibC::Int
+
+    fun crypto_generichash_blake2b_init_salt_personal(
+      state : Pointer(LibC::UChar),
+      key : Pointer(LibC::UChar),
+      key_len : UInt8,
+      out_len : UInt8,
+      salt :  Pointer(LibC::UChar),
+      personal : Pointer(LibC::UChar),
+    ) : LibC::Int
+
+    fun crypto_generichash_blake2b_update(
+      state : Pointer(LibC::UChar),
+      in : Pointer(LibC::UChar),
+      in_len : UInt64,
+    ) : LibC::Int
+
+    fun crypto_generichash_blake2b_final(
+      state : Pointer(LibC::UChar),
+      output : Pointer(LibC::UChar),
+      output_len : UInt64,
     ) : LibC::Int
   end
 end
