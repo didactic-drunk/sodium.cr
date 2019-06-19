@@ -40,10 +40,10 @@ nonce, encrypted = Cox.encrypt(data, bob.public, alice.secret)
 decrypted = Cox.decrypt(encrypted, nonce, alice.public, bob.secret)
 
 String.new(decrypted) # => "Hello World!"
+```
 
-
-# Public key signing
-
+## Public key signing
+```crystal
 message = "Hello World!"
 
 signing_pair = Cox::SignKeyPair.new
@@ -55,7 +55,38 @@ signature = Cox.sign_detached(message, signing_pair.secret)
 Cox.verify_detached(signature, message, signing_pair.public) # => true
 ```
 
-# Key derivation
+## Secret Key Encryption
+```crystal
+key = Cox::SecretKey.random
+
+message = "foobar"
+encrypted, nonce = key.encrypt_easy message
+
+# On the other side.
+key = Cox::SecretKey.new key
+message = key.decrypt_easy encrypted, nonce
+```
+
+## Blake2b
+```crystal
+key = Bytes.new Cox::Blake2B::KEY_SIZE
+salt = Bytes.new Cox::Blake2B::SALT_SIZE
+personal = Bytes.new Cox::Blake2B::PERSONAL_SIZE
+out_size = 64 # bytes between Cox::Blake2B::OUT_SIZE_MIN and Cox::Blake2B::OUT_SIZE_MAX
+data = "data".to_slice
+
+# output_size, key, salt, and personal are optional.
+digest = Cox::Blake2b.new out_size, key: key, salt: salt, personal: personal
+digest.update data
+output = d.hexdigest
+
+digest.reset # Reuse existing object to hash again.
+digest.update data
+output = d.hexdigest
+```
+
+## Key derivation
+```crystal
 kdf = Cox::Kdf.new
 
 # kdf.derive(8_byte_context, subkey_size, subkey_id)
@@ -63,6 +94,19 @@ subkey1 = kdf.derive "context1", 16, 0
 subkey2 = kdf.derive "context1", 16, 1
 subkey3 = kdf.derive "context2", 32, 0
 subkey4 = kdf.derive "context2", 64, 1
+```
+
+## Password Hashing
+```crystal
+pwhash = Cox::Pwhash.new
+
+pwhash.memlimit = Cox::Pwhash::MEMLIMIT_MIN
+pwhash.opslimit = Cox::Pwhash::OPSLIMIT_MIN
+
+pass = "1234"
+hash = pwhash.hash_str pass
+pwhash.verify hash, pass
+```
 
 ## Contributing
 
