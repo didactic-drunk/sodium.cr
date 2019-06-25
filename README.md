@@ -1,7 +1,7 @@
 # cox
-[![Build Status](https://travis-ci.org/andrewhamon/cox.svg?branch=master)](https://travis-ci.org/andrewhamon/cox)
+[![Build Status](https://travis-ci.org/didactic-drunk/cox.svg?branch=master)](https://travis-ci.org/didactic-drunk/cox)
 
-Crystal bindings for the [libsodium box API](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html)
+Updated Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
 
 Given a recipients public key, you can encrypt and sign a message for them. Upon
 receipt, they can decrypt and authenticate the message as having come from you.
@@ -15,7 +15,7 @@ Add this to your application's `shard.yml`:
 ```yaml
 dependencies:
   cox:
-    github: andrewhamon/cox
+    github: didactic-drunk/cox
 ```
 
 ## Usage
@@ -113,7 +113,7 @@ Use `examples/pwhash_selector.cr` to help choose ops/mem limits.
 
 ## Contributing
 
-1. Fork it ( https://github.com/andrewhamon/cox/fork )
+1. Fork it ( https://github.com/didactic-drunk/cox/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
@@ -121,5 +121,6 @@ Use `examples/pwhash_selector.cr` to help choose ops/mem limits.
 
 ## Contributors
 
-- [andrewhamon](https://github.com/andrewhamon) Andrew Hamon - creator, maintainer
+- [andrewhamon](https://github.com/andrewhamon) Andrew Hamon - creator, former maintainer
 - [dorkrawk](https://github.com/dorkrawk) Dave Schwantes - contributor
+- [didactic-drunk](https://github.com/didactic-drunk) - current maintainer
