@@ -108,6 +108,9 @@ hash = pwhash.hash_str pass
 pwhash.verify hash, pass
 ```
 
+Use `examples/pwhash_selector.cr` to help choose ops/mem limits.
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/andrewhamon/cox/fork )

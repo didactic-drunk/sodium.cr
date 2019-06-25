@@ -1,0 +1,58 @@
+# ARGV (md5) uses OpenSSL::Digest for comparison
+crystal run --release benchmark/blake2b.cr -- md5
+      blake2b.new 16   1.67M (599.94ns) (± 1.72%)  1.07kB/op    3.11× slower
+    blake2b.reset 16   1.86M (536.20ns) (±30.19%)    592B/op    2.78× slower
+   blake2b.finish 16   5.19M (192.64ns) (± 7.99%)    0.0B/op         fastest
+          md5.new 16 947.11k (  1.06µs) (± 1.82%)    224B/op    5.48× slower
+        md5.reset 16   1.64M (609.26ns) (± 6.35%)    128B/op    3.16× slower
+      blake2b.new 64   1.63M (611.95ns) (± 4.92%)  1.07kB/op    3.18× slower
+    blake2b.reset 64   2.36M (423.98ns) (± 6.72%)    592B/op    2.20× slower
+   blake2b.finish 64   5.14M (194.38ns) (± 6.64%)    0.0B/op    1.01× slower
+          md5.new 64 782.61k (  1.28µs) (±11.20%)    224B/op    6.63× slower
+        md5.reset 64   1.37M (728.47ns) (±10.08%)    128B/op    3.78× slower
+     blake2b.new 256   1.29M (774.20ns) (±12.59%)  1.07kB/op    4.02× slower
+   blake2b.reset 256   1.64M (609.63ns) (±12.04%)    592B/op    3.16× slower
+  blake2b.finish 256   2.92M (341.95ns) (± 4.12%)    0.0B/op    1.78× slower
+         md5.new 256 696.63k (  1.44µs) (± 4.63%)    224B/op    7.45× slower
+       md5.reset 256 969.33k (  1.03µs) (± 8.35%)    128B/op    5.36× slower
+    blake2b.new 1024 623.42k (  1.60µs) (± 4.12%)  1.07kB/op    8.33× slower
+  blake2b.reset 1024 708.85k (  1.41µs) (± 3.29%)    592B/op    7.32× slower
+ blake2b.finish 1024 739.69k (  1.35µs) (±24.97%)    0.0B/op    7.02× slower
+        md5.new 1024 377.38k (  2.65µs) (±13.05%)    224B/op   13.76× slower
+      md5.reset 1024 481.61k (  2.08µs) (± 2.06%)    128B/op   10.78× slower
+    blake2b.new 8192 103.77k (  9.64µs) (± 3.57%)  1.07kB/op   50.02× slower
+  blake2b.reset 8192 106.93k (  9.35µs) (± 1.89%)    592B/op   48.55× slower
+ blake2b.finish 8192 110.76k (  9.03µs) (± 0.92%)    0.0B/op   46.87× slower
+        md5.new 8192  76.17k ( 13.13µs) (± 2.55%)    224B/op   68.15× slower
+      md5.reset 8192  78.80k ( 12.69µs) (± 1.30%)    128B/op   65.88× slower
+   blake2b.new 16384  54.25k ( 18.43µs) (± 1.50%)  1.07kB/op   95.68× slower
+ blake2b.reset 16384  50.62k ( 19.75µs) (±11.75%)    592B/op  102.54× slower
+blake2b.finish 16384  53.59k ( 18.66µs) (± 6.43%)    0.0B/op   96.86× slower
+       md5.new 16384  40.35k ( 24.78µs) (± 2.77%)    224B/op  128.64× slower
+     md5.reset 16384  39.44k ( 25.35µs) (± 4.71%)    128B/op  131.62× slower
+
+
+openssl speed -evp blake2b512 md5
+  OpenSSL 1.1.1a  20 Nov 2018
+  options:bn(64,64) rc4(16x,int) des(int) aes(partial) idea(int) blowfish(ptr)
+  compiler: clang -fPIC -arch x86_64 -O3 -Wall -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_CPUID_OBJ -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DKECCAK1600_ASM -DRC4_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DGHASH_ASM -DECP_NISTZ256_ASM -DX25519_ASM -DPADLOCK_ASM -DPOLY1305_ASM -D_REENTRANT -DNDEBUG
+
+  Doing blake2b512 for 3s on 16 size blocks: 5998042 blake2b512's in 2.99s
+  Doing blake2b512 for 3s on 64 size blocks: 6057697 blake2b512's in 3.00s
+  Doing blake2b512 for 3s on 256 size blocks: 4325714 blake2b512's in 2.99s
+  Doing blake2b512 for 3s on 1024 size blocks: 1611100 blake2b512's in 2.99s
+  Doing blake2b512 for 3s on 8192 size blocks: 237548 blake2b512's in 2.99s
+  Doing blake2b512 for 3s on 16384 size blocks: 119315 blake2b512's in 2.97s
+
+  Doing md5 for 3s on 16 size blocks: 8250787 md5's in 2.98s
+  Doing md5 for 3s on 64 size blocks: 6621343 md5's in 2.99s
+  Doing md5 for 3s on 256 size blocks: 4110946 md5's in 2.98s
+  Doing md5 for 3s on 1024 size blocks: 1645393 md5's in 2.99s
+  Doing md5 for 3s on 8192 size blocks: 246308 md5's in 2.99s
+  Doing md5 for 3s on 16384 size blocks: 125954 md5's in 2.99s
+   
+
+# In all tests crystal Cox::Blake2b(512) beats crystal OpenSSL::Digest::SHA256.
+# Using .reset instead of creating new objects gives a significant performance boost when hashing small data sizes.
+# Reusing an output buffer with .reset gives a further performance boost when hashing small data sizes.
+# New objects have a significant penalty for hashing small data sizes.  Only problematic with iterative hashing or in a tight loop.
