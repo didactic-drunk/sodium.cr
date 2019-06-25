@@ -1,6 +1,27 @@
 sudo: true
 language: crystal
+os:
+  - linux
+#  - osx
+
 install:
   - ./travis-install-lib-sodium.sh
 before_script:
-  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+  - export C_INCLUDE_PATH=$LD_LIBRARY_PATH:`pwd`/sodium/include
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/sodium/lib
+  - env | egrep PKG
+  - export PKG_CONFIG_PATH=`pwd`/sodium/lib/pkgconfig
+  - env | egrep LD_
+  - env | egrep PKG
+  - pwd
+cache:
+  directories:
+    - sodium
+
+#addons:
+#  apt:
+#    packages:
+#      - libsodium-dev # old
+#  homebrew:
+#    packages:
+#      - libsodium # takes forever

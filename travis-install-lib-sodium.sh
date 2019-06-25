@@ -5,9 +5,21 @@
 
 set -e
 
-wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
-tar xvfz LATEST.tar.gz
-cd libsodium-stable
-sudo ./configure
-sudo make
-sudo make install
+LIBSODIUM_INSTALL_PATH=`pwd`/sodium
+
+if [ ! -f "sodium/include/sodium.h" ]; then
+	set -x
+
+	mkdir -p "$LIBSODIUM_INSTALL_PATH"
+	find "$LIBSODIUM_INSTALL_PATH"
+
+	wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
+	tar xfz LATEST.tar.gz
+	cd libsodium-stable
+	./configure --prefix="$LIBSODIUM_INSTALL_PATH"
+	make
+	make install
+else
+	echo "using cached libsodium build"
+	find "$LIBSODIUM_INSTALL_PATH"
+fi
