@@ -17,7 +17,7 @@ module Cox
     property memlimit = MEMLIMIT_INTERACTIVE
 
     def hash_str(pass)
-      outstr = Bytes.new LibSodium::PWHASH_STR_BYTES
+      outstr = Bytes.new LibSodium::PWHASH_STR_SIZE
       if LibSodium.crypto_pwhash_str(outstr, pass, pass.bytesize, @opslimit, @memlimit) != 0
         raise Cox::Error.new("crypto_pwhash_str")
       end

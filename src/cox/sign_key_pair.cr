@@ -13,8 +13,8 @@ module Cox
     end
 
     def self.new
-      public_key = Bytes.new(SignPublicKey::KEY_LENGTH)
-      secret_key = Bytes.new(SignSecretKey::KEY_LENGTH)
+      public_key = Bytes.new(SignPublicKey::KEY_SIZE)
+      secret_key = Bytes.new(SignSecretKey::KEY_SIZE)
 
       LibSodium.crypto_sign_keypair(public_key.to_unsafe, secret_key.to_unsafe)
 

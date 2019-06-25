@@ -5,16 +5,16 @@ module Cox
   class Nonce
     property bytes : Bytes
 
-    NONCE_LENGTH = LibSodium::NONCE_BYTES
+    NONCE_SIZE = LibSodium::NONCE_SIZE
 
     def initialize(@bytes : Bytes)
-      if bytes.bytesize != NONCE_LENGTH
-        raise ArgumentError.new("Nonce must be #{NONCE_LENGTH} bytes, got #{bytes.bytesize}")
+      if bytes.bytesize != NONCE_SIZE
+        raise ArgumentError.new("Nonce must be #{NONCE_SIZE} bytes, got #{bytes.bytesize}")
       end
     end
 
     def self.new
-      new(Random::Secure.random_bytes(NONCE_LENGTH))
+      new(Random::Secure.random_bytes(NONCE_SIZE))
     end
 
     def pointer

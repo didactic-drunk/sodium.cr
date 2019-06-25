@@ -3,22 +3,22 @@ module Cox
     property bytes : Bytes
 
     def initialize(bytes : Bytes)
-      if bytes.bytesize != LibSodium::KDF_KEY_BYTES
-        raise ArgumentError.new("bytes must be #{LibSodium::KDF_KEY_BYTES}, got #{bytes.bytesize}")
+      if bytes.bytesize != LibSodium::KDF_KEY_SIZE
+        raise ArgumentError.new("bytes must be #{LibSodium::KDF_KEY_SIZE}, got #{bytes.bytesize}")
       end
 
       @bytes = bytes
     end
 
     def initialize
-      @bytes = Random::Secure.random_bytes(LibSodium::KDF_KEY_BYTES)
+      @bytes = Random::Secure.random_bytes(LibSodium::KDF_KEY_SIZE)
     end
 
     # context must be 8 bytes
     # subkey_size must be 16..64 bytes as of libsodium 1.0.17
     def derive(context, subkey_size, subkey_id = 0)
-      if context.bytesize != LibSodium::KDF_CONTEXT_BYTES
-        raise ArgumentError.new("context must be #{LibSodium::KDF_CONTEXT_BYTES}, got #{context.bytesize}")
+      if context.bytesize != LibSodium::KDF_CONTEXT_SIZE
+        raise ArgumentError.new("context must be #{LibSodium::KDF_CONTEXT_SIZE}, got #{context.bytesize}")
       end
 
       subkey = Bytes.new subkey_size

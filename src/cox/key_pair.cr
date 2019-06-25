@@ -13,8 +13,8 @@ module Cox
     end
 
     def self.new
-      public_key = Bytes.new(PublicKey::KEY_LENGTH)
-      secret_key = Bytes.new(SecretKey::KEY_LENGTH)
+      public_key = Bytes.new(PublicKey::KEY_SIZE)
+      secret_key = Bytes.new(SecretKey::KEY_SIZE)
 
       LibSodium.crypto_box_keypair(public_key.to_unsafe, secret_key.to_unsafe)
 

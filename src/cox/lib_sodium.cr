@@ -31,16 +31,16 @@ module Cox
     fun crypto_generichash_blake2b_saltbytes : LibC::SizeT
     fun crypto_generichash_blake2b_personalbytes : LibC::SizeT
 
-    PUBLIC_KEY_BYTES  = crypto_box_publickeybytes()
-    SECRET_KEY_BYTES  = crypto_box_secretkeybytes()
-    NONCE_BYTES       = crypto_box_noncebytes()
-    MAC_BYTES         = crypto_box_macbytes()
-    PUBLIC_SIGN_BYTES = crypto_sign_publickeybytes()
-    SECRET_SIGN_BYTES = crypto_sign_secretkeybytes()
-    SIGNATURE_BYTES   = crypto_sign_bytes()
-    KDF_KEY_BYTES     = crypto_kdf_keybytes()
-    KDF_CONTEXT_BYTES = crypto_kdf_contextbytes()
-    PWHASH_STR_BYTES  = crypto_pwhash_strbytes()
+    PUBLIC_KEY_SIZE  = crypto_box_publickeybytes()
+    SECRET_KEY_SIZE  = crypto_box_secretkeybytes()
+    NONCE_SIZE       = crypto_box_noncebytes()
+    MAC_SIZE         = crypto_box_macbytes()
+    PUBLIC_SIGN_SIZE = crypto_sign_publickeybytes()
+    SECRET_SIGN_SIZE = crypto_sign_secretkeybytes()
+    SIGNATURE_SIZE   = crypto_sign_bytes()
+    KDF_KEY_SIZE     = crypto_kdf_keybytes()
+    KDF_CONTEXT_SIZE = crypto_kdf_contextbytes()
+    PWHASH_STR_SIZE  = crypto_pwhash_strbytes()
 
     fun crypto_secretbox_easy(
       output               : Pointer(LibC::UChar),
