@@ -131,11 +131,11 @@ output = d.hexdigest
 ```crystal
 kdf = Cox::Kdf.new
 
-# kdf.derive(8_byte_context, subkey_size, subkey_id)
-subkey1 = kdf.derive "context1", 16, 0
-subkey2 = kdf.derive "context1", 16, 1
-subkey3 = kdf.derive "context2", 32, 0
-subkey4 = kdf.derive "context2", 64, 1
+# kdf.derive(8_byte_context, subkey_id, subkey_size)
+subkey1 = kdf.derive "context1", 0, 16
+subkey2 = kdf.derive "context1", 1, 16
+subkey3 = kdf.derive "context2", 0, 32
+subkey4 = kdf.derive "context2", 1, 64
 ```
 
 ### Password Hashing

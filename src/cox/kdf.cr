@@ -16,7 +16,7 @@ module Cox
 
     # context must be 8 bytes
     # subkey_size must be 16..64 bytes as of libsodium 1.0.17
-    def derive(context, subkey_size, subkey_id = 0)
+    def derive(context, subkey_id, subkey_size)
       if context.bytesize != LibSodium::KDF_CONTEXT_SIZE
         raise ArgumentError.new("context must be #{LibSodium::KDF_CONTEXT_SIZE}, got #{context.bytesize}")
       end
