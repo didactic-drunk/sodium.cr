@@ -3,8 +3,49 @@
 
 Updated Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
 
-Given a recipients public key, you can encrypt and sign a message for them. Upon
-receipt, they can decrypt and authenticate the message as having come from you.
+## Features
+
+- Public-Key Cryptography
+  - [x] Crypto Box Easy
+  - [ ] Sealed Box
+  - [x] Combined Signatures
+  - [x] Detached Signatures
+- [Secret-Key Cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
+  - Secret Box
+    - [x] [Combined mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
+    - [ ] Detached mode
+  - Streaming
+    - [ ] XChaCha20 Poly1305
+  - AEAD
+   - [ ] [AES256-GCM (Requires hardware acceleration)](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead)
+   - [ ] XChaCha20-Poly1305-IETF
+   - [ ] ChaCha20-Poly1305-IETF
+   - [ ] ChaCha20-Poly1305
+- Hashing
+  - [x] ☑ [Blake2b](https://libsodium.gitbook.io/doc/hashing/generic_hashing)
+  - [ ] [SipHash](https://libsodium.gitbook.io/doc/hashing/short-input_hashing)
+- [Password Hashing](https://libsodium.gitbook.io/doc/password_hashing)
+  - [x] [Argon2](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function) (Use for new applications)
+  - [ ] Scrypt (For compatibility with older applications)
+- Other
+  - [x] [Key Derivation](https://libsodium.gitbook.io/doc/key_derivation)
+  - [ ] [Key Exchange](https://libsodium.gitbook.io/doc/key_exchange)
+- Advanced
+  - Stream Ciphers
+    - [x] XSalsa20
+    - [x] Salsa20
+    - [x] XChaCha20
+    - [x] ChaCha20 Ietf
+    - [x] ChaCha20
+  - [ ] One time auth
+  - [ ] Padding
+
+☑ Indicate specs are compared against test vectors from another source.
+
+Several features in libsodium are already provided by Crystal:
+* Random (Use [Random::Secure](https://crystal-lang.org/api/latest/Random/Secure.html))
+* SHA-2 (Use [OpenSSL::Digest](https://crystal-lang.org/api/latest/OpenSSL/Digest.html))
+* HMAC SHA-2 (Use [OpenSSL::HMAC](https://crystal-lang.org/api/latest/OpenSSL/HMAC.html))
 
 ## Installation
 
@@ -18,36 +59,6 @@ dependencies:
   cox:
     github: didactic-drunk/cox
 ```
-
-
-## Features
-
-- Public-Key Cryptography
-  - [x] Crypto Box Easy
-  - [ ] Sealed Box
-  - [x] Combined Signatures
-  - [x] Detached Signatures
-- Secret-Key Cryptography
-  - [x] Secret Box
-  - [x] XSalsa20
-  - [x] Salsa20
-  - [x] XChaCha20
-  - [x] ChaCha20 Ietf
-  - [x] ChaCha20
-- Hashing
-  - [x] Blake2b
-  - [ ] SipHash
-- Password Hashing
-  - [x] Argon2 (Use for new applications)
-  - [ ] Scrypt (For compatibility with older applications)
-- Other
-  - [x] Key Derivation
-  - [ ] One time auth
-
-Several libsodium API's are already provided by Crystal:
-* Random (Use [Random::Secure](https://crystal-lang.org/api/latest/Random/Secure.html))
-* SHA-2 (Use [OpenSSL::Digest](https://crystal-lang.org/api/latest/OpenSSL/Digest.html))
-* HMAC SHA-2 (Use [OpenSSL::HMAC](https://crystal-lang.org/api/latest/OpenSSL/HMAC.html))
 
 ## Usage
 
