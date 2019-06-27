@@ -1,4 +1,5 @@
 require "../src/cox"
+require "tallboy"
 
 if ARGV.empty?
   puts "Help select Pwhash ops/mem limits for your application."
@@ -18,31 +19,67 @@ mem_limit = (ARGV.shift?.try &.to_i || (Cox::Pwhash::MEMLIMIT_MAX)).to_u64
 pwhash = Cox::Pwhash.new
 pass = "1234"
 
+#data = Array(Array({UInt64, UInt64, Float64})).new
+header = ["      "]
+data = [header]
+
+def bytes_str(b)
+  suffix = if b >= 1024*1024
+    b /= (1024*1024)
+    "M"
+  elsif b >= 1024
+    b = b / 1024
+    "K"
+  else
+    ""
+  end
+  "%5d#{suffix}" % b
+end
+
 pwhash.memlimit = Cox::Pwhash::MEMLIMIT_MIN
 loop do
   pwhash.opslimit = Cox::Pwhash::OPSLIMIT_MIN
+  row = ["%5dK" % (pwhash.memlimit / 1024)]
+  data << row
 
   loop do
     # p pwhash
     t = Time.measure { pwhash.store pass }.to_f
-    s = String.build do |sb|
-      sb << "mem_limit "
-      sb << "%7d" % (pwhash.memlimit / 1024)
-      sb << "K       ops_limit "
-      sb << "%7d" % pwhash.opslimit
-      sb << "       "
-      sb << "%8.4fs" % t
+    ostr = "%7d" % pwhash.opslimit
+    header << ostr if data.size == 2
+    if t >= time_min
+      mstr = bytes_str pwhash.memlimit
+#      mstr = "%5dK" % (pwhash.memlimit / 1024)
+      tstr = "%6.3fs" % t
+      row << tstr
+      s = String.build do |sb|
+        sb << "mem_limit "
+        sb << mstr
+        sb << "    ops_limit "
+        sb << ostr
+        sb << "    "
+        sb << tstr
+      end
+      puts s
+    else
+      row << "       "
     end
-    puts s if t >= time_min
 
     break if t >= time_limit
-    pwhash.opslimit *= 2
+    pwhash.opslimit *= 4
   end
+  row << "" # puts | on the end
   puts ""
 
   break if pwhash.memlimit >= mem_limit
   break if pwhash.opslimit == Cox::Pwhash::OPSLIMIT_MIN # Couldn't get past 1 iteration before going over time.
-  pwhash.memlimit *= 2
+  pwhash.memlimit *= 4
 end
+#header << "Ops limit"
+data << ["Memory"]
 
-# TODO: table format
+# Quick n dirty sparse table.
+puts "Ops Limit --->"
+data.each do |row|
+  puts row.join(" | ")
+end
