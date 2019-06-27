@@ -21,6 +21,11 @@ module Cox
     fun crypto_pwhash_opslimit_sensitive()     : LibC::SizeT
     fun crypto_pwhash_opslimit_max()     : LibC::SizeT
     fun crypto_pwhash_strbytes()     : LibC::SizeT
+    fun crypto_pwhash_alg_argon2i13()     : LibC::Int
+    fun crypto_pwhash_alg_argon2id13()     : LibC::Int
+    fun crypto_pwhash_saltbytes : LibC::SizeT
+    fun crypto_pwhash_bytes_min() : LibC::SizeT
+    fun crypto_pwhash_bytes_max() : LibC::SizeT
     fun crypto_generichash_blake2b_statebytes : LibC::SizeT
     fun crypto_generichash_blake2b_bytes : LibC::SizeT
     fun crypto_generichash_blake2b_bytes_min : LibC::SizeT
@@ -107,6 +112,17 @@ module Cox
       subkey_id    : UInt64,
       ctx    : Pointer(LibC::UChar),
       key    : Pointer(LibC::UChar)
+    ) : LibC::Int
+
+    fun crypto_pwhash(
+      key    : Pointer(LibC::UChar),
+      key_size    : LibC::ULongLong,
+      pass    : Pointer(LibC::UChar),
+      pass_size    : LibC::ULongLong,
+      salt    : Pointer(LibC::UChar),
+      optslimit    : LibC::ULongLong,
+      memlimit    : LibC::SizeT,
+      alg    : LibC::Int,
     ) : LibC::Int
 
     fun crypto_pwhash_str(
