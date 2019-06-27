@@ -8,7 +8,8 @@ receipt, they can decrypt and authenticate the message as having come from you.
 
 ## Installation
 
-**[Install libsodium](https://download.libsodium.org/doc/installation/)**, then:
+**[Optionally Install libsodium.](https://download.libsodium.org/doc/installation/)**
+A recent version of libsodium is automatically downloaded and compiled if you don't install your own version.
 
 Add this to your application's `shard.yml`:
 
@@ -17,6 +18,35 @@ dependencies:
   cox:
     github: didactic-drunk/cox
 ```
+
+
+## Features
+
+- Public-Key Cryptography
+  - [x] Crypto Box Easy
+  - [ ] Sealed Box
+  - [x] Combined Signatures
+  - [x] Detached Signatures
+- Secret-Key Cryptography
+  - [x] Secret Box
+  - [ ] Salsa20
+  - [ ] XSalsa20
+  - [ ] ChaCha20
+  - [ ] XChaCha20
+- Hashing
+  - [x] Blake2b
+  - [ ] SipHash
+- Password Hashing
+  - [x] Argon2 (Use for new applications)
+  - [ ] Scrypt (For compatibility with older applications)
+- Other
+  - [x] Key Derivation
+  - [ ] One time auth
+
+Several libsodium API's are already provided by Crystal:
+* SHA-2 (Use [OpenSSL::Digest](https://crystal-lang.org/api/latest/OpenSSL/Digest.html))
+* HMAC SHA-2 (Use [OpenSSL::HMAC](https://crystal-lang.org/api/latest/OpenSSL/HMAC.html))
+* Random (Use [Random::Secure](https://crystal-lang.org/api/latest/Random/Secure.html))
 
 ## Usage
 
@@ -42,7 +72,7 @@ decrypted = Cox.decrypt(encrypted, nonce, alice.public, bob.secret)
 String.new(decrypted) # => "Hello World!"
 ```
 
-## Public key signing
+### Public key signing
 ```crystal
 message = "Hello World!"
 
@@ -55,7 +85,7 @@ signature = Cox.sign_detached(message, signing_pair.secret)
 Cox.verify_detached(signature, message, signing_pair.public) # => true
 ```
 
-## Secret Key Encryption
+### Secret Key Encryption
 ```crystal
 key = Cox::SecretKey.random
 
@@ -67,7 +97,7 @@ key = Cox::SecretKey.new key
 message = key.decrypt_easy encrypted, nonce
 ```
 
-## Blake2b
+### Blake2b
 ```crystal
 key = Bytes.new Cox::Blake2B::KEY_SIZE
 salt = Bytes.new Cox::Blake2B::SALT_SIZE
@@ -85,7 +115,7 @@ digest.update data
 output = d.hexdigest
 ```
 
-## Key derivation
+### Key derivation
 ```crystal
 kdf = Cox::Kdf.new
 
@@ -96,7 +126,7 @@ subkey3 = kdf.derive "context2", 32, 0
 subkey4 = kdf.derive "context2", 64, 1
 ```
 
-## Password Hashing
+### Password Hashing
 ```crystal
 pwhash = Cox::Pwhash.new
 
