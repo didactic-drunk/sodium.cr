@@ -29,10 +29,11 @@ dependencies:
   - [x] Detached Signatures
 - Secret-Key Cryptography
   - [x] Secret Box
-  - [ ] Salsa20
-  - [ ] XSalsa20
-  - [ ] ChaCha20
-  - [ ] XChaCha20
+  - [x] XSalsa20
+  - [x] Salsa20
+  - [x] XChaCha20
+  - [x] ChaCha20 Ietf
+  - [x] ChaCha20
 - Hashing
   - [x] Blake2b
   - [ ] SipHash
@@ -44,9 +45,9 @@ dependencies:
   - [ ] One time auth
 
 Several libsodium API's are already provided by Crystal:
+* Random (Use [Random::Secure](https://crystal-lang.org/api/latest/Random/Secure.html))
 * SHA-2 (Use [OpenSSL::Digest](https://crystal-lang.org/api/latest/OpenSSL/Digest.html))
 * HMAC SHA-2 (Use [OpenSSL::HMAC](https://crystal-lang.org/api/latest/OpenSSL/HMAC.html))
-* Random (Use [Random::Secure](https://crystal-lang.org/api/latest/Random/Secure.html))
 
 ## Usage
 

@@ -63,6 +63,21 @@ module Cox
       key : Pointer(LibC::UChar),
     ) : LibC::Int
 
+# TODO: Add reduced round variants.
+    {% for name in ["_chacha20", "_chacha20_ietf", "_xchacha20", "_salsa20", "_xsalsa20"] %}
+      fun crypto_stream{{ name.id}}_keybytes() : LibC::SizeT
+      fun crypto_stream{{ name.id}}_noncebytes() : LibC::SizeT
+
+      fun crypto_stream{{ name.id }}_xor_ic(
+        c : Pointer(LibC::UChar),
+        m : Pointer(LibC::UChar),
+        len : LibC::ULongLong,
+        nonce : Pointer(LibC::UChar),
+        offset : LibC::UInt64T,
+        key : Pointer(LibC::UChar)
+      ) : LibC::Int
+    {% end %}
+
     fun crypto_box_keypair(
       public_key_output : Pointer(LibC::UChar),
       secret_key_output : Pointer(LibC::UChar)
