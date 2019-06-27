@@ -4,6 +4,10 @@ version: 0.1.0
 authors:
   - Andrew Hamon <andrew@hamon.cc>
 
+development_dependencies:
+  ghshard:
+    github: bcardiff/ghshard
+
 crystal: 0.24.1
 
 license: MIT

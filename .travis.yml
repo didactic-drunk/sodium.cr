@@ -5,18 +5,14 @@ os:
 #  - osx
 
 install:
-  - ./travis-install-lib-sodium.sh
+  - COX_BUILD_DEBUG=1 LIBSODIUM_BUILD_DIR=$HOME/libsodium ./build/libsodium_install.sh
 before_script:
-  - export C_INCLUDE_PATH=$LD_LIBRARY_PATH:`pwd`/sodium/include
-  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/sodium/lib
-  - env | egrep PKG
-  - export PKG_CONFIG_PATH=`pwd`/sodium/lib/pkgconfig
-  - env | egrep LD_
-  - env | egrep PKG
-  - pwd
+  - export LIBSODIUM_BUILD_DIR=$HOME/libsodium
+after_failure:
+  - "[ -f libsodium_install.out ] && cat libsodium_install.out"
 cache:
   directories:
-    - sodium
+    - "$HOME/libsodium"
 
 #addons:
 #  apt:

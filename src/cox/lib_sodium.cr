@@ -1,5 +1,5 @@
 module Cox
-  @[Link("sodium")]
+  @[Link(ldflags: "`#{__DIR__}/../../build/pkg-libs.sh #{__DIR__}/../..`")]
   lib LibSodium
     fun sodium_init() : LibC::Int
 
