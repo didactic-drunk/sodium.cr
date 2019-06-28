@@ -6,41 +6,39 @@ Updated Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/do
 
 ## Features
 
-- Public-Key Cryptography
-  - [x] Crypto Box Easy
-  - [ ] Sealed Box
-  - [ ] Combined Signatures
-  - [x] Detached Signatures
+- [Public-Key Cryptography](https://libsodium.gitbook.io/doc/public-key_cryptography)
+  - [x] [Crypto Box Easy](https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption)
+  - [ ] [Sealed Box](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes)
+  - [ ] [Combined Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
+  - [x] [Detached Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
 - [Secret-Key Cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
   - Secret Box
     - [x] [Combined mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
-    - [ ] Detached mode
-  - Streaming
-    - [ ] XChaCha20 Poly1305
-  - AEAD
-   - [ ] [AES256-GCM (Requires hardware acceleration)](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead)
-   - [ ] XChaCha20-Poly1305-IETF
-   - [ ] ChaCha20-Poly1305-IETF
-   - [ ] ChaCha20-Poly1305
-- Hashing
+    - [ ] [Detached mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
+  - [AEAD](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead)
+    - [ ] AES256-GCM (Requires hardware acceleration)
+    - [ ] XChaCha20-Poly1305-IETF
+    - [ ] ChaCha20-Poly1305-IETF
+    - [ ] ChaCha20-Poly1305
+- [Hashing](https://libsodium.gitbook.io/doc/hashing)
   - [x] ☑ [Blake2b](https://libsodium.gitbook.io/doc/hashing/generic_hashing)
   - [ ] [SipHash](https://libsodium.gitbook.io/doc/hashing/short-input_hashing)
 - [Password Hashing](https://libsodium.gitbook.io/doc/password_hashing)
   - [x] [Argon2](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function) (Use for new applications)
-  - [ ] Scrypt (For compatibility with older applications)
+  - [ ] [Scrypt](https://libsodium.gitbook.io/doc/advanced/scrypt) (For compatibility with older applications)
 - Other
   - [x] [Key Derivation](https://libsodium.gitbook.io/doc/key_derivation)
   - [ ] [Key Exchange](https://libsodium.gitbook.io/doc/key_exchange)
-- Advanced
-  - Stream Ciphers
+- [Advanced](https://libsodium.gitbook.io/doc/advanced0
+  - [Stream Ciphers](https://libsodium.gitbook.io/doc/advanced/stream_ciphers)
     - [x] XSalsa20
     - [x] Salsa20
     - [x] XChaCha20
     - [x] ChaCha20 Ietf
     - [x] ChaCha20
-  - [ ] One time auth
+  - [ ] [One time auth](https://libsodium.gitbook.io/doc/advanced/poly1305)
   - [ ] Padding
-  - [?] Semi-automatic memory wiping.
+  - (Partial) Semi-automatic memory wiping.
 
 ☑ Indicate specs are compared against test vectors from another source.
 
@@ -61,6 +59,25 @@ dependencies:
   cox:
     github: didactic-drunk/cox
 ```
+
+## What should I use for my application?
+
+| Class | |
+| --- | --- |
+| `CryptoBox` `Sign` `SecretBox` | I don't know much about crypto. |
+| `Cox::CryptoBox::PrivateKey` | I want to encrypt + authenticate data using public key encryption. |
+| `Cox::Sign::PrivateKey` | I want to sign or verify messages without encryption. |
+| `Cox::SecretBox` | I have a shared key and want to encrypt + authenticate data. |
+| AEAD | I have a shared key and want encrypt + authenticate streamed data. (not implemented yet) |
+| `Cox::Blake2b` | I want to hash data fast and securely. |
+| `Cox::SipHash` | I want to hash data really fast and less securely. (not implemented yet) |
+| `Cox::Pwhash` | I want to hash a password and store it. |
+| `Cox::Pwhash` | I want to derive a key from a password. |
+| `Cox::Kdf` | I have a high quality master key and want to make subkeys. |
+| `Cox::Cipher::Chalsa` | What goes with guacamole? |
+| Everything else | I want to design my own crypto protocol and probably do it wrong. |
+
+The `specs` provide the best examples of how to use or misuse this shard.
 
 ## Usage
 
