@@ -1,5 +1,6 @@
 # cox
 [![Build Status](https://travis-ci.org/didactic-drunk/cox.svg?branch=master)](https://travis-ci.org/didactic-drunk/cox)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://didactic-drunk.github.io/cox/)
 
 Updated Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
 

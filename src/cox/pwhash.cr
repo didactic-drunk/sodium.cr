@@ -2,6 +2,8 @@ module Cox
   # [Argon2 Password Hashing](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function)
   # * #store #verify #needs_rehash? are used together for password verification.
   # * #key_derive is used on it's own to generate password based keys.
+  #
+  # See `examples/pwhash_selector.cr` for help on selecting parameters.
   class Pwhash
     class PasswordVerifyError < Cox::Error
     end
@@ -16,6 +18,7 @@ module Cox
     MEMLIMIT_MAX         = LibSodium.crypto_pwhash_memlimit_max
     MEMLIMIT_INTERACTIVE = LibSodium.crypto_pwhash_memlimit_interactive
 
+    # Use the most recent algorithm Argon2id13 for new applications.
     enum Algorithm
       Argon2i13  = 1
       Argon2id13 = 2
