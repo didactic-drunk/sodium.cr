@@ -23,10 +23,10 @@ test_vectors = [
   },
 ]
 
-describe Cox::Blake2b do
+describe Cox::Digest::Blake2b do
   it "libsodium comparisons" do
     libsodium_comparisons.each do |vec|
-      d = Cox::Blake2b.new vec[:out_size], key: vec[:key].try(&.hexbytes)
+      d = Cox::Digest::Blake2b.new vec[:out_size], key: vec[:key].try(&.hexbytes)
       d.update vec[:input].hexbytes
       d.hexdigest.should eq vec[:output]
     end
@@ -34,31 +34,31 @@ describe Cox::Blake2b do
 
   it "test vectors" do
     test_vectors.each do |vec|
-      d = Cox::Blake2b.new 64, key: vec[:key].hexbytes
+      d = Cox::Digest::Blake2b.new 64, key: vec[:key].hexbytes
       d.update vec[:input].hexbytes
       d.hexdigest.should eq vec[:output]
     end
   end
 
   it "produces different output with different salt or personal params" do
-    key = Bytes.new Cox::Blake2b::KEY_SIZE
-    salt = Bytes.new Cox::Blake2b::SALT_SIZE
-    salt2 = Bytes.new Cox::Blake2b::SALT_SIZE
+    key = Bytes.new Cox::Digest::Blake2b::KEY_SIZE
+    salt = Bytes.new Cox::Digest::Blake2b::SALT_SIZE
+    salt2 = Bytes.new Cox::Digest::Blake2b::SALT_SIZE
     salt2 = salt.dup
     salt2[0] = 1
-    personal = Bytes.new Cox::Blake2b::PERSONAL_SIZE
+    personal = Bytes.new Cox::Digest::Blake2b::PERSONAL_SIZE
     personal2 = personal.dup
     personal2[0] = 1
 
-    d = Cox::Blake2b.new key: key, salt: salt, personal: personal
+    d = Cox::Digest::Blake2b.new key: key, salt: salt, personal: personal
     d.update "foo".to_slice
     output = d.hexdigest
 
-    d = Cox::Blake2b.new key: key, salt: salt2, personal: personal
+    d = Cox::Digest::Blake2b.new key: key, salt: salt2, personal: personal
     d.update "foo".to_slice
     saltout = d.hexdigest
 
-    d = Cox::Blake2b.new key: key, salt: salt, personal: personal2
+    d = Cox::Digest::Blake2b.new key: key, salt: salt, personal: personal2
     d.update "foo".to_slice
     personalout = d.hexdigest
 
@@ -69,19 +69,19 @@ describe Cox::Blake2b do
 
   it "raises on invalid " do
     expect_raises ArgumentError do
-      Cox::Blake2b.new key: Bytes.new(128)
+      Cox::Digest::Blake2b.new key: Bytes.new(128)
     end
 
     expect_raises ArgumentError do
-      Cox::Blake2b.new salt: Bytes.new(1)
+      Cox::Digest::Blake2b.new salt: Bytes.new(1)
     end
 
     expect_raises ArgumentError do
-      Cox::Blake2b.new salt: Bytes.new(128)
+      Cox::Digest::Blake2b.new salt: Bytes.new(128)
     end
 
     expect_raises ArgumentError do
-      Cox::Blake2b.new personal: Bytes.new(128)
+      Cox::Digest::Blake2b.new personal: Bytes.new(128)
     end
   end
 end

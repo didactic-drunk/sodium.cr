@@ -1,6 +1,6 @@
 require "openssl/digest/digest_base"
 
-module Cox
+module Cox::Digest
   class Blake2b
     # provides copying digest/hexdigest methods
     include OpenSSL::DigestBase

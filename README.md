@@ -65,16 +65,16 @@ dependencies:
 | Class | |
 | --- | --- |
 | `CryptoBox` `Sign` `SecretBox` | I don't know much about crypto. |
-| `Cox::CryptoBox::PrivateKey` | I want to encrypt + authenticate data using public key encryption. |
-| `Cox::Sign::PrivateKey` | I want to sign or verify messages without encryption. |
-| `Cox::SecretBox` | I have a shared key and want to encrypt + authenticate data. |
-| AEAD | I have a shared key and want encrypt + authenticate streamed data. (not implemented yet) |
-| `Cox::Blake2b` | I want to hash data fast and securely. |
-| `Cox::SipHash` | I want to hash data really fast and less securely. (not implemented yet) |
+| [`Cox::CryptoBox::SecretKey`](https://didactic-drunk.github.io/cox/Cox/CryptoBox/SecretKey.html) | I want to encrypt + authenticate data using public key encryption. |
+| [`Cox::Sign::SecretKey`](https://didactic-drunk.github.io/cox/Cox/Sign/SecretKey.html) | I want to sign or verify messages without encryption. |
+| [`Cox::SecretBox`](https://didactic-drunk.github.io/cox/Cox/SecretBox.html) | I have a shared key and want to encrypt + authenticate data. |
+| AEAD | I have a shared key and want encrypt + authenticate streamed data. (Not implemented yet) |
+| [`Cox::Digest::Blake2b`](https://didactic-drunk.github.io/cox/Cox/Digest::Blake2b.html) | I want to hash data fast and securely. |
+| `Cox::Digest::SipHash` | I want to hash data really fast and less securely. (Not implemented yet) |
 | `Cox::Pwhash` | I want to hash a password and store it. |
 | `Cox::Pwhash` | I want to derive a key from a password. |
 | `Cox::Kdf` | I have a high quality master key and want to make subkeys. |
-| `Cox::Cipher::Chalsa` | What goes with guacamole? |
+| [`Cox::Cipher::Chalsa`](https://didactic-drunk.github.io/cox/Cox/Cipher/Chalsa.html) | What goes with guacamole? |
 | Everything else | I want to design my own crypto protocol and probably do it wrong. |
 
 
@@ -142,14 +142,14 @@ message = key.decrypt_easy encrypted, nonce
 
 ### Blake2b
 ```crystal
-key = Bytes.new Cox::Blake2B::KEY_SIZE
-salt = Bytes.new Cox::Blake2B::SALT_SIZE
-personal = Bytes.new Cox::Blake2B::PERSONAL_SIZE
-out_size = 64 # bytes between Cox::Blake2B::OUT_SIZE_MIN and Cox::Blake2B::OUT_SIZE_MAX
+key = Bytes.new Cox::Digest::Blake2B::KEY_SIZE
+salt = Bytes.new Cox::Digest::Blake2B::SALT_SIZE
+personal = Bytes.new Cox::Digest::Blake2B::PERSONAL_SIZE
+out_size = 64 # bytes between Cox::Digest::Blake2B::OUT_SIZE_MIN and Cox::Digest::Blake2B::OUT_SIZE_MAX
 data = "data".to_slice
 
 # output_size, key, salt, and personal are optional.
-digest = Cox::Blake2b.new out_size, key: key, salt: salt, personal: personal
+digest = Cox::Digest::Blake2b.new out_size, key: key, salt: salt, personal: personal
 digest.update data
 output = d.hexdigest
 
