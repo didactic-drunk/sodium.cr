@@ -2,13 +2,7 @@ module Cox
   abstract class Key
     abstract def bytes
 
-    def pointer
-      bytes.to_unsafe
-    end
-
-    def pointer(size)
-      bytes.pointer(size)
-    end
+    delegate to_slice, to: @bytes
 
     def to_base64
       Base64.encode(bytes)

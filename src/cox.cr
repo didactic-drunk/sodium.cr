@@ -11,14 +11,14 @@ module Cox
   end
 end
 
-require "./cox/*"
+require "./cox/**"
 
 module Cox
   def self.encrypt(data, nonce : Nonce, recipient_public_key : PublicKey, sender_secret_key : SecretKey)
     data_buffer = data.to_slice
     data_size = data_buffer.bytesize
     output_buffer = Bytes.new(data_buffer.bytesize + LibSodium::MAC_SIZE)
-    if LibSodium.crypto_box_easy(output_buffer.to_unsafe, data_buffer, data_size, nonce.pointer, recipient_public_key.pointer, sender_secret_key.pointer) != 0
+    if LibSodium.crypto_box_easy(output_buffer.to_slice, data_buffer, data_size, nonce.to_slice, recipient_public_key.to_slice, sender_secret_key.to_slice) != 0
       raise Error.new("crypto_box_easy")
     end
     output_buffer
@@ -33,7 +33,7 @@ module Cox
     data_buffer = data.to_slice
     data_size = data_buffer.bytesize
     output_buffer = Bytes.new(data_buffer.bytesize - LibSodium::MAC_SIZE)
-    if LibSodium.crypto_box_open_easy(output_buffer.to_unsafe, data_buffer.to_unsafe, data_size, nonce.pointer, sender_public_key.pointer, recipient_secret_key.pointer) != 0
+    if LibSodium.crypto_box_open_easy(output_buffer.to_slice, data_buffer.to_slice, data_size, nonce.to_slice, sender_public_key.to_slice, recipient_secret_key.to_slice) != 0
       raise DecryptionFailed.new("crypto_box_open_easy")
     end
     output_buffer
@@ -44,7 +44,7 @@ module Cox
     message_buffer_size = message_buffer.bytesize
     signature_output_buffer = Bytes.new(LibSodium::SIGNATURE_SIZE)
 
-    if LibSodium.crypto_sign_detached(signature_output_buffer.to_unsafe, 0, message_buffer.to_unsafe, message_buffer_size, secret_key.pointer) != 0
+    if LibSodium.crypto_sign_detached(signature_output_buffer.to_slice, 0, message_buffer.to_slice, message_buffer_size, secret_key.to_slice) != 0
       raise Error.new("crypto_sign_detached")
     end
     signature_output_buffer
@@ -55,12 +55,11 @@ module Cox
     message_buffer = message.to_slice
     message_buffer_size = message_buffer.bytesize
 
-    verified = LibSodium.crypto_sign_verify_detached(signature_buffer.to_unsafe, message_buffer.to_unsafe, message_buffer_size, public_key.pointer)
+    verified = LibSodium.crypto_sign_verify_detached(signature_buffer.to_slice, message_buffer.to_slice, message_buffer_size, public_key.to_slice)
     verified.zero?
   end
 end
 
 if Cox::LibSodium.sodium_init == -1
-  STDERR.puts("Failed to init libsodium")
-  exit(1)
+  abort "Failed to init libsodium"
 end

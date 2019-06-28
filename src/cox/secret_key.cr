@@ -40,7 +40,7 @@ module Cox
       if dst.bytesize != (src.bytesize + MAC_SIZE)
         raise ArgumentError.new("dst.bytesize must be src.bytesize + MAC_SIZE, got #{dst.bytesize}")
       end
-      if LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.pointer, @bytes) != 0
+      if LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.to_slice, @bytes) != 0
         raise Cox::Error.new("crypto_secretbox_easy")
       end
       dst
@@ -57,7 +57,7 @@ module Cox
       if dst.bytesize != (src.bytesize - MAC_SIZE)
         raise ArgumentError.new("dst.bytesize must be src.bytesize - MAC_SIZE, got #{dst.bytesize}")
       end
-      if LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.pointer, @bytes) != 0
+      if LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.to_slice, @bytes) != 0
         raise Cox::DecryptionFailed.new("crypto_secretbox_easy")
       end
       dst

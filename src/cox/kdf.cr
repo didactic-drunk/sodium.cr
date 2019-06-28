@@ -2,6 +2,8 @@ module Cox
   class Kdf
     property bytes : Bytes
 
+    delegate to_slice, to: @bytes
+
     def initialize(bytes : Bytes)
       if bytes.bytesize != LibSodium::KDF_KEY_SIZE
         raise ArgumentError.new("bytes must be #{LibSodium::KDF_KEY_SIZE}, got #{bytes.bytesize}")
@@ -26,14 +28,6 @@ module Cox
         raise Cox::Error.new("crypto_kdf_derive_from_key returned #{ret} (subkey size is probably out of range)")
       end
       subkey
-    end
-
-    def pointer
-      bytes.to_unsafe
-    end
-
-    def pointer(size)
-      bytes.pointer(size)
     end
 
     def to_base64
