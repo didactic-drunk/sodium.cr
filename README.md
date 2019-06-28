@@ -16,10 +16,10 @@ Updated Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/do
     - [x] [Combined mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
     - [ ] [Detached mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
   - [AEAD](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead)
-    - [ ] AES256-GCM (Requires hardware acceleration)
-    - [ ] XChaCha20-Poly1305-IETF
-    - [ ] ChaCha20-Poly1305-IETF
-    - [ ] ChaCha20-Poly1305
+   - [ ] AES256-GCM (Requires hardware acceleration)
+   - [ ] XChaCha20-Poly1305-IETF
+   - [ ] ChaCha20-Poly1305-IETF
+   - [ ] ChaCha20-Poly1305
 - [Hashing](https://libsodium.gitbook.io/doc/hashing)
   - [x] ☑ [Blake2b](https://libsodium.gitbook.io/doc/hashing/generic_hashing)
   - [ ] [SipHash](https://libsodium.gitbook.io/doc/hashing/short-input_hashing)
@@ -77,9 +77,10 @@ dependencies:
 | `Cox::Cipher::Chalsa` | What goes with guacamole? |
 | Everything else | I want to design my own crypto protocol and probably do it wrong. |
 
-The `specs` provide the best examples of how to use or misuse this shard.
 
 ## Usage
+
+The `specs` provide the best examples of how to use or misuse this shard.
 
 ### CryptoBox easy encryption
 ```crystal
