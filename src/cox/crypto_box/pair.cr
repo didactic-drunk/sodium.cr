@@ -2,8 +2,13 @@ require "../lib_sodium"
 
 module Cox::CryptoBox
   class Pair
-    # TODO: precompute using crypto_box_beforenm
+    include Wipe
+
+    # BUG: precompute size
+    @bytes = Bytes.new(1)
+
     def initialize(@secret_key : SecretKey, @public_key : PublicKey)
+      # TODO: precompute using crypto_box_beforenm
     end
 
     def encrypt_easy(src)
@@ -25,8 +30,5 @@ module Cox::CryptoBox
     end
 
     # TODO detached
-    def close
-      # TODO: wipe state
-    end
   end
 end

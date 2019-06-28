@@ -2,6 +2,7 @@ require "../lib_sodium"
 
 module Cox
   class Sign::PublicKey < Key
+    include Wipe
     KEY_SIZE = LibSodium::PUBLIC_SIGN_SIZE
 
     getter bytes : Bytes

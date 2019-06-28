@@ -1,8 +1,8 @@
 require "../spec_helper"
 
-describe Cox::SecretKey do
+describe Cox::SecretBox do
   it "encrypts/decrypts" do
-    key = Cox::SecretKey.random
+    key = Cox::SecretBox.new
 
     message = "foobar"
     encrypted, nonce = key.encrypt_easy message

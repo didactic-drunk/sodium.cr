@@ -1,20 +1,33 @@
 require "./lib_sodium"
 
 module Cox
-  class SecretKey < Key
-    property bytes : Bytes
-
+  # [https://libsodium.gitbook.io/doc/secret-key_cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
+  #
+  # ```crystal
+  # key = Cox::SecretKey.new
+  # message = "foobar"
+  # encrypted, nonce = key.encrypt_easy message
+  #
+  # # On the other side.
+  # key = Cox::SecretKey.new key
+  # message = key.decrypt_easy encrypted, nonce
+  # ```
+  class SecretBox < Key
     KEY_SIZE = LibSodium::SECRET_KEY_SIZE
     MAC_SIZE = LibSodium::MAC_SIZE
 
+    property bytes : Bytes
+
+    # Generate a new random key.
+    def initialize
+      @bytes = Random::Secure.random_bytes(KEY_SIZE)
+    end
+
+    # Use an existing key from bytes.
     def initialize(@bytes : Bytes)
       if bytes.bytesize != KEY_SIZE
         raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{bytes.bytesize}")
       end
-    end
-
-    def self.random
-      new Random::Secure.random_bytes(KEY_SIZE)
     end
 
     def encrypt_easy(data)

@@ -2,6 +2,7 @@ require "../lib_sodium"
 
 module Cox::CryptoBox
   class PublicKey < Key
+    include Wipe
     KEY_SIZE = LibSodium::PUBLIC_KEY_SIZE
 
     getter bytes : Bytes

@@ -40,6 +40,7 @@ Updated Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/do
     - [x] ChaCha20
   - [ ] One time auth
   - [ ] Padding
+  - [?] Semi-automatic memory wiping.
 
 ☑ Indicate specs are compared against test vectors from another source.
 
@@ -111,7 +112,7 @@ public_key.verify_detached message, signature
 
 ### Secret Key Encryption
 ```crystal
-key = Cox::SecretKey.random
+key = Cox::SecretKey.new
 
 message = "foobar"
 encrypted, nonce = key.encrypt_easy message

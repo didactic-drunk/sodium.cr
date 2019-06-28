@@ -35,6 +35,7 @@ module Cox
     fun crypto_generichash_blake2b_keybytes_max : LibC::SizeT
     fun crypto_generichash_blake2b_saltbytes : LibC::SizeT
     fun crypto_generichash_blake2b_personalbytes : LibC::SizeT
+    fun sodium_memzero(Pointer(LibC::UChar), LibC::SizeT) : Nil
 
     PUBLIC_KEY_SIZE  = crypto_box_publickeybytes()
     SECRET_KEY_SIZE  = crypto_box_secretkeybytes()

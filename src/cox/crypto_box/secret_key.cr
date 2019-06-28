@@ -2,6 +2,7 @@ require "../lib_sodium"
 
 module Cox::CryptoBox
   class SecretKey < Key
+    include Wipe
     KEY_SIZE = LibSodium::SECRET_KEY_SIZE
     MAC_SIZE = LibSodium::MAC_SIZE
 
@@ -24,11 +25,12 @@ module Cox::CryptoBox
       @public_key = PublicKey.new pkey
     end
 
-    def pair(public_key)
+    # Return a Pair containing a precomputed shared secret for use with encryption/decryption.
+    def pair(public_key) : Pair
       Pair.new self, public_key
     end
 
-    # Create a new pair and automatically close when exiting the block.
+    # Create a new pair and automatically close when the block exits.
     def pair(public_key)
       pa = pair public_key
       begin
