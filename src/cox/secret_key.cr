@@ -48,7 +48,7 @@ module Cox
 
     def decrypt_easy(data : Bytes, nonce : Nonce) : Bytes
       output_size = data.bytesize - MAC_SIZE
-      raise Cox::DecryptionFailed.new("encrypted data too small #{data.bytesize}") if output_size <= 0
+      raise Cox::Error::DecryptionFailed.new("encrypted data too small #{data.bytesize}") if output_size <= 0
       output = Bytes.new output_size
       decrypt_easy(data, output, nonce)
     end
@@ -58,7 +58,7 @@ module Cox
         raise ArgumentError.new("dst.bytesize must be src.bytesize - MAC_SIZE, got #{dst.bytesize}")
       end
       if LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.to_slice, @bytes) != 0
-        raise Cox::DecryptionFailed.new("crypto_secretbox_easy")
+        raise Cox::Error::DecryptionFailed.new("crypto_secretbox_easy")
       end
       dst
     end

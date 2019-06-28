@@ -9,7 +9,7 @@ describe Cox::SecretKey do
     decrypted = key.decrypt_easy encrypted, nonce
     message.should eq String.new(decrypted)
 
-    expect_raises(Cox::DecryptionFailed) do
+    expect_raises(Cox::Error::DecryptionFailed) do
       key.decrypt_easy "badmsgbadmsgbadmsgbadmsgbadmsg".to_slice, nonce
     end
   end

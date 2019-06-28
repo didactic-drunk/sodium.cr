@@ -9,7 +9,7 @@ Updated Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/do
 - Public-Key Cryptography
   - [x] Crypto Box Easy
   - [ ] Sealed Box
-  - [x] Combined Signatures
+  - [ ] Combined Signatures
   - [x] Detached Signatures
 - [Secret-Key Cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
   - Secret Box
@@ -89,13 +89,17 @@ String.new(decrypted) # => "Hello World!"
 ```crystal
 message = "Hello World!"
 
-signing_pair = Cox::SignKeyPair.new
+secret_key = Cox::Sign::SecretKey.new
 
 # Sign the message
-signature = Cox.sign_detached(message, signing_pair.secret)
+signature = secret_key.sign_detached message
 
-# And verify
-Cox.verify_detached(signature, message, signing_pair.public) # => true
+# Send secret_key.public_key to the recipient
+
+public_key = Cox::Sign::PublicKey.new key_bytes
+
+# raises Cox::Error::VerificationFailed on failure.
+public_key.verify_detached message, signature
 ```
 
 ### Secret Key Encryption

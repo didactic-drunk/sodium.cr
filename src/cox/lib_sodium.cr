@@ -108,7 +108,7 @@ module Cox
 
     fun crypto_sign_detached(
       signature_output : Pointer(LibC::UChar),
-      signature_output_size : LibC::ULongLong,
+      signature_output_size : Pointer(LibC::ULongLong),
       message : Pointer(LibC::UChar),
       message_size : LibC::ULongLong,
       secret_key : Pointer(LibC::UChar)
