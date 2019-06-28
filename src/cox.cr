@@ -3,12 +3,13 @@ require "random/secure"
 module Cox
   class Error < ::Exception
   end
+
   class VerificationFailed < Error
   end
+
   class DecryptionFailed < Error
   end
 end
-
 
 require "./cox/*"
 
@@ -59,7 +60,7 @@ module Cox
   end
 end
 
-if Cox::LibSodium.sodium_init() == -1
+if Cox::LibSodium.sodium_init == -1
   STDERR.puts("Failed to init libsodium")
   exit(1)
 end

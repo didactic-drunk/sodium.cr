@@ -173,10 +173,11 @@ Ops limit →
 ## Contributing
 
 1. Fork it ( https://github.com/didactic-drunk/cox/fork )
-2. Create your feature branch (git checkout -b my-new-feature)
-3. Commit your changes (git commit -am 'Add some feature')
-4. Push to the branch (git push origin my-new-feature)
-5. Create a new Pull Request
+2. **Install a formatting check git hook (ln -sf ../../scripts/git/pre-commit .git/hooks)**
+3. Create your feature branch (git checkout -b my-new-feature)
+4. Commit your changes (git commit -am 'Add some feature')
+5. Push to the branch (git push origin my-new-feature)
+6. Create a new Pull Request
 
 ## Contributors
 

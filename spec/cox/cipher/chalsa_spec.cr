@@ -20,4 +20,3 @@ require "../../../src/cox/cipher/chalsa"
     end
   end
 {% end %}
-

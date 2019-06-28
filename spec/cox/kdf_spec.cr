@@ -22,5 +22,5 @@ describe Cox::Kdf do
     subkey1.should_not eq subkey2
   end
 
-# TODO: test exceptions
+  # TODO: test exceptions
 end

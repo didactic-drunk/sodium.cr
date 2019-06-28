@@ -17,7 +17,7 @@ module Cox
     MEMLIMIT_INTERACTIVE = LibSodium.crypto_pwhash_memlimit_interactive
 
     enum Algorithm
-      Argon2i13 = 1
+      Argon2i13  = 1
       Argon2id13 = 2
     end
 

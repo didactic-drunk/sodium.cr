@@ -19,20 +19,20 @@ mem_limit = (ARGV.shift?.try &.to_i || (Cox::Pwhash::MEMLIMIT_MAX)).to_u64
 pwhash = Cox::Pwhash.new
 pass = "1234"
 
-#data = Array(Array({UInt64, UInt64, Float64})).new
+# data = Array(Array({UInt64, UInt64, Float64})).new
 header = ["      "]
 data = [header]
 
 def bytes_str(b)
   suffix = if b >= 1024*1024
-    b /= (1024*1024)
-    "M"
-  elsif b >= 1024
-    b = b / 1024
-    "K"
-  else
-    ""
-  end
+             b /= (1024*1024)
+             "M"
+           elsif b >= 1024
+             b = b / 1024
+             "K"
+           else
+             ""
+           end
   "%5d#{suffix}" % b
 end
 
@@ -49,7 +49,7 @@ loop do
     header << ostr if data.size == 2
     if t >= time_min
       mstr = bytes_str pwhash.memlimit
-#      mstr = "%5dK" % (pwhash.memlimit / 1024)
+      #      mstr = "%5dK" % (pwhash.memlimit / 1024)
       tstr = "%6.3fs" % t
       row << tstr
       s = String.build do |sb|
@@ -75,7 +75,7 @@ loop do
   break if pwhash.opslimit == Cox::Pwhash::OPSLIMIT_MIN # Couldn't get past 1 iteration before going over time.
   pwhash.memlimit *= 4
 end
-#header << "Ops limit"
+# header << "Ops limit"
 data << ["Memory"]
 
 # Quick n dirty sparse table.

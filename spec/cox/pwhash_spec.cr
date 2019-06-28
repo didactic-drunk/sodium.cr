@@ -1,12 +1,12 @@
 require "../spec_helper"
 
 private def pw_min
-    pwhash = Cox::Pwhash.new
+  pwhash = Cox::Pwhash.new
 
-    # set to minimum to speed up tests
-    pwhash.memlimit = Cox::Pwhash::MEMLIMIT_MIN
-    pwhash.opslimit = Cox::Pwhash::OPSLIMIT_MIN
-    pwhash
+  # set to minimum to speed up tests
+  pwhash.memlimit = Cox::Pwhash::MEMLIMIT_MIN
+  pwhash.opslimit = Cox::Pwhash::OPSLIMIT_MIN
+  pwhash
 end
 
 describe Cox::Pwhash do
@@ -45,6 +45,6 @@ describe Cox::Pwhash do
     key1.should eq key2
     key1.should_not eq key3
     key1.should_not eq key4
-# BUG: validate against known passwords
+    # BUG: validate against known passwords
   end
 end

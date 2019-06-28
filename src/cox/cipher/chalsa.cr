@@ -41,9 +41,8 @@ module Cox::Cipher
 
     # Xor's src with the cipher output and returns a new Slice
     def update(src : Bytes) : Bytes
-        update src, Bytes.new(src.bytesize)
+      update src, Bytes.new(src.bytesize)
     end
-
 
     # Provided for compatibility with block ciphers.
     # Stream ciphers don't have additional data.
@@ -57,11 +56,11 @@ module Cox::Cipher
     end
 
     abstract def update(src : Bytes, dst : Bytes)
-    abstract def key_size()
-    abstract def nonce_size()
+    abstract def key_size
+    abstract def nonce_size
   end
 
-  {% for key, val in { "XSalsa20" => "xsalsa20", "Salsa20" => "salsa20", "XChaCha20" => "xchacha20", "ChaCha20Ietf" => "chacha20_ietf", "ChaCha20" => "chacha20",} %}
+  {% for key, val in {"XSalsa20" => "xsalsa20", "Salsa20" => "salsa20", "XChaCha20" => "xchacha20", "ChaCha20Ietf" => "chacha20_ietf", "ChaCha20" => "chacha20"} %}
     # These classes can be used to generate pseudo-random data from a key,
     # or as building blocks for implementing custom constructions, but they
     # are not alternatives to secretbox.

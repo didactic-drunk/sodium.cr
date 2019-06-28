@@ -2,9 +2,9 @@ require "../spec_helper"
 
 libsodium_comparisons = [
   {
-    key: nil,
-    input: "",
-    output: "0e5751c026e543b2e8ab2eb06099daa1d1e5df47778f7787faab45cdf12fe3a8",
+    key:      nil,
+    input:    "",
+    output:   "0e5751c026e543b2e8ab2eb06099daa1d1e5df47778f7787faab45cdf12fe3a8",
     out_size: 32,
   },
 ]
@@ -12,17 +12,16 @@ libsodium_comparisons = [
 # from https://github.com/BLAKE2/BLAKE2/tree/master/testvectors
 test_vectors = [
   {
-    key: "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f",
-    input: "",
+    key:    "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f",
+    input:  "",
     output: "10ebb67700b1868efb4417987acf4690ae9d972fb7a590c2f02871799aaa4786b5e996e8f0f4eb981fc214b005f42d2ff4233499391653df7aefcbc13fc51568",
   },
   {
-    key: "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f",
-    input: "00",
+    key:    "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f",
+    input:  "00",
     output: "961f6dd1e4dd30f63901690c512e78e4b45e4742ed197c3c5e45c549fd25f2e4187b0bc9fe30492b16b0d0bc4ef9b0f34c7003fac09a5ef1532e69430234cebd",
   },
 ]
-
 
 describe Cox::Blake2b do
   it "libsodium comparisons" do
@@ -50,7 +49,6 @@ describe Cox::Blake2b do
     personal = Bytes.new Cox::Blake2b::PERSONAL_SIZE
     personal2 = personal.dup
     personal2[0] = 1
-
 
     d = Cox::Blake2b.new key: key, salt: salt, personal: personal
     d.update "foo".to_slice

@@ -5,7 +5,7 @@ module Cox
     # provides copying digest/hexdigest methods
     include OpenSSL::DigestBase
 
-    KEY_SIZE = LibSodium.crypto_generichash_blake2b_keybytes
+    KEY_SIZE     = LibSodium.crypto_generichash_blake2b_keybytes
     KEY_SIZE_MIN = LibSodium.crypto_generichash_blake2b_keybytes_min
     KEY_SIZE_MAX = LibSodium.crypto_generichash_blake2b_keybytes_max
 
@@ -13,7 +13,7 @@ module Cox
 
     PERSONAL_SIZE = LibSodium.crypto_generichash_blake2b_personalbytes
 
-    OUT_SIZE = LibSodium.crypto_generichash_blake2b_bytes.to_i32
+    OUT_SIZE     = LibSodium.crypto_generichash_blake2b_bytes.to_i32
     OUT_SIZE_MIN = LibSodium.crypto_generichash_blake2b_bytes_min.to_i32
     OUT_SIZE_MAX = LibSodium.crypto_generichash_blake2b_bytes_max.to_i32
 
@@ -23,7 +23,6 @@ module Cox
     @key_size = 0
     @have_salt = false
     @have_personal = false
-
 
     # implemented as static array's so clone works without jumping through hoops.
     @key = StaticArray(UInt8, 64).new 0
@@ -104,5 +103,3 @@ module Cox
 
   Blake2b.new.__validate_sizes__
 end
-
-
