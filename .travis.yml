@@ -3,7 +3,7 @@ os:
 - linux
 - osx
 install:
-- COX_BUILD_DEBUG=1 LIBSODIUM_BUILD_DIR=$HOME/libsodium ./build/libsodium_install.sh
+- SODIUM_BUILD_DEBUG=1 LIBSODIUM_BUILD_DIR=$HOME/libsodium ./build/libsodium_install.sh
 before_script:
 - export LIBSODIUM_BUILD_DIR=$HOME/libsodium
 after_failure:

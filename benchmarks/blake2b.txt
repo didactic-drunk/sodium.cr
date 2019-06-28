@@ -52,7 +52,7 @@ openssl speed -evp blake2b512 md5
   Doing md5 for 3s on 16384 size blocks: 125954 md5's in 2.99s
    
 
-# In all tests crystal Cox::Blake2b(512) beats crystal OpenSSL::Digest::SHA256.
+# In all tests crystal Sodium::Digest::Blake2b(512) beats crystal OpenSSL::Digest::SHA256.
 # Using .reset instead of creating new objects gives a significant performance boost when hashing small data sizes.
 # Reusing an output buffer with .reset gives a further performance boost when hashing small data sizes.
 # New objects have a significant penalty for hashing small data sizes.  Only problematic with iterative hashing or in a tight loop.

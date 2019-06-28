@@ -1,5 +1,4 @@
-require "../src/cox"
-require "tallboy"
+require "../src/sodium"
 
 if ARGV.empty?
   puts "Help select Pwhash ops/mem limits for your application."
@@ -15,8 +14,8 @@ time_limit = if t = ARGV.shift?
              else
                time_min * 4
              end
-mem_limit = (ARGV.shift?.try &.to_i || (Cox::Pwhash::MEMLIMIT_MAX)).to_u64
-pwhash = Cox::Pwhash.new
+mem_limit = (ARGV.shift?.try &.to_i || (Sodium::Pwhash::MEMLIMIT_MAX)).to_u64
+pwhash = Sodium::Pwhash.new
 pass = "1234"
 
 # data = Array(Array({UInt64, UInt64, Float64})).new
@@ -36,9 +35,9 @@ def bytes_str(b)
   "%5d#{suffix}" % b
 end
 
-pwhash.memlimit = Cox::Pwhash::MEMLIMIT_MIN
+pwhash.memlimit = Sodium::Pwhash::MEMLIMIT_MIN
 loop do
-  pwhash.opslimit = Cox::Pwhash::OPSLIMIT_MIN
+  pwhash.opslimit = Sodium::Pwhash::OPSLIMIT_MIN
   row = ["%5dK" % (pwhash.memlimit / 1024)]
   data << row
 
@@ -72,7 +71,7 @@ loop do
   puts ""
 
   break if pwhash.memlimit >= mem_limit
-  break if pwhash.opslimit == Cox::Pwhash::OPSLIMIT_MIN # Couldn't get past 1 iteration before going over time.
+  break if pwhash.opslimit == Sodium::Pwhash::OPSLIMIT_MIN # Couldn't get past 1 iteration before going over time.
   pwhash.memlimit *= 4
 end
 # header << "Ops limit"

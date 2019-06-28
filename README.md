@@ -1,6 +1,6 @@
-# cox
-[![Build Status](https://travis-ci.org/didactic-drunk/cox.svg?branch=master)](https://travis-ci.org/didactic-drunk/cox)
-[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://didactic-drunk.github.io/cox/)
+# sodium.cr
+[![Build Status](https://travis-ci.org/didactic-drunk/sodium.cr.svg?branch=master)](https://travis-ci.org/didactic-drunk/sodium.cr)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://didactic-drunk.github.io/sodium.cr/)
 
 Updated Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
 
@@ -56,8 +56,8 @@ Add this to your application's `shard.yml`:
 
 ```yaml
 dependencies:
-  cox:
-    github: didactic-drunk/cox
+  sodium.cr:
+    github: didactic-drunk/sodium.cr
 ```
 
 ## What should I use for my application?
@@ -65,16 +65,16 @@ dependencies:
 | Class | |
 | --- | --- |
 | `CryptoBox` `Sign` `SecretBox` | I don't know much about crypto. |
-| [`Cox::CryptoBox::SecretKey`](https://didactic-drunk.github.io/cox/Cox/CryptoBox/SecretKey.html) | I want to encrypt + authenticate data using public key encryption. |
-| [`Cox::Sign::SecretKey`](https://didactic-drunk.github.io/cox/Cox/Sign/SecretKey.html) | I want to sign or verify messages without encryption. |
-| [`Cox::SecretBox`](https://didactic-drunk.github.io/cox/Cox/SecretBox.html) | I have a shared key and want to encrypt + authenticate data. |
+| [`Sodium::CryptoBox::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/CryptoBox/SecretKey.html) | I want to encrypt + authenticate data using public key encryption. |
+| [`Sodium::Sign::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/Sign/SecretKey.html) | I want to sign or verify messages without encryption. |
+| [`Sodium::SecretBox`](https://didactic-drunk.github.io/sodium.cr/Sodium/SecretBox.html) | I have a shared key and want to encrypt + authenticate data. |
 | AEAD | I have a shared key and want encrypt + authenticate streamed data. (Not implemented yet) |
-| [`Cox::Digest::Blake2b`](https://didactic-drunk.github.io/cox/Cox/Digest::Blake2b.html) | I want to hash data fast and securely. |
-| `Cox::Digest::SipHash` | I want to hash data really fast and less securely. (Not implemented yet) |
-| `Cox::Pwhash` | I want to hash a password and store it. |
-| `Cox::Pwhash` | I want to derive a key from a password. |
-| `Cox::Kdf` | I have a high quality master key and want to make subkeys. |
-| [`Cox::Cipher::Chalsa`](https://didactic-drunk.github.io/cox/Cox/Cipher/Chalsa.html) | What goes with guacamole? |
+| [`Sodium::Digest::Blake2b`](https://didactic-drunk.github.io/sodium.cr/Sodium/Digest::Blake2b.html) | I want to hash data fast and securely. |
+| `Sodium::Digest::SipHash` | I want to hash data really fast and less securely. (Not implemented yet) |
+| `Sodium::Pwhash` | I want to hash a password and store it. |
+| `Sodium::Pwhash` | I want to derive a key from a password. |
+| `Sodium::Kdf` | I have a high quality master key and want to make subkeys. |
+| [`Sodium::Cipher::Chalsa`](https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/Chalsa.html) | What goes with guacamole? |
 | Everything else | I want to design my own crypto protocol and probably do it wrong. |
 
 
@@ -84,15 +84,15 @@ The `specs` provide the best examples of how to use or misuse this shard.
 
 ### CryptoBox easy encryption
 ```crystal
-require "cox"
+require "sodium"
 
 data = "Hello World!"
 
 # Alice is the sender
-alice = Cox::CryptoBox::SecretKey.new
+alice = Sodium::CryptoBox::SecretKey.new
 
 # Bob is the recipient
-bob = Cox::CryptoBox::SecretKey.new
+bob = Sodium::CryptoBox::SecretKey.new
 
 # Precompute a shared secret between alice and bob.
 pair = alice.pair bob.public_key
@@ -105,7 +105,7 @@ nonce, encrypted = pair.encrypt data
 bob.pair alice.public_key do |pair|
   # Decrypt the message using Bob's secret key, and verify its signature against
   # Alice's public key
-  decrypted = Cox.decrypt(encrypted, nonce, alice.public, bob.secret)
+  decrypted = Sodium.decrypt(encrypted, nonce, alice.public, bob.secret)
 
   String.new(decrypted) # => "Hello World!"
 end
@@ -115,41 +115,41 @@ end
 ```crystal
 message = "Hello World!"
 
-secret_key = Cox::Sign::SecretKey.new
+secret_key = Sodium::Sign::SecretKey.new
 
 # Sign the message
 signature = secret_key.sign_detached message
 
 # Send secret_key.public_key to the recipient
 
-public_key = Cox::Sign::PublicKey.new key_bytes
+public_key = Sodium::Sign::PublicKey.new key_bytes
 
-# raises Cox::Error::VerificationFailed on failure.
+# raises Sodium::Error::VerificationFailed on failure.
 public_key.verify_detached message, signature
 ```
 
 ### Secret Key Encryption
 ```crystal
-key = Cox::SecretKey.new
+key = Sodium::SecretKey.new
 
 message = "foobar"
 encrypted, nonce = key.encrypt_easy message
 
 # On the other side.
-key = Cox::SecretKey.new key
+key = Sodium::SecretKey.new key
 message = key.decrypt_easy encrypted, nonce
 ```
 
 ### Blake2b
 ```crystal
-key = Bytes.new Cox::Digest::Blake2B::KEY_SIZE
-salt = Bytes.new Cox::Digest::Blake2B::SALT_SIZE
-personal = Bytes.new Cox::Digest::Blake2B::PERSONAL_SIZE
-out_size = 64 # bytes between Cox::Digest::Blake2B::OUT_SIZE_MIN and Cox::Digest::Blake2B::OUT_SIZE_MAX
+key = Bytes.new Sodium::Digest::Blake2B::KEY_SIZE
+salt = Bytes.new Sodium::Digest::Blake2B::SALT_SIZE
+personal = Bytes.new Sodium::Digest::Blake2B::PERSONAL_SIZE
+out_size = 64 # bytes between Sodium::Digest::Blake2B::OUT_SIZE_MIN and Sodium::Digest::Blake2B::OUT_SIZE_MAX
 data = "data".to_slice
 
 # output_size, key, salt, and personal are optional.
-digest = Cox::Digest::Blake2b.new out_size, key: key, salt: salt, personal: personal
+digest = Sodium::Digest::Blake2b.new out_size, key: key, salt: salt, personal: personal
 digest.update data
 output = d.hexdigest
 
@@ -160,7 +160,7 @@ output = d.hexdigest
 
 ### Key derivation
 ```crystal
-kdf = Cox::Kdf.new
+kdf = Sodium::Kdf.new
 
 # kdf.derive(8_byte_context, subkey_id, subkey_size)
 subkey1 = kdf.derive "context1", 0, 16
@@ -171,10 +171,10 @@ subkey4 = kdf.derive "context2", 1, 64
 
 ### Password Hashing
 ```crystal
-pwhash = Cox::Pwhash.new
+pwhash = Sodium::Pwhash.new
 
-pwhash.memlimit = Cox::Pwhash::MEMLIMIT_MIN
-pwhash.opslimit = Cox::Pwhash::OPSLIMIT_MIN
+pwhash.memlimit = Sodium::Pwhash::MEMLIMIT_MIN
+pwhash.opslimit = Sodium::Pwhash::OPSLIMIT_MIN
 
 pass = "1234"
 hash = pwhash.hash_str pass
@@ -203,7 +203,7 @@ Ops limit →
 
 ## Contributing
 
-1. Fork it ( https://github.com/didactic-drunk/cox/fork )
+1. Fork it ( https://github.com/didactic-drunk/sodium.cr/fork )
 2. **Install a formatting check git hook (ln -sf ../../scripts/git/pre-commit .git/hooks)**
 3. Create your feature branch (git checkout -b my-new-feature)
 4. Commit your changes (git commit -am 'Add some feature')

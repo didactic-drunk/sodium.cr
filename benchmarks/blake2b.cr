@@ -1,5 +1,5 @@
 require "benchmark"
-require "../src/cox"
+require "../src/sodium"
 require "openssl"
 require "openssl/digest"
 
@@ -13,19 +13,19 @@ puts "'crystal run --release benchmarks/blake2b.cr sha1 sha256'"
 Benchmark.ips(warmup: 0.5) do |bm|
   sizes.each_with_index do |size, i|
     bm.report "blake2b new obj per iter #{size}" do
-      d = Cox::Digest::Blake2b.new 64
+      d = Sodium::Digest::Blake2b.new 64
       d.update bufs[i]
       d.digest
     end
 
-    d = Cox::Digest::Blake2b.new output_size
+    d = Sodium::Digest::Blake2b.new output_size
     bm.report "blake2b reset per iter #{size}" do
       d.reset
       d.update bufs[i]
       d.digest
     end
 
-    d = Cox::Digest::Blake2b.new output_size
+    d = Sodium::Digest::Blake2b.new output_size
     dst = Bytes.new d.digest_size
     bm.report "blake2b reset reusing buffer per iter #{size}" do
       d.reset

@@ -12,8 +12,8 @@ set -e
 
 #export LIBSODIUM_INSTALL=1
 if [ "$LIBSODIUM_INSTALL" != "1" ]; then
-	[ ! -z "$COX_BUILD_VERBOSE" ] echo "Skipping libsodium build."
-	exit
+	[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Skipping libsodium build."
+	exit 0
 fi
 
 
@@ -22,7 +22,7 @@ cd "$LIBSODIUM_BUILD_DIR"
 
 
 if [ ! -f "$LIBSODIUM_INSTALL_PATH/include/sodium.h" ]; then
-	[ ! -z "$COX_BUILD_DEBUG" ] && set -x
+	[ ! -z "$SODIUM_BUILD_DEBUG" ] && set -x
 
 	DIRNAME=libsodium-"$MIN_LIBSODIUM_VERSION"
 	TGZ_FILENAME="$DIRNAME".tar.gz
@@ -58,11 +58,11 @@ if [ ! -f "$LIBSODIUM_INSTALL_PATH/include/sodium.h" ]; then
 		touch .make.install.done
 	fi
 
-	[ ! -z "$COX_BUILD_VERBOSE" ] && echo "Finished building libsodium."
+	[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Finished building libsodium."
 else
 #	find "$LIBSODIUM_INSTALL_PATH"
 
-	[ ! -z "$COX_BUILD_VERBOSE" ] && echo "Using already built libsodium."
+	[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Using already built libsodium."
 fi
 
 exit 0

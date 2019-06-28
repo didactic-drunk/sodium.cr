@@ -1,4 +1,4 @@
-name: cox
+name: sodium.cr
 version: 0.1.0
 
 authors:
@@ -8,6 +8,6 @@ development_dependencies:
   ghshard:
     github: bcardiff/ghshard
 
-crystal: 0.24.1
+crystal: 0.28.0
 
 license: MIT

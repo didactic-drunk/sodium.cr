@@ -1,2 +1,2 @@
 require "spec"
-require "../src/cox"
+require "../src/sodium"
