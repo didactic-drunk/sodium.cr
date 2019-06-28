@@ -14,8 +14,8 @@ module Cox
       end
     end
 
-    def self.new
-      new(Random::Secure.random_bytes(NONCE_SIZE))
+    def initialize
+      @bytes = Random::Secure.random_bytes(NONCE_SIZE)
     end
   end
 end

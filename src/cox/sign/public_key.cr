@@ -2,9 +2,9 @@ require "../lib_sodium"
 
 module Cox
   class Sign::PublicKey < Key
-    property bytes : Bytes
-
     KEY_SIZE = LibSodium::PUBLIC_SIGN_SIZE
+
+    getter bytes : Bytes
 
     def initialize(@bytes : Bytes)
       if bytes.bytesize != KEY_SIZE
@@ -12,6 +12,8 @@ module Cox
       end
     end
 
+    # Verify signature made by `secret_key.sign_detached(message)`
+    # Raises on verification failure.
     def verify_detached(message, sig : Bytes)
       verify_detached message.to_slice, sig
     end

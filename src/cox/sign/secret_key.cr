@@ -15,7 +15,7 @@ module Cox
       LibSodium.crypto_sign_keypair pkey, @bytes
     end
 
-    # Use existing Private and Public keys.
+    # Use existing Secret and Public keys.
     def initialize(@bytes : Bytes, pkey : Bytes)
       raise ArgumentError.new("Secret sign key must be #{KEY_SIZE}, got #{@bytes.bytesize}")
       @public_key = PublicKey.new pkey
@@ -31,6 +31,8 @@ module Cox
     # Also needs to differentiate from seed as a single parameter
     #    end
 
+    # Signs message and returns a detached signature.
+    # Verify using `secret_key.public_key.verify_detached(message, sig)`
     def sign_detached(message)
       sign_detached message.to_slice
     end

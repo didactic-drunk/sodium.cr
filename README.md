@@ -63,26 +63,33 @@ dependencies:
 
 ## Usage
 
+### CryptoBox easy encryption
 ```crystal
 require "cox"
 
 data = "Hello World!"
 
 # Alice is the sender
-alice = Cox::KeyPair.new
+alice = Cox::CryptoBox::SecretKey.new
 
 # Bob is the recipient
-bob = Cox::KeyPair.new
+bob = Cox::CryptoBox::SecretKey.new
+
+# Precompute a shared secret between alice and bob.
+pair = alice.pair bob.public_key
 
 # Encrypt a message for Bob using his public key, signing it with Alice's
 # secret key
-nonce, encrypted = Cox.encrypt(data, bob.public, alice.secret)
+nonce, encrypted = pair.encrypt data
 
-# Decrypt the message using Bob's secret key, and verify its signature against
-# Alice's public key
-decrypted = Cox.decrypt(encrypted, nonce, alice.public, bob.secret)
+# Precompute within a block.  The shared secret is wiped when the block exits.
+bob.pair alice.public_key do |pair|
+  # Decrypt the message using Bob's secret key, and verify its signature against
+  # Alice's public key
+  decrypted = Cox.decrypt(encrypted, nonce, alice.public, bob.secret)
 
-String.new(decrypted) # => "Hello World!"
+  String.new(decrypted) # => "Hello World!"
+end
 ```
 
 ### Public key signing

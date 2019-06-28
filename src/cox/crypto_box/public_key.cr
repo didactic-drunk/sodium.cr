@@ -1,10 +1,10 @@
-require "./lib_sodium"
+require "../lib_sodium"
 
-module Cox
+module Cox::CryptoBox
   class PublicKey < Key
-    property bytes : Bytes
-
     KEY_SIZE = LibSodium::PUBLIC_KEY_SIZE
+
+    getter bytes : Bytes
 
     def initialize(@bytes : Bytes)
       if bytes.bytesize != KEY_SIZE

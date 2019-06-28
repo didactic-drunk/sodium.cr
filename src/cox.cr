@@ -13,7 +13,7 @@ end
 require "./cox/**"
 
 module Cox
-  def self.encrypt(data, nonce : Nonce, recipient_public_key : PublicKey, sender_secret_key : SecretKey)
+  def self.encrypt(data, nonce : Nonce, recipient_public_key : CryptoBox::PublicKey, sender_secret_key : CryptoBox::SecretKey)
     data_buffer = data.to_slice
     data_size = data_buffer.bytesize
     output_buffer = Bytes.new(data_buffer.bytesize + LibSodium::MAC_SIZE)
@@ -23,12 +23,12 @@ module Cox
     output_buffer
   end
 
-  def self.encrypt(data, recipient_public_key : PublicKey, sender_secret_key : SecretKey)
+  def self.encrypt(data, recipient_public_key : CryptoBox::PublicKey, sender_secret_key : CryptoBox::SecretKey)
     nonce = Nonce.new
     {nonce, encrypt(data, nonce, recipient_public_key, sender_secret_key)}
   end
 
-  def self.decrypt(data, nonce : Nonce, sender_public_key : PublicKey, recipient_secret_key : SecretKey)
+  def self.decrypt(data, nonce : Nonce, sender_public_key : CryptoBox::PublicKey, recipient_secret_key : CryptoBox::SecretKey)
     data_buffer = data.to_slice
     data_size = data_buffer.bytesize
     output_buffer = Bytes.new(data_buffer.bytesize - LibSodium::MAC_SIZE)
