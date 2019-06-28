@@ -1,19 +1,25 @@
-sudo: true
 language: crystal
 os:
-  - linux
-#  - osx
-
+- linux
+- osx
 install:
-  - COX_BUILD_DEBUG=1 LIBSODIUM_BUILD_DIR=$HOME/libsodium ./build/libsodium_install.sh
+- COX_BUILD_DEBUG=1 LIBSODIUM_BUILD_DIR=$HOME/libsodium ./build/libsodium_install.sh
 before_script:
-  - export LIBSODIUM_BUILD_DIR=$HOME/libsodium
+- export LIBSODIUM_BUILD_DIR=$HOME/libsodium
 after_failure:
-  - "[ -f libsodium_install.out ] && cat libsodium_install.out"
+- "[ -f libsodium_install.out ] && cat libsodium_install.out"
 cache:
   directories:
-    - "$HOME/libsodium"
-
+  - "$HOME/libsodium"
+script:
+- crystal spec
+- crystal tool format --check
+- crystal docs
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: docs
 #addons:
 #  apt:
 #    packages:
@@ -21,3 +27,4 @@ cache:
 #  homebrew:
 #    packages:
 #      - libsodium # takes forever
+
