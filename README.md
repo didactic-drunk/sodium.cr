@@ -2,7 +2,16 @@
 [![Build Status](https://travis-ci.org/didactic-drunk/sodium.cr.svg?branch=master)](https://travis-ci.org/didactic-drunk/sodium.cr)
 [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://didactic-drunk.github.io/sodium.cr/)
 
-Updated Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
+Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
+
+## Goals
+
+* Provide an easy to use API based on reviewing most other [libsodium bindings](https://libsodium.gitbook.io/doc/bindings_for_other_languages).
+* Provide the most commonly used libsodium API's.
+* Test for compatibility against other libsodium bindings to ensure interoperability.
+* Always provide a stream interface to handle arbitrarily sized data when one is available.
+* Drop in replacement classes compatible with OpenSSL::{Digest,Cipher} when possible.
+* Use the newest system packaged libsodium or download the most recent stable version without manual configuration.
 
 ## Features
 
@@ -47,18 +56,6 @@ Several features in libsodium are already provided by Crystal:
 * SHA-2 (Use [OpenSSL::Digest](https://crystal-lang.org/api/latest/OpenSSL/Digest.html))
 * HMAC SHA-2 (Use [OpenSSL::HMAC](https://crystal-lang.org/api/latest/OpenSSL/HMAC.html))
 
-## Installation
-
-**[Optionally Install libsodium.](https://download.libsodium.org/doc/installation/)**
-A recent version of libsodium is automatically downloaded and compiled if you don't install your own version.
-
-Add this to your application's `shard.yml`:
-
-```yaml
-dependencies:
-  sodium.cr:
-    github: didactic-drunk/sodium.cr
-```
 
 ## What should I use for my application?
 
@@ -78,9 +75,61 @@ dependencies:
 | Everything else | I want to design my own crypto protocol and probably do it wrong. |
 
 
+## Installation
+
+**[Optionally Install libsodium.](https://download.libsodium.org/doc/installation/)**
+A recent version of libsodium is automatically downloaded and compiled if you don't install your own version.
+
+Add this to your application's `shard.yml`:
+
+```yaml
+dependencies:
+  sodium.cr:
+    github: didactic-drunk/sodium.cr
+```
+
+
 ## Usage
 
 The `specs` provide the best examples of how to use or misuse this shard.
+
+### Warning
+
+This library uses automatic memory wiping.  **Make sure you write your keys to disk or send them over a network
+before losing references to objects that contain keys.**  You may also call `.dup`.
+
+```crystal
+# Returns Bytes representation and loses reference to SecretKey
+def new_key
+  secret_key = Sodium::CryptoBox::SecretKey.new
+  secret_key.bytes
+end
+
+saved_key = new_key
+
+p saved_key[0, 8]
+GC.collect
+p saved_key[0, 8]
+```
+    
+```
+# Before GC
+Bytes[175, 134, 134, 159, 149, 208, 171, 251]
+# After GC
+Bytes[0, 0, 0, 0, 0, 0, 0, 0]
+```
+
+You may call `.close` on any object that retains keying material to wipe it's key(s) earlier.
+Objects with a  `.close` method also respond to `Class.open` and wipe when the block returns.
+
+```crystal
+Sodium::CryptoBox::SecretKey.open(sec_key, pub_key) do |secret_key|
+ ... Do crypto operations ...
+end
+# sec_key is wiped
+# public keys aren't wiped.
+
+```
 
 ### CryptoBox easy encryption
 ```crystal
@@ -209,6 +258,20 @@ Ops limit →
 4. Commit your changes (git commit -am 'Add some feature')
 5. Push to the branch (git push origin my-new-feature)
 6. Create a new Pull Request
+
+## Project History
+
+* Originally created by [Andrew Hamon](https://github.com/andrewhamons/cox)
+* Forked by [Didactic Drunk](https://github.com/didactic-drunk/cox) for lack of updates in the original project.
+* Complaints about the name being too controversial.  Project name changed from "cox" to a more libsodium related name of "salty seaman".
+* ~50% complete libsodium API.
+* More complaints about the name.  Dead hooker jokes added.
+* None of the original API is left.
+* More complaints threatening a boycott.  Told them "Go ahead, I own Coca Cola and Water".
+* Account unsuspended.
+* Unrelated to the boycott the project name changed to "libsodium" because sodium happens to be a tasty byproduct of the two earlier names.
+* Account unsuspended.
+* Dead hooker jokes (mostly) removed.
 
 ## Contributors
 
