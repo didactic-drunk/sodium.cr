@@ -13,8 +13,9 @@ module Sodium
   # message = key.decrypt_easy encrypted, nonce
   # ```
   class SecretBox < Key
-    KEY_SIZE = LibSodium::SECRET_KEY_SIZE
-    MAC_SIZE = LibSodium::MAC_SIZE
+    KEY_SIZE   = LibSodium.crypto_secretbox_keybytes
+    NONCE_SIZE = LibSodium.crypto_secretbox_noncebytes
+    MAC_SIZE   = LibSodium::MAC_SIZE
 
     property bytes : Bytes
 

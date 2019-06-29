@@ -5,11 +5,16 @@ module Sodium
 
     fun crypto_box_publickeybytes : LibC::SizeT
     fun crypto_box_secretkeybytes : LibC::SizeT
+    fun crypto_box_seedbytes : LibC::SizeT
     fun crypto_box_noncebytes : LibC::SizeT
     fun crypto_box_macbytes : LibC::SizeT
     fun crypto_sign_publickeybytes : LibC::SizeT
     fun crypto_sign_secretkeybytes : LibC::SizeT
     fun crypto_sign_bytes : LibC::SizeT
+    fun crypto_sign_seedbytes : LibC::SizeT
+    fun crypto_secretbox_keybytes : LibC::SizeT
+    fun crypto_secretbox_noncebytes : LibC::SizeT
+    fun crypto_secretbox_macbytes : LibC::SizeT
     fun crypto_kdf_keybytes : LibC::SizeT
     fun crypto_kdf_contextbytes : LibC::SizeT
     fun crypto_pwhash_memlimit_min : LibC::SizeT
@@ -41,8 +46,6 @@ module Sodium
     SECRET_KEY_SIZE  = crypto_box_secretkeybytes()
     NONCE_SIZE       = crypto_box_noncebytes()
     MAC_SIZE         = crypto_box_macbytes()
-    PUBLIC_SIGN_SIZE = crypto_sign_publickeybytes()
-    SECRET_SIGN_SIZE = crypto_sign_secretkeybytes()
     SIGNATURE_SIZE   = crypto_sign_bytes()
     KDF_KEY_SIZE     = crypto_kdf_keybytes()
     KDF_CONTEXT_SIZE = crypto_kdf_contextbytes()
@@ -82,7 +85,13 @@ module Sodium
     fun crypto_box_keypair(
       public_key_output : Pointer(LibC::UChar),
       secret_key_output : Pointer(LibC::UChar)
-    )
+    ) : LibC::Int
+
+    fun crypto_box_seed_keypair(
+      public_key_output : Pointer(LibC::UChar),
+      secret_key_output : Pointer(LibC::UChar),
+      seed : Pointer(LibC::UChar)
+    ) : LibC::Int
 
     fun crypto_box_easy(
       output : Pointer(LibC::UChar),
@@ -105,6 +114,12 @@ module Sodium
     fun crypto_sign_keypair(
       public_key_output : Pointer(LibC::UChar),
       secret_key_output : Pointer(LibC::UChar)
+    ) : LibC::Int
+
+    fun crypto_sign_seed_keypair(
+      public_key_output : Pointer(LibC::UChar),
+      secret_key_output : Pointer(LibC::UChar),
+      seed : Pointer(LibC::UChar)
     ) : LibC::Int
 
     fun crypto_sign_detached(
@@ -181,5 +196,13 @@ module Sodium
       output : Pointer(LibC::UChar),
       output_len : UInt64
     ) : LibC::Int
+  end
+
+  if LibSodium.crypto_secretbox_noncebytes != LibSodium.crypto_box_noncebytes
+    raise "Assumptions in this library regarding nonce sizes may not be valid"
+  end
+
+  if LibSodium.crypto_secretbox_macbytes != LibSodium.crypto_box_macbytes
+    raise "Assumptions in this library regarding mac sizes may not be valid"
   end
 end

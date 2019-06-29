@@ -1,7 +1,7 @@
 require "../lib_sodium"
 
 module Sodium::CryptoBox
-  class Pair
+  class Box
     include Wipe
 
     # BUG: precompute size

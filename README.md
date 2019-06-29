@@ -144,14 +144,14 @@ alice = Sodium::CryptoBox::SecretKey.new
 bob = Sodium::CryptoBox::SecretKey.new
 
 # Precompute a shared secret between alice and bob.
-pair = alice.pair bob.public_key
+box = alice.box bob.public_key
 
 # Encrypt a message for Bob using his public key, signing it with Alice's
 # secret key
-nonce, encrypted = pair.encrypt data
+nonce, encrypted = box.encrypt data
 
 # Precompute within a block.  The shared secret is wiped when the block exits.
-bob.pair alice.public_key do |pair|
+bob.box alice.public_key do |box|
   # Decrypt the message using Bob's secret key, and verify its signature against
   # Alice's public key
   decrypted = Sodium.decrypt(encrypted, nonce, alice.public, bob.secret)
