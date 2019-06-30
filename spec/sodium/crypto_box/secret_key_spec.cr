@@ -27,7 +27,7 @@ describe Sodium::CryptoBox::SecretKey do
     key1.public_key.bytes.should eq key2.public_key.bytes
   end
 
-  it "easy encrypt/decrypt" do
+  it "authenticated easy encrypt/decrypt" do
     data = "Hello World!"
 
     # Alice is the sender
@@ -48,6 +48,21 @@ describe Sodium::CryptoBox::SecretKey do
 
       String.new(decrypted).should eq(data)
     end
+  end
+
+  it "unauthenticated seal encrypt/decrypt" do
+    data = "foo bar"
+
+    # Bob is the recipient
+    bob = Sodium::CryptoBox::SecretKey.new
+
+    # Encrypt a message for Bob using his public key.  No signature.
+    encrypted = bob.public_key.encrypt data
+
+    # Decrypt the message using Bob's secret key.
+    decrypted = bob.decrypt encrypted
+
+    String.new(decrypted).should eq(data)
   end
 
   it "wipes keys" do

@@ -15,7 +15,7 @@ module Sodium
   class SecretBox < Key
     KEY_SIZE   = LibSodium.crypto_secretbox_keybytes
     NONCE_SIZE = LibSodium.crypto_secretbox_noncebytes
-    MAC_SIZE   = LibSodium::MAC_SIZE
+    MAC_SIZE   = LibSodium.crypto_secretbox_macbytes
 
     @[Wipe::Var]
     property bytes : Bytes

@@ -4,6 +4,7 @@ module Sodium
   class Sign::PublicKey < Key
     include Wipe
     KEY_SIZE = LibSodium.crypto_sign_publickeybytes
+    SIG_SIZE = LibSodium.crypto_sign_bytes
 
     getter bytes : Bytes
 
@@ -26,7 +27,7 @@ module Sodium
     end
 
     def verify_detached(message : Bytes, sig : Bytes)
-      raise ArgumentError.new("Signature must be #{LibSodium::SIGNATURE_SIZE} bytes, got #{sig.bytesize}") if sig.bytesize != LibSodium::SIGNATURE_SIZE
+      raise ArgumentError.new("Signature must be #{SIG_SIZE} bytes, got #{sig.bytesize}") if sig.bytesize != SIG_SIZE
 
       v = LibSodium.crypto_sign_verify_detached sig, message, message.bytesize, @bytes
       if v != 0

@@ -7,6 +7,7 @@ module Sodium
     fun crypto_box_secretkeybytes : LibC::SizeT
     fun crypto_box_seedbytes : LibC::SizeT
     fun crypto_box_noncebytes : LibC::SizeT
+    fun crypto_box_sealbytes : LibC::SizeT
     fun crypto_box_macbytes : LibC::SizeT
     fun crypto_sign_publickeybytes : LibC::SizeT
     fun crypto_sign_secretkeybytes : LibC::SizeT
@@ -42,9 +43,7 @@ module Sodium
     fun crypto_generichash_blake2b_personalbytes : LibC::SizeT
     fun sodium_memzero(Pointer(LibC::UChar), LibC::SizeT) : Nil
 
-    NONCE_SIZE     = crypto_box_noncebytes()
-    MAC_SIZE       = crypto_box_macbytes()
-    SIGNATURE_SIZE = crypto_sign_bytes()
+    NONCE_SIZE = crypto_box_noncebytes()
 
     fun crypto_secretbox_easy(
       output : Pointer(LibC::UChar),
@@ -224,9 +223,5 @@ module Sodium
 
   if LibSodium.crypto_secretbox_noncebytes != LibSodium.crypto_box_noncebytes
     raise "Assumptions in this library regarding nonce sizes may not be valid"
-  end
-
-  if LibSodium.crypto_secretbox_macbytes != LibSodium.crypto_box_macbytes
-    raise "Assumptions in this library regarding mac sizes may not be valid"
   end
 end

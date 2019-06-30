@@ -7,7 +7,7 @@ module Sodium::CryptoBox
     include Wipe
     KEY_SIZE  = LibSodium.crypto_box_secretkeybytes
     SEED_SIZE = LibSodium.crypto_box_seedbytes
-    MAC_SIZE  = LibSodium::MAC_SIZE
+    SEAL_SIZE = LibSodium.crypto_box_sealbytes
 
     getter public_key : PublicKey
 
@@ -51,7 +51,7 @@ module Sodium::CryptoBox
       end
     end
 
-    # Return a Box containing a precomputed shared secret for use with encryption/decryption.
+    # Return a Box containing a precomputed shared secret for use with authenticated encryption/decryption.
     def box(public_key) : Box
       Box.new self, public_key
     end
@@ -64,6 +64,19 @@ module Sodium::CryptoBox
       ensure
         b.close
       end
+    end
+
+    # Anonymously receive messages without signatures.
+    # For authenticated messages use `secret_key.box(recipient_public_key).decrypt`.
+    def decrypt(src)
+      encrypt src.to_slice
+    end
+
+    def decrypt(src : Bytes, dst : Bytes = Bytes.new(src.bytesize - SEAL_SIZE)) : Bytes
+      if LibSodium.crypto_box_seal_open(dst, src, src.bytesize, @public_key.bytes, @bytes) != 0
+        raise Sodium::Error.new("crypto_box_seal_open")
+      end
+      dst
     end
   end
 end

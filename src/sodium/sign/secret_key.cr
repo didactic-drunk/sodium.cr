@@ -9,6 +9,7 @@ module Sodium
   # ```
   class Sign::SecretKey < Sodium::Key
     KEY_SIZE  = LibSodium.crypto_sign_secretkeybytes
+    SIG_SIZE  = LibSodium.crypto_sign_bytes
     SEED_SIZE = LibSodium.crypto_sign_seedbytes
 
     getter public_key : PublicKey
@@ -61,7 +62,7 @@ module Sodium
     end
 
     def sign_detached(message : Bytes)
-      sig = Bytes.new(LibSodium::SIGNATURE_SIZE)
+      sig = Bytes.new(SIG_SIZE)
       if LibSodium.crypto_sign_detached(sig, out sig_len, message, message.bytesize, @bytes) != 0
         raise Error.new("crypto_sign_detached")
       end
