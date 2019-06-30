@@ -15,16 +15,17 @@ module Sodium::Wipe
 
     {% for ivar in @type.instance_vars %}
       {% if ann = ivar.annotation(Wipe::Var) %}
-        if var = @{{ ivar.id }}
-          case var
-          when StaticArray
-#puts "wiping {{ivar}}"
-#            Sodium.memzero var.to_slice
-#            @{{ ivar.id }} = var
+        {% if ivar.type <= StaticArray %}
+          Sodium.memzero @{{ivar.id}}.to_slice
+        {% else %}
+          case var = @{{ ivar.id }}
+          when Slice
+            Sodium.memzero var
+          when nil
           else
-            Sodium.memzero var.to_slice
+            raise "unsupported wipe type for #{typeof(@{{ ivar.id }})} {{ ivar.id }}"
           end
-        end
+        {% end %}
       {% end %}
     {% end %}
   end
