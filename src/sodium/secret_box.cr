@@ -7,12 +7,12 @@ module Sodium
   # If you don't want this behavior pass a duplicate of the key/seed to initialize().
   #
   # ```crystal
-  # key = Sodium::SecretKey.new
+  # key = Sodium::SecretBox.new
   # message = "foobar"
   # encrypted, nonce = key.encrypt_easy message
   #
   # # On the other side.
-  # key = Sodium::SecretKey.new key
+  # key = Sodium::SecretBox.new key
   # message = key.decrypt_easy encrypted, nonce
   # ```
   class SecretBox < Key

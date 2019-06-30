@@ -15,16 +15,16 @@ module Sodium::Wipe
 
     {% for ivar in @type.instance_vars %}
       {% if ann = ivar.annotation(Wipe::Var) %}
-        {% if ivar.type.id == StaticArray.id %}
-#puts "wiping static {{ivar}}"
-#            Sodium.memzero @{{ ivar.id }}.to_slice
-        {% else %}
-          if var = @{{ ivar.id }}
+        if var = @{{ ivar.id }}
+          case var
+          when StaticArray
 #puts "wiping {{ivar}}"
-#            Sodium.memzero var
+#            Sodium.memzero var.to_slice
+#            @{{ ivar.id }} = var
+          else
             Sodium.memzero var.to_slice
           end
-        {% end %}
+        end
       {% end %}
     {% end %}
   end

@@ -1,15 +1,7 @@
 require "../../spec_helper"
+require "json"
 
-libsodium_comparisons = [
-  {
-    key:      nil,
-    input:    "",
-    output:   "0e5751c026e543b2e8ab2eb06099daa1d1e5df47778f7787faab45cdf12fe3a8",
-    out_size: 32,
-  },
-]
-
-# from https://github.com/BLAKE2/BLAKE2/tree/master/testvectors
+# From https://github.com/BLAKE2/BLAKE2/tree/master/testvectors
 test_vectors = [
   {
     key:    "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f",
@@ -23,6 +15,19 @@ test_vectors = [
   },
 ]
 
+# From https://github.com/emilbayes/blake2b/blob/master/test-vectors.json
+buf = File.read(Path[__DIR__].join("blake2b-test-vectors.json").to_s)
+more_vectors = Array(Hash(String, String | Int32)).from_json(buf).map do |h|
+  {
+    input:    h["input"].to_s,
+    output:   h["out"].to_s,
+    out_len:  h["outlen"].to_i,
+    key:      h["key"].to_s,
+    salt:     h["salt"].to_s,
+    personal: h["personal"].to_s,
+  }
+end
+
 describe Sodium::Digest::Blake2b do
   it "libsodium comparisons" do
     libsodium_comparisons.each do |vec|
@@ -35,6 +40,14 @@ describe Sodium::Digest::Blake2b do
   it "test vectors" do
     test_vectors.each do |vec|
       d = Sodium::Digest::Blake2b.new 64, key: vec[:key].hexbytes
+      d.update vec[:input].hexbytes
+      d.hexdigest.should eq vec[:output]
+    end
+
+    more_vectors.each do |vec|
+      salt = vec[:salt].empty? ? nil : vec[:salt].hexbytes
+      personal = vec[:personal].empty? ? nil : vec[:personal].hexbytes
+      d = Sodium::Digest::Blake2b.new vec[:out_len], key: vec[:key].hexbytes, salt: salt, personal: personal
       d.update vec[:input].hexbytes
       d.hexdigest.should eq vec[:output]
     end
