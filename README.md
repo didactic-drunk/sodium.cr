@@ -39,7 +39,7 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
 - Other
   - [x] [Key Derivation](https://libsodium.gitbook.io/doc/key_derivation)
   - [ ] [Key Exchange](https://libsodium.gitbook.io/doc/key_exchange)
-- [Advanced](https://libsodium.gitbook.io/doc/advanced0
+- [Advanced](https://libsodium.gitbook.io/doc/advanced)
   - [Stream Ciphers](https://libsodium.gitbook.io/doc/advanced/stream_ciphers)
     - [x] XSalsa20
     - [x] Salsa20
