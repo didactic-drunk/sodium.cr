@@ -3,6 +3,9 @@ require "./lib_sodium"
 module Sodium
   # [https://libsodium.gitbook.io/doc/secret-key_cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
   #
+  # WARNING: This class takes ownership of any key material passed to it.
+  # If you don't want this behavior pass a duplicate of the key/seed to initialize().
+  #
   # ```crystal
   # key = Sodium::SecretKey.new
   # message = "foobar"

@@ -5,11 +5,6 @@ module Sodium::Digest
   #
   # Compatible with the Crystal OpenSSL::Digest interface.
   #
-  # digest_size is selectable.  Use 32 for Blake2b256 (libsodium default), 64 for Blake2b512
-  # or any value between OUT_SIZE_MIN and OUT_SIZE_MAX.  Many libsodium bindings only support [256] or [256 and 512] bit output.
-  #
-  # `key`, `salt`, and `personal` are all optional in the constructor.  Most other libsodium bindings don't support them.
-  #
   # Usage:
   # ```
   # digest = Blake2b.new
@@ -46,6 +41,13 @@ module Sodium::Digest
     @salt = StaticArray(UInt8, 16).new 0
     @personal = StaticArray(UInt8, 16).new 0
 
+    # Create a new Blake2b Digest.
+    #
+    # digest_size is selectable.  Use 32 for Blake2b256 (libsodium default), 64 for Blake2b512
+    # or any value between OUT_SIZE_MIN and OUT_SIZE_MAX.  Many libsodium bindings only support [256] or [256 and 512] bit output.
+    #
+    # `key`, `salt`, and `personal` are all optional.  Most other libsodium bindings don't support them.
+    # Check the other implementation(s) you need to interoperate with before using.
     def initialize(@digest_size : Int32 = OUT_SIZE, key : Bytes? = nil, salt : Bytes? = nil, personal : Bytes? = nil)
       if k = key
         raise ArgumentError.new("key larger than KEY_SIZE_MAX(#{KEY_SIZE_MAX}), got #{k.bytesize}") if k.bytesize > KEY_SIZE_MAX

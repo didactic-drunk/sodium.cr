@@ -1,6 +1,8 @@
 require "../lib_sodium"
 
 module Sodium::CryptoBox
+  # Key used for encryption + authentication or encryption without authentication, not for unencrypted signing.
+  #
   # WARNING: This class takes ownership of any key material passed to it.
   # If you don't want this behavior pass a duplicate of the key/seed to initialize().
   class SecretKey < Key
@@ -65,7 +67,7 @@ module Sodium::CryptoBox
       end
     end
 
-    # Anonymously receive messages without signatures.
+    # Anonymously receive messages without a signatures.
     # For authenticated messages use `secret_key.box(recipient_public_key).decrypt`.
     def decrypt(src)
       encrypt src.to_slice

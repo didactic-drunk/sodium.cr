@@ -2,11 +2,23 @@ require "./lib_sodium"
 require "./wipe"
 
 module Sodium
+  # Key derivation function
+  #
+  # WARNING: This class takes ownership of any key material passed to it.
+  # Read **each** constructor WARNING for differences in usage.
+  #
+  # Usage:
+  # ```
+  # kdf = KDF.new
+  # subkey_id = 0
+  # output_size = 16
+  # subkey = kdf.derive "8bytectx", subkey_id, output_size
+  # ```
   class Kdf
     include Wipe
 
-    KDF_KEY_SIZE     = LibSodium.crypto_kdf_keybytes
-    KDF_CONTEXT_SIZE = LibSodium.crypto_kdf_contextbytes
+    KEY_SIZE     = LibSodium.crypto_kdf_keybytes
+    CONTEXT_SIZE = LibSodium.crypto_kdf_contextbytes
 
     @[Wipe::Var]
     getter bytes : Bytes
@@ -18,8 +30,8 @@ module Sodium
     # WARNING: This class takes ownership of any key material passed to it.
     # If you don't want this behavior pass a duplicate of the key to initialize().
     def initialize(bytes : Bytes)
-      if bytes.bytesize != KDF_KEY_SIZE
-        raise ArgumentError.new("bytes must be #{KDF_KEY_SIZE}, got #{bytes.bytesize}")
+      if bytes.bytesize != KEY_SIZE
+        raise ArgumentError.new("bytes must be #{KEY_SIZE}, got #{bytes.bytesize}")
       end
 
       @bytes = bytes
@@ -31,7 +43,7 @@ module Sodium
     #
     # Make sure to save kdf.bytes before kdf goes out of scope.
     def initialize
-      @bytes = Random::Secure.random_bytes(KDF_KEY_SIZE)
+      @bytes = Random::Secure.random_bytes(KEY_SIZE)
     end
 
     # Derive a consistent subkey based on `context` and `subkey_id`.
@@ -41,8 +53,9 @@ module Sodium
     # * subkey_size must be 16..64 bytes as of libsodium 1.0.17
     #
     def derive(context, subkey_id, subkey_size)
-      if context.bytesize != KDF_CONTEXT_SIZE
-        raise ArgumentError.new("context must be #{KDF_CONTEXT_SIZE}, got #{context.bytesize}")
+      context = context.to_slice
+      if context.bytesize != CONTEXT_SIZE
+        raise ArgumentError.new("context must be #{CONTEXT_SIZE}, got #{context.bytesize}")
       end
 
       subkey = Bytes.new subkey_size

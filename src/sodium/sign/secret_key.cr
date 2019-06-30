@@ -1,6 +1,11 @@
 require "../lib_sodium"
 
 module Sodium
+  # Key used for signing/verification only.
+  #
+  # WARNING: This class takes ownership of any key material passed to it.
+  # If you don't want this behavior pass a duplicate of the key/seed to initialize().
+  #
   # Usage:
   # ```
   # key = SecretKey.new
