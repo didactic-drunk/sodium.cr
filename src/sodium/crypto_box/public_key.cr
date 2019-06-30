@@ -2,7 +2,6 @@ require "../lib_sodium"
 
 module Sodium::CryptoBox
   class PublicKey < Key
-    include Wipe
     KEY_SIZE  = LibSodium.crypto_box_publickeybytes
     SEAL_SIZE = LibSodium.crypto_box_sealbytes
 

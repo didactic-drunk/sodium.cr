@@ -5,7 +5,7 @@ module Sodium
   class Nonce
     NONCE_SIZE = LibSodium::NONCE_SIZE
 
-    property bytes : Bytes
+    getter bytes : Bytes
     delegate to_slice, to: @bytes
 
     def initialize(@bytes : Bytes)

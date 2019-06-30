@@ -18,7 +18,7 @@ module Sodium
     MAC_SIZE   = LibSodium.crypto_secretbox_macbytes
 
     @[Wipe::Var]
-    property bytes : Bytes
+    getter bytes : Bytes
 
     # Generate a new random key.
     def initialize

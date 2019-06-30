@@ -1,6 +1,22 @@
 require "openssl/digest/digest_base"
 
 module Sodium::Digest
+  # Hash data using Blake2b.
+  #
+  # Compatible with the Crystal OpenSSL::Digest interface.
+  #
+  # digest_size is selectable.  Use 32 for Blake2b256 (libsodium default), 64 for Blake2b512
+  # or any value between OUT_SIZE_MIN and OUT_SIZE_MAX.  Many libsodium bindings only support [256] or [256 and 512] bit output.
+  #
+  # `key`, `salt`, and `personal` are all optional in the constructor.  Most other libsodium bindings don't support them.
+  #
+  # Usage:
+  # ```
+  # digest = Blake2b.new
+  # digest.update data
+  # digest.update data
+  # digest.hexdigest => String
+  # ```
   class Blake2b
     # provides copying digest/hexdigest methods
     include OpenSSL::DigestBase

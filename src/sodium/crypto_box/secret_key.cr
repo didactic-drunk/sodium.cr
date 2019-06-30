@@ -4,7 +4,6 @@ module Sodium::CryptoBox
   # WARNING: This class takes ownership of any key material passed to it.
   # If you don't want this behavior pass a duplicate of the key/seed to initialize().
   class SecretKey < Key
-    include Wipe
     KEY_SIZE  = LibSodium.crypto_box_secretkeybytes
     SEED_SIZE = LibSodium.crypto_box_seedbytes
     SEAL_SIZE = LibSodium.crypto_box_sealbytes

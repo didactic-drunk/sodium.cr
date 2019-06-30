@@ -17,7 +17,7 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
 
 - [Public-Key Cryptography](https://libsodium.gitbook.io/doc/public-key_cryptography)
   - [x] [Crypto Box Easy](https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption)
-  - [ ] [Sealed Box](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes)
+  - [x] [Sealed Box](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes)
   - [ ] [Combined Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
   - [x] [Detached Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
 - [Secret-Key Cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
@@ -31,6 +31,7 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
    - [ ] ChaCha20-Poly1305
 - [Hashing](https://libsodium.gitbook.io/doc/hashing)
   - [x] ☑ [Blake2b](https://libsodium.gitbook.io/doc/hashing/generic_hashing)
+    - [x] Complete implementation including `key`, `salt`, `personal` and fully selectable output sizes.
   - [ ] [SipHash](https://libsodium.gitbook.io/doc/hashing/short-input_hashing)
 - [Password Hashing](https://libsodium.gitbook.io/doc/password_hashing)
   - [x] [Argon2](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function) (Use for new applications)
@@ -61,8 +62,9 @@ Several features in libsodium are already provided by Crystal:
 
 | Class | |
 | --- | --- |
-| `CryptoBox` `Sign` `SecretBox` | I don't know much about crypto. |
-| [`Sodium::CryptoBox::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/CryptoBox/SecretKey.html) | I want to encrypt + authenticate data using public key encryption. |
+| Only use `CryptoBox::SecretKey` `Sign::SecretKey` `SecretBox` | I don't know much about crypto. |
+| [`Sodium::CryptoBox::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/CryptoBox/SecretKey.html) .box | I want to encrypt + authenticate data using public key encryption. |
+| [`Sodium::Sign::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/CryptoBox/PublicKey.html) .encrypt | I want anonymously send encrypted data. (No authentication) |
 | [`Sodium::Sign::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/Sign/SecretKey.html) | I want to sign or verify messages without encryption. |
 | [`Sodium::SecretBox`](https://didactic-drunk.github.io/sodium.cr/Sodium/SecretBox.html) | I have a shared key and want to encrypt + authenticate data. |
 | AEAD | I have a shared key and want encrypt + authenticate streamed data. (Not implemented yet) |
@@ -131,7 +133,7 @@ end
 
 ```
 
-### CryptoBox easy encryption
+### CryptoBox authenticated easy encryption
 ```crystal
 require "sodium"
 
@@ -160,6 +162,21 @@ bob.box alice.public_key do |box|
 end
 ```
 
+### Unauthenticated public key encryption
+```crystal
+data = "Hello World!"
+
+# Bob is the recipient
+bob = Sodium::CryptoBox::SecretKey.new
+
+# Encrypt a message for Bob using his public key
+encrypted = bob.public_key.encrypt data
+
+# Decrypt the message using Bob's secret key
+decrypted = bob.decrypt encrypted
+String.new(decrypted) # => "Hello World!"
+```
+
 ### Public key signing
 ```crystal
 message = "Hello World!"
@@ -171,6 +188,7 @@ signature = secret_key.sign_detached message
 
 # Send secret_key.public_key to the recipient
 
+# On the recipient
 public_key = Sodium::Sign::PublicKey.new key_bytes
 
 # raises Sodium::Error::VerificationFailed on failure.

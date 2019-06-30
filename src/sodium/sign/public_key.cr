@@ -2,7 +2,6 @@ require "../lib_sodium"
 
 module Sodium
   class Sign::PublicKey < Key
-    include Wipe
     KEY_SIZE = LibSodium.crypto_sign_publickeybytes
     SIG_SIZE = LibSodium.crypto_sign_bytes
 
