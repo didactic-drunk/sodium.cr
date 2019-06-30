@@ -18,6 +18,8 @@ module Sodium
     MEMLIMIT_MAX         = LibSodium.crypto_pwhash_memlimit_max
     MEMLIMIT_INTERACTIVE = LibSodium.crypto_pwhash_memlimit_interactive
 
+    PWHASH_STR_SIZE = LibSodium.crypto_pwhash_strbytes
+
     # Use the most recent algorithm Argon2id13 for new applications.
     enum Algorithm
       Argon2i13  = 1
@@ -37,7 +39,7 @@ module Sodium
     # * the automatically generated salt used for the previous computation
     # * the other parameters required to verify the password, including the algorithm identifier, its version, opslimit and memlimit.
     def store(pass)
-      outstr = Bytes.new LibSodium::PWHASH_STR_SIZE
+      outstr = Bytes.new PWHASH_STR_SIZE
       if LibSodium.crypto_pwhash_str(outstr, pass, pass.bytesize, @opslimit, @memlimit) != 0
         raise Sodium::Error.new("crypto_pwhash_str")
       end

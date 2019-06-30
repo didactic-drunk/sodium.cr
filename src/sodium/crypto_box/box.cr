@@ -5,6 +5,7 @@ module Sodium::CryptoBox
     include Wipe
 
     # BUG: precompute size
+    @[Wipe::Var]
     @bytes = Bytes.new(1)
 
     def initialize(@secret_key : SecretKey, @public_key : PublicKey)

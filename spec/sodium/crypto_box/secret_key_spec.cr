@@ -12,6 +12,13 @@ describe Sodium::CryptoBox::SecretKey do
     key1.public_key.bytes.should eq key2.public_key.bytes
   end
 
+  it "recomputes the public_key" do
+    key1 = Sodium::CryptoBox::SecretKey.new
+    key2 = Sodium::CryptoBox::SecretKey.new key1.bytes
+    key1.bytes.should eq key2.bytes
+    key1.public_key.bytes.should eq key2.public_key.bytes
+  end
+
   it "seed keys" do
     seed = Bytes.new Sodium::CryptoBox::SecretKey::SEED_SIZE
     key1 = Sodium::CryptoBox::SecretKey.new seed: seed

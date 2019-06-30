@@ -1,7 +1,7 @@
 require "../../spec_helper"
 require "../../../src/sodium/sign/secret_key"
 
-private def new_key_bytes
+private def new_sign_key_bytes
   Sodium::Sign::SecretKey.new.bytes
 end
 
@@ -11,8 +11,13 @@ describe Sodium::Sign::SecretKey do
     key2 = Sodium::Sign::SecretKey.new key1.bytes, key1.public_key.bytes
     key1.bytes.should eq key2.bytes
     key1.public_key.bytes.should eq key2.public_key.bytes
+  end
 
-    # TODO: test loading when missing public_key
+  it "recomputes the public key" do
+    key1 = Sodium::Sign::SecretKey.new
+    key2 = Sodium::Sign::SecretKey.new key1.bytes
+    key1.bytes.should eq key2.bytes
+    key1.public_key.bytes.should eq key2.public_key.bytes
   end
 
   it "seed keys" do
@@ -42,6 +47,6 @@ describe Sodium::Sign::SecretKey do
   end
 
   it "checks wiped" do
-    check_wiped new_key_bytes
+    check_wiped new_sign_key_bytes
   end
 end

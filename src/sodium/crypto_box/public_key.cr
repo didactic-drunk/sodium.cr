@@ -7,6 +7,12 @@ module Sodium::CryptoBox
 
     getter bytes : Bytes
 
+    # :nodoc:
+    # Only used by SecretKey
+    def initialize
+      @bytes = Bytes.new KEY_SIZE
+    end
+
     def initialize(@bytes : Bytes)
       if bytes.bytesize != KEY_SIZE
         raise ArgumentError.new("Public key must be #{KEY_SIZE} bytes, got #{bytes.bytesize}")

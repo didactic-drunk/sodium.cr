@@ -1,5 +1,9 @@
+require "./wipe"
+
 module Sodium
   abstract class Key
+    include Sodium::Wipe
+
     abstract def bytes
 
     delegate to_slice, to: @bytes

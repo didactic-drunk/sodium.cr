@@ -6,8 +6,8 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
 
 ## Goals
 
-* Provide an easy to use API based on reviewing most other [libsodium bindings](https://libsodium.gitbook.io/doc/bindings_for_other_languages).
 * Provide the most commonly used libsodium API's.
+* Provide an easy to use API based on reviewing most other [libsodium bindings](https://libsodium.gitbook.io/doc/bindings_for_other_languages).
 * Test for compatibility against other libsodium bindings to ensure interoperability.
 * Always provide a stream interface to handle arbitrarily sized data when one is available.
 * Drop in replacement classes compatible with OpenSSL::{Digest,Cipher} when possible.

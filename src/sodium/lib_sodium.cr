@@ -42,14 +42,9 @@ module Sodium
     fun crypto_generichash_blake2b_personalbytes : LibC::SizeT
     fun sodium_memzero(Pointer(LibC::UChar), LibC::SizeT) : Nil
 
-    PUBLIC_KEY_SIZE  = crypto_box_publickeybytes()
-    SECRET_KEY_SIZE  = crypto_box_secretkeybytes()
-    NONCE_SIZE       = crypto_box_noncebytes()
-    MAC_SIZE         = crypto_box_macbytes()
-    SIGNATURE_SIZE   = crypto_sign_bytes()
-    KDF_KEY_SIZE     = crypto_kdf_keybytes()
-    KDF_CONTEXT_SIZE = crypto_kdf_contextbytes()
-    PWHASH_STR_SIZE  = crypto_pwhash_strbytes()
+    NONCE_SIZE     = crypto_box_noncebytes()
+    MAC_SIZE       = crypto_box_macbytes()
+    SIGNATURE_SIZE = crypto_sign_bytes()
 
     fun crypto_secretbox_easy(
       output : Pointer(LibC::UChar),
@@ -93,6 +88,11 @@ module Sodium
       seed : Pointer(LibC::UChar)
     ) : LibC::Int
 
+    fun crypto_scalarmult_base(
+      public_key_output : Pointer(LibC::UChar),
+      secret_key_output : Pointer(LibC::UChar)
+    ) : LibC::Int
+
     fun crypto_box_easy(
       output : Pointer(LibC::UChar),
       data : Pointer(LibC::UChar),
@@ -111,6 +111,21 @@ module Sodium
       recipient_secret_key : Pointer(LibC::UChar)
     ) : LibC::Int
 
+    fun crypto_box_seal(
+      output : Pointer(LibC::UChar),
+      data : Pointer(LibC::UChar),
+      data_size : LibC::ULongLong,
+      recipient_public_key : Pointer(LibC::UChar)
+    ) : LibC::Int
+
+    fun crypto_box_seal_open(
+      output : Pointer(LibC::UChar),
+      data : Pointer(LibC::UChar),
+      data_size : LibC::ULongLong,
+      recipient_public_key : Pointer(LibC::UChar),
+      recipient_secret_key : Pointer(LibC::UChar)
+    ) : LibC::Int
+
     fun crypto_sign_keypair(
       public_key_output : Pointer(LibC::UChar),
       secret_key_output : Pointer(LibC::UChar)
@@ -120,6 +135,11 @@ module Sodium
       public_key_output : Pointer(LibC::UChar),
       secret_key_output : Pointer(LibC::UChar),
       seed : Pointer(LibC::UChar)
+    ) : LibC::Int
+
+    fun crypto_sign_ed25519_sk_to_pk(
+      public_key_output : Pointer(LibC::UChar),
+      secret_key_output : Pointer(LibC::UChar)
     ) : LibC::Int
 
     fun crypto_sign_detached(
@@ -196,6 +216,10 @@ module Sodium
       output : Pointer(LibC::UChar),
       output_len : UInt64
     ) : LibC::Int
+  end
+
+  if LibSodium.sodium_init != 0
+    abort "Failed to init libsodium"
   end
 
   if LibSodium.crypto_secretbox_noncebytes != LibSodium.crypto_box_noncebytes

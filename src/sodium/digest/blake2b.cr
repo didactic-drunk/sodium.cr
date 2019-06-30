@@ -4,6 +4,7 @@ module Sodium::Digest
   class Blake2b
     # provides copying digest/hexdigest methods
     include OpenSSL::DigestBase
+    include Wipe
 
     KEY_SIZE     = LibSodium.crypto_generichash_blake2b_keybytes
     KEY_SIZE_MIN = LibSodium.crypto_generichash_blake2b_keybytes_min
@@ -19,42 +20,40 @@ module Sodium::Digest
 
     getter digest_size
 
+    @[Wipe::Var]
     @state = StaticArray(UInt8, 384).new 0
     @key_size = 0
-    @have_salt = false
-    @have_personal = false
 
     # implemented as static array's so clone works without jumping through hoops.
+    @[Wipe::Var]
     @key = StaticArray(UInt8, 64).new 0
     @salt = StaticArray(UInt8, 16).new 0
     @personal = StaticArray(UInt8, 16).new 0
 
     def initialize(@digest_size : Int32 = OUT_SIZE, key : Bytes? = nil, salt : Bytes? = nil, personal : Bytes? = nil)
       if k = key
-        raise ArgumentError.new("key larger than KEY_SIZE_MAX, got #{k.bytesize}") if k.bytesize > KEY_SIZE_MAX
+        raise ArgumentError.new("key larger than KEY_SIZE_MAX(#{KEY_SIZE_MAX}), got #{k.bytesize}") if k.bytesize > KEY_SIZE_MAX
         @key_size = k.bytesize
         k.copy_to @key.to_slice
       end
 
       if sa = salt
-        raise ArgumentError.new("salt must be SALT_SIZE bytes, got #{sa.bytesize}") if sa.bytesize != SALT_SIZE
+        raise ArgumentError.new("salt must be SALT_SIZE(#{SALT_SIZE}) bytes, got #{sa.bytesize}") if sa.bytesize != SALT_SIZE
         sa.copy_to @salt.to_slice
-        @have_salt = true
       end
 
       if pe = personal
-        raise ArgumentError.new("personal must be PERSONAL_SIZE bytes, got #{pe.bytesize}") if pe.bytesize != PERSONAL_SIZE
+        raise ArgumentError.new("personal must be PERSONAL_SIZE(#{PERSONAL_SIZE}) bytes, got #{pe.bytesize}") if pe.bytesize != PERSONAL_SIZE
         pe.copy_to @personal.to_slice
-        @have_personal = true
       end
 
       reset
     end
 
     def reset
-      key = @key_size > 0 ? @key.to_unsafe : nil
-      salt = @have_salt ? @salt.to_unsafe : nil
-      personal = @have_personal ? @personal.to_unsafe : nil
+      key = @key.to_unsafe
+      salt = @salt.to_unsafe
+      personal = @personal.to_unsafe
 
       if LibSodium.crypto_generichash_blake2b_init_salt_personal(@state, key, @key_size, @digest_size, salt, personal) != 0
         raise Sodium::Error.new("blake2b_init_key_salt_personal")

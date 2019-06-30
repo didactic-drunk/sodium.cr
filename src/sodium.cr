@@ -15,7 +15,3 @@ module Sodium
 end
 
 require "./sodium/**"
-
-if Sodium::LibSodium.sodium_init == -1
-  abort "Failed to init libsodium"
-end

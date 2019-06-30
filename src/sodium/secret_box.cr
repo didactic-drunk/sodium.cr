@@ -17,6 +17,7 @@ module Sodium
     NONCE_SIZE = LibSodium.crypto_secretbox_noncebytes
     MAC_SIZE   = LibSodium::MAC_SIZE
 
+    @[Wipe::Var]
     property bytes : Bytes
 
     # Generate a new random key.
