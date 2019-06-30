@@ -29,14 +29,6 @@ more_vectors = Array(Hash(String, String | Int32)).from_json(buf).map do |h|
 end
 
 describe Sodium::Digest::Blake2b do
-  it "libsodium comparisons" do
-    libsodium_comparisons.each do |vec|
-      d = Sodium::Digest::Blake2b.new vec[:out_size], key: vec[:key].try(&.hexbytes)
-      d.update vec[:input].hexbytes
-      d.hexdigest.should eq vec[:output]
-    end
-  end
-
   it "test vectors" do
     test_vectors.each do |vec|
       d = Sodium::Digest::Blake2b.new 64, key: vec[:key].hexbytes
