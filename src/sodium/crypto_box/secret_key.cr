@@ -1,6 +1,9 @@
 require "../lib_sodium"
+require "../key"
+require "./public_key"
+require "../crypto_box"
 
-module Sodium::CryptoBox
+class Sodium::CryptoBox
   # Key used for encryption + authentication or encryption without authentication, not for unencrypted signing.
   #
   # WARNING: This class takes ownership of any key material passed to it.
@@ -53,8 +56,8 @@ module Sodium::CryptoBox
     end
 
     # Return a Box containing a precomputed shared secret for use with authenticated encryption/decryption.
-    def box(public_key) : Box
-      Box.new self, public_key
+    def box(public_key) : CryptoBox
+      CryptoBox.new self, public_key
     end
 
     # Create a new box and automatically close when the block exits.

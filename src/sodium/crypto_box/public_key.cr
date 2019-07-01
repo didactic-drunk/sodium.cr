@@ -1,6 +1,7 @@
 require "../lib_sodium"
+require "../key"
 
-module Sodium::CryptoBox
+class Sodium::CryptoBox
   class PublicKey < Key
     KEY_SIZE  = LibSodium.crypto_box_publickeybytes
     SEAL_SIZE = LibSodium.crypto_box_sealbytes

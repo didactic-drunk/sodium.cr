@@ -1,4 +1,6 @@
 require "../lib_sodium"
+require "../key"
+require "./public_key"
 
 module Sodium
   # Key used for signing/verification only.

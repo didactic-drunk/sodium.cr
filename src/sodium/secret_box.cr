@@ -1,4 +1,5 @@
 require "./lib_sodium"
+require "./key"
 
 module Sodium
   # [https://libsodium.gitbook.io/doc/secret-key_cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)

@@ -1,5 +1,7 @@
 require "../src/sodium"
 
+# Print most constant values.
+
 {% for name in %w(KEY_SIZE KEY_SIZE_MIN KEY_SIZE_MAX SALT_SIZE PERSONAL_SIZE OUT_SIZE OUT_SIZE_MIN OUT_SIZE_MAX) %}
   puts "Sodium::Digest::Blake2b::{{ name.id }} #{Sodium::Digest::Blake2b::{{ name.id }}}"
 {% end %}

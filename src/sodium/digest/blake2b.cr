@@ -1,3 +1,5 @@
+require "../lib_sodium"
+require "../wipe"
 require "openssl/digest/digest_base"
 
 module Sodium::Digest

@@ -1,5 +1,6 @@
 require "spec"
-require "../src/sodium"
+
+# require "../src/sodium"
 
 def check_wiped(buf : Bytes)
   GC.collect

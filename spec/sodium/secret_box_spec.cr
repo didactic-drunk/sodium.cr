@@ -1,4 +1,5 @@
 require "../spec_helper"
+require "../../src/sodium/secret_box"
 
 describe Sodium::SecretBox do
   it "encrypts/decrypts" do

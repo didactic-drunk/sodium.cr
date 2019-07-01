@@ -1,4 +1,5 @@
 require "../../spec_helper"
+require "../../../src/sodium/digest/blake2b"
 require "json"
 
 # From https://github.com/BLAKE2/BLAKE2/tree/master/testvectors

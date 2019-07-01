@@ -1,4 +1,5 @@
 require "../spec_helper"
+require "../../src/sodium/kdf"
 
 CONTEXT = "8_bytess"
 

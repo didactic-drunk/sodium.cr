@@ -1,3 +1,6 @@
+require "random/secure"
+require "./error"
+
 module Sodium
   @[Link(ldflags: "`#{__DIR__}/../../build/pkg-libs.sh #{__DIR__}/../..`")]
   lib LibSodium

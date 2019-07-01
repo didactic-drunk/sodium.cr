@@ -31,7 +31,7 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
    - [ ] ChaCha20-Poly1305
 - [Hashing](https://libsodium.gitbook.io/doc/hashing)
   - [x] ☑ [Blake2b](https://libsodium.gitbook.io/doc/hashing/generic_hashing)
-    - [x] Complete implementation including `key`, `salt`, `personal` and fully selectable output sizes.
+    - [x] Complete libsodium implementation including `key`, `salt`, `personal` and fully selectable output sizes.
   - [ ] [SipHash](https://libsodium.gitbook.io/doc/hashing/short-input_hashing)
 - [Password Hashing](https://libsodium.gitbook.io/doc/password_hashing)
   - [x] [Argon2](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function) (Use for new applications)
@@ -48,7 +48,10 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
     - [x] ChaCha20
   - [ ] [One time auth](https://libsodium.gitbook.io/doc/advanced/poly1305)
   - [ ] Padding
-  - (Partial) Semi-automatic memory wiping.
+- Library features
+  - Faster builds by requiring what you need (`require "sodium/secret_box"`)
+  - Controlled memory wiping (by calling `.close`)
+  - Semi-automatic memory wiping (on GC).
 
 ☑ Indicate specs are compared against test vectors from another source.
 

@@ -1,4 +1,5 @@
 require "./spec_helper"
+require "../src/sodium"
 
 describe Sodium do
   # Finished in 71 microseconds

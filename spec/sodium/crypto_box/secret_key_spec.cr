@@ -1,4 +1,5 @@
 require "../../spec_helper"
+require "../../../src/sodium/crypto_box/secret_key"
 
 private def new_key_bytes
   Sodium::CryptoBox::SecretKey.new.bytes

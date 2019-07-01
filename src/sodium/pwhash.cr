@@ -1,3 +1,5 @@
+require "./lib_sodium"
+
 module Sodium
   # [Argon2 Password Hashing](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function)
   # * #store #verify #needs_rehash? are used together for password verification.

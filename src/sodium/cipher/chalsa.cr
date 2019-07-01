@@ -1,10 +1,16 @@
 require "../lib_sodium"
+require "../wipe"
 
 module Sodium::Cipher
   # The great beat you can eat!
   #
   # What? They're both dance?
+  #
+  # WARNING: This class takes ownership of any key material passed to it.
+  #
+  # WARNING: Not validated against test vectors.  You should probably write some before using.
   abstract class Chalsa
+    @[Wipe::Var]
     @key : Bytes?
     @nonce : Bytes?
 

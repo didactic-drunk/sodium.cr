@@ -1,4 +1,5 @@
 require "../spec_helper"
+require "../../src/sodium/pwhash"
 
 private def pw_min
   pwhash = Sodium::Pwhash.new

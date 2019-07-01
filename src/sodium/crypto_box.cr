@@ -1,7 +1,9 @@
-require "../lib_sodium"
+require "./lib_sodium"
+require "./wipe"
+require "./crypto_box/secret_key"
 
-module Sodium::CryptoBox
-  class Box
+module Sodium
+  class CryptoBox
     include Wipe
 
     MAC_SIZE = LibSodium.crypto_box_macbytes
@@ -23,6 +25,10 @@ module Sodium::CryptoBox
         raise Error.new("crypto_box_easy")
       end
       {nonce, dst}
+    end
+
+    def decrypt_easy(src)
+      decrypt_easy src.to_slice
     end
 
     def decrypt_easy(src : Bytes, dst = Bytes.new(src.bytesize - MAC_SIZE), nonce = Nonce.new) : Bytes
