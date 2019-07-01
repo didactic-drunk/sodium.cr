@@ -40,7 +40,7 @@ describe Sodium::CryptoBox::SecretKey do
     # Encrypt a message for Bob using his public key, signing it with Alice's
     # secret key
     box = alice.box bob.public_key
-    nonce, encrypted = box.encrypt_easy data
+    encrypted, nonce = box.encrypt_easy data
 
     # Decrypt the message using Bob's secret key, and verify its signature against
     # Alice's public key

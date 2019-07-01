@@ -20,10 +20,11 @@ module Sodium
     MEMLIMIT_INTERACTIVE = LibSodium.crypto_pwhash_memlimit_interactive
     MEMLIMIT_MAX         = LibSodium.crypto_pwhash_memlimit_max # Don't use this.  Maximum of the library which is more ram than any computer.
 
-    STR_SIZE = LibSodium.crypto_pwhash_strbytes
+    SALT_SIZE = LibSodium.crypto_pwhash_saltbytes
+    STR_SIZE  = LibSodium.crypto_pwhash_strbytes
 
     # Use the most recent algorithm Argon2id13 for new applications.
-    enum Algorithm
+    enum Mode
       Argon2i13  = 1
       Argon2id13 = 2
     end
@@ -33,7 +34,7 @@ module Sodium
     property memlimit = MEMLIMIT_INTERACTIVE
 
     # Used by and must be set before calling #key_derive
-    property algorithm : Algorithm?
+    property mode : Mode?
 
     # Apply the most recent password hashing algorithm agains a password.
     # Returns a opaque String which includes:
@@ -73,28 +74,30 @@ module Sodium
       end
     end
 
-    # Returns a consistent key based on [salt, pass, key_bytes, algorithm, ops_limit, mem_limit]
+    # Returns a consistent key based on [salt, pass, key_bytes, mode, ops_limit, mem_limit]
     #
-    # Must set an algorithm before calling.
-    def key_derive(salt : Bytes, pass : Bytes, key_bytes) : Bytes
-      if alg = algorithm
-        key = Bytes.new key_bytes
-        if LibSodium.crypto_pwhash(key, key.bytesize, pass, pass.bytesize, salt, @opslimit, @memlimit, alg) != 0
-          raise Sodium::Error.new("crypto_pwhash_str")
-        end
-        key
-      else
-        raise ArgumentError.new("algorithm not set")
-      end
-    end
-
+    # Must set a mode before calling.
     def key_derive(salt, pass, key_bytes)
       key_derive salt.to_slice, pass.to_slice, key_bytes
     end
 
+    def key_derive(salt : Bytes, pass : Bytes, key_bytes) : Bytes
+      raise "salt expected #{SALT_SIZE} bytes, got #{salt.bytesize} " if salt.bytesize != SALT_SIZE
+
+      if m = mode
+        key = Bytes.new key_bytes
+        if LibSodium.crypto_pwhash(key, key.bytesize, pass, pass.bytesize, salt, @opslimit, @memlimit, m) != 0
+          raise Sodium::Error.new("crypto_pwhash_str")
+        end
+        key
+      else
+        raise ArgumentError.new("mode not set")
+      end
+    end
+
     # Returns a random salt for use with #key_derive
     def salt
-      Random::Secure.random_bytes LibSodium.crypto_pwhash_saltbytes
+      Random::Secure.random_bytes SALT_SIZE
     end
   end
 end

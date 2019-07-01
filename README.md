@@ -34,7 +34,7 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
     - [x] Complete libsodium implementation including `key`, `salt`, `personal` and fully selectable output sizes.
   - [ ] [SipHash](https://libsodium.gitbook.io/doc/hashing/short-input_hashing)
 - [Password Hashing](https://libsodium.gitbook.io/doc/password_hashing)
-  - [x] [Argon2](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function) (Use for new applications)
+  - [x] [x] [Argon2](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function) (Use for new applications)
   - [ ] [Scrypt](https://libsodium.gitbook.io/doc/advanced/scrypt) (For compatibility with older applications)
 - Other
   - [x] [Key Derivation](https://libsodium.gitbook.io/doc/key_derivation)

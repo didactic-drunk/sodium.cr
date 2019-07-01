@@ -1,6 +1,7 @@
 require "./lib_sodium"
 require "./wipe"
 require "./crypto_box/secret_key"
+require "./nonce"
 
 module Sodium
   class CryptoBox
@@ -24,7 +25,7 @@ module Sodium
       if LibSodium.crypto_box_easy(dst, src, src.bytesize, nonce.to_slice, @public_key.to_slice, @secret_key.to_slice) != 0
         raise Error.new("crypto_box_easy")
       end
-      {nonce, dst}
+      {dst, nonce}
     end
 
     def decrypt_easy(src)
