@@ -49,9 +49,9 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
   - [ ] [One time auth](https://libsodium.gitbook.io/doc/advanced/poly1305)
   - [ ] Padding
 - Library features
-  - Faster builds by requiring what you need (`require "sodium/secret_box"`)
-  - Controlled memory wiping (by calling `.close`)
-  - Semi-automatic memory wiping (on GC).
+  - [x] Faster builds by requiring what you need (`require "sodium/secret_box"`)
+  - [x] All SecretKey's held in libsodium guarded memory.
+  - [ ] Controlled memory wiping (by calling `.close`)
 
 ☑ Indicate specs are compared against test vectors from another source.
 
@@ -96,38 +96,17 @@ dependencies:
 
 ## Usage
 
-The `specs` provide the best examples of how to use or misuse this shard.
+See `examples` for help on using these classes in a complete application.
 
-### Warning
+The `specs` provide the best examples of how to use or misuse individual classes.
 
-This library uses automatic memory wiping.  **Make sure you write your keys to disk or send them over a network
-before losing references to objects that contain keys.**  You may also call `.dup`.
 
-```crystal
-# Returns Bytes representation and loses reference to SecretKey
-def new_key
-  secret_key = Sodium::CryptoBox::SecretKey.new
-  secret_key.bytes
-end
-
-saved_key = new_key
-
-p saved_key[0, 8]
-GC.collect
-p saved_key[0, 8]
-```
-    
-```
-# Before GC
-Bytes[175, 134, 134, 159, 149, 208, 171, 251]
-# After GC
-Bytes[0, 0, 0, 0, 0, 0, 0, 0]
-```
 
 You may call `.close` on any object that retains keying material to wipe it's key(s) earlier.
 Objects with a  `.close` method also respond to `Class.open` and wipe when the block returns.
 
 ```crystal
+# TODO
 Sodium::CryptoBox::SecretKey.open(sec_key, pub_key) do |secret_key|
  ... Do crypto operations ...
 end

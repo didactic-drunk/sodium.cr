@@ -18,23 +18,33 @@ module Sodium
   # message = key.decrypt_easy encrypted, nonce
   # ```
   class SecretBox < Key
-    KEY_SIZE   = LibSodium.crypto_secretbox_keybytes
-    NONCE_SIZE = LibSodium.crypto_secretbox_noncebytes
-    MAC_SIZE   = LibSodium.crypto_secretbox_macbytes
+    KEY_SIZE   = LibSodium.crypto_secretbox_keybytes.to_i
+    NONCE_SIZE = LibSodium.crypto_secretbox_noncebytes.to_i
+    MAC_SIZE   = LibSodium.crypto_secretbox_macbytes.to_i
 
-    @[Wipe::Var]
-    getter bytes : Bytes
+    delegate to_slice, to: @buf
 
-    # Generate a new random key.
+    # Generate a new random key held in a SecureBuffer.
     def initialize
-      @bytes = Random::Secure.random_bytes(KEY_SIZE)
+      @buf = SecureBuffer.random KEY_SIZE
     end
 
-    # Use an existing key from bytes.
-    def initialize(@bytes : Bytes)
+    # Use an existing SecureBuffer.
+    protected def initialize(@buf : SecureBuffer)
+      if @buf.bytesize != KEY_SIZE
+        raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{@buf.bytesize}")
+      end
+      @buf.readonly
+    end
+
+    # Copy bytes to a new SecureBuffer
+    #
+    # Optionally erases bytes after copying if erase is set
+    protected def initialize(bytes : Bytes, erase = false)
       if bytes.bytesize != KEY_SIZE
         raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{bytes.bytesize}")
       end
+      @buf = SecureBuffer.new bytes, erase: erase
     end
 
     def encrypt_easy(data)
@@ -60,7 +70,7 @@ module Sodium
       if dst.bytesize != (src.bytesize + MAC_SIZE)
         raise ArgumentError.new("dst.bytesize must be src.bytesize + MAC_SIZE, got #{dst.bytesize}")
       end
-      if LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.to_slice, @bytes) != 0
+      if LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.to_slice, self.to_slice) != 0
         raise Sodium::Error.new("crypto_secretbox_easy")
       end
       dst
@@ -77,7 +87,7 @@ module Sodium
       if dst.bytesize != (src.bytesize - MAC_SIZE)
         raise ArgumentError.new("dst.bytesize must be src.bytesize - MAC_SIZE, got #{dst.bytesize}")
       end
-      if LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.to_slice, @bytes) != 0
+      if LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.to_slice, self.to_slice) != 0
         raise Sodium::Error::DecryptionFailed.new("crypto_secretbox_easy")
       end
       dst

@@ -71,18 +71,18 @@ describe Sodium::Pwhash do
   it "key_derive fails without a mode" do
     pwhash = pw_min
     expect_raises(ArgumentError) do
-      pwhash.key_derive pwhash.salt, "foo", 16
+      pwhash.key_derive pwhash.random_salt, "foo", 16
     end
   end
 
   it "derives a key from a password" do
     pwhash = pw_min
     pwhash.mode = Sodium::Pwhash::Mode::Argon2id13
-    salt = pwhash.salt
+    salt = pwhash.random_salt
     key1 = pwhash.key_derive salt, "foo", 16
     key2 = pwhash.key_derive salt, "foo", 16
     key3 = pwhash.key_derive salt, "bar", 16
-    key4 = pwhash.key_derive pwhash.salt, "foo", 16
+    key4 = pwhash.key_derive pwhash.random_salt, "foo", 16
 
     key1.bytesize.should eq 16
     key1.should eq key2

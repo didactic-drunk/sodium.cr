@@ -1,4 +1,5 @@
 require "./lib_sodium"
+require "./secure_buffer"
 
 module Sodium
   # [Argon2 Password Hashing](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function)
@@ -74,19 +75,19 @@ module Sodium
       end
     end
 
-    # Returns a consistent key based on [salt, pass, key_bytes, mode, ops_limit, mem_limit]
+    # Returns a consistent key based on [salt, pass, key_bytes, mode, ops_limit, mem_limit] in a SecureBuffer
     #
     # Must set a mode before calling.
     def key_derive(salt, pass, key_bytes)
       key_derive salt.to_slice, pass.to_slice, key_bytes
     end
 
-    def key_derive(salt : Bytes, pass : Bytes, key_bytes) : Bytes
+    def key_derive(salt : Bytes, pass : Bytes, key_bytes) : SecureBuffer
       raise "salt expected #{SALT_SIZE} bytes, got #{salt.bytesize} " if salt.bytesize != SALT_SIZE
 
       if m = mode
-        key = Bytes.new key_bytes
-        if LibSodium.crypto_pwhash(key, key.bytesize, pass, pass.bytesize, salt, @opslimit, @memlimit, m) != 0
+        key = SecureBuffer.new key_bytes
+        if LibSodium.crypto_pwhash(key.to_slice, key.bytesize, pass, pass.bytesize, salt, @opslimit, @memlimit, m) != 0
           raise Sodium::Error.new("crypto_pwhash_str")
         end
         key
@@ -95,8 +96,14 @@ module Sodium
       end
     end
 
+    # Derives a key using key_derive and returns KDF.new(key)
+    def kdf_derive(salt, pass, key_bytes) : Kdf
+      key = key_derive salt, pass, key_bytes
+      Kdf.new key
+    end
+
     # Returns a random salt for use with #key_derive
-    def salt
+    def random_salt
       Random::Secure.random_bytes SALT_SIZE
     end
   end

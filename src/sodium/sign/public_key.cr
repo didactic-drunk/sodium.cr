@@ -2,10 +2,10 @@ require "../lib_sodium"
 
 module Sodium
   class Sign::PublicKey < Key
-    KEY_SIZE = LibSodium.crypto_sign_publickeybytes
-    SIG_SIZE = LibSodium.crypto_sign_bytes
+    KEY_SIZE = LibSodium.crypto_sign_publickeybytes.to_i
+    SIG_SIZE = LibSodium.crypto_sign_bytes.to_i
 
-    getter bytes : Bytes
+    delegate to_slice, to: @bytes
 
     # :nodoc:
     # Only used by SecretKey

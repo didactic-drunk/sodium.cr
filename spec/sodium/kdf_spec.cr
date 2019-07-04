@@ -8,7 +8,7 @@ describe Sodium::Kdf do
     kdf1 = Sodium::Kdf.new
 
     # verify loading saved key
-    kdf2 = Sodium::Kdf.new kdf1.bytes
+    kdf2 = Sodium::Kdf.new kdf1.to_slice.dup
 
     # verify generated subkey's are the same after loading
     key1_s1 = kdf1.derive CONTEXT, 0, 16

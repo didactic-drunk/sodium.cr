@@ -2,30 +2,30 @@ require "../../spec_helper"
 require "../../../src/sodium/crypto_box/secret_key"
 
 private def new_key_bytes
-  Sodium::CryptoBox::SecretKey.new.bytes
+  Sodium::CryptoBox::SecretKey.new.to_slice
 end
 
 describe Sodium::CryptoBox::SecretKey do
   it "loads keys" do
     key1 = Sodium::CryptoBox::SecretKey.new
-    key2 = Sodium::CryptoBox::SecretKey.new key1.bytes, key1.public_key.bytes
-    key1.bytes.should eq key2.bytes
-    key1.public_key.bytes.should eq key2.public_key.bytes
+    key2 = Sodium::CryptoBox::SecretKey.new key1.to_slice, key1.public_key.to_slice
+    key1.to_slice.should eq key2.to_slice
+    key1.public_key.to_slice.should eq key2.public_key.to_slice
   end
 
   it "recomputes the public_key" do
     key1 = Sodium::CryptoBox::SecretKey.new
-    key2 = Sodium::CryptoBox::SecretKey.new key1.bytes
-    key1.bytes.should eq key2.bytes
-    key1.public_key.bytes.should eq key2.public_key.bytes
+    key2 = Sodium::CryptoBox::SecretKey.new key1.to_slice
+    key1.to_slice.should eq key2.to_slice
+    key1.public_key.to_slice.should eq key2.public_key.to_slice
   end
 
   it "seed keys" do
     seed = Bytes.new Sodium::CryptoBox::SecretKey::SEED_SIZE
     key1 = Sodium::CryptoBox::SecretKey.new seed: seed
     key2 = Sodium::CryptoBox::SecretKey.new seed: seed
-    key1.bytes.should eq key2.bytes
-    key1.public_key.bytes.should eq key2.public_key.bytes
+    key1.to_slice.should eq key2.to_slice
+    key1.public_key.to_slice.should eq key2.public_key.to_slice
   end
 
   it "authenticated easy encrypt/decrypt" do
@@ -64,9 +64,5 @@ describe Sodium::CryptoBox::SecretKey do
     decrypted = bob.decrypt encrypted
 
     String.new(decrypted).should eq(data)
-  end
-
-  it "wipes keys" do
-    check_wiped new_key_bytes
   end
 end

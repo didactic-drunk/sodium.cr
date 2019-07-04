@@ -7,7 +7,7 @@ module Sodium
   class CryptoBox
     include Wipe
 
-    MAC_SIZE = LibSodium.crypto_box_macbytes
+    MAC_SIZE = LibSodium.crypto_box_macbytes.to_i
 
     # BUG: precompute size
     @[Wipe::Var]

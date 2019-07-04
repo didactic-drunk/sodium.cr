@@ -3,10 +3,10 @@ require "../key"
 
 class Sodium::CryptoBox
   class PublicKey < Key
-    KEY_SIZE  = LibSodium.crypto_box_publickeybytes
+    KEY_SIZE  = LibSodium.crypto_box_publickeybytes.to_i
     SEAL_SIZE = LibSodium.crypto_box_sealbytes
 
-    getter bytes : Bytes
+    delegate to_slice, to: @bytes
 
     # :nodoc:
     # Only used by SecretKey

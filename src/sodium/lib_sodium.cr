@@ -44,7 +44,15 @@ module Sodium
     fun crypto_generichash_blake2b_keybytes_max : LibC::SizeT
     fun crypto_generichash_blake2b_saltbytes : LibC::SizeT
     fun crypto_generichash_blake2b_personalbytes : LibC::SizeT
+
     fun sodium_memzero(Pointer(LibC::UChar), LibC::SizeT) : Nil
+
+    fun sodium_malloc(LibC::SizeT) : Pointer(LibC::UChar)
+    fun sodium_free(Pointer(LibC::UChar)) : Nil
+
+    fun sodium_mprotect_noaccess(Pointer(LibC::UChar)) : LibC::Int
+    fun sodium_mprotect_readonly(Pointer(LibC::UChar)) : LibC::Int
+    fun sodium_mprotect_readwrite(Pointer(LibC::UChar)) : LibC::Int
 
     NONCE_SIZE = crypto_box_noncebytes()
 
