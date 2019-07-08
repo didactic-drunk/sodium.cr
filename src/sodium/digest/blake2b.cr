@@ -19,13 +19,13 @@ module Sodium::Digest
     include OpenSSL::DigestBase
     include Wipe
 
-    KEY_SIZE     = LibSodium.crypto_generichash_blake2b_keybytes     # 32
-    KEY_SIZE_MIN = LibSodium.crypto_generichash_blake2b_keybytes_min # 16
-    KEY_SIZE_MAX = LibSodium.crypto_generichash_blake2b_keybytes_max # 64
+    KEY_SIZE     = LibSodium.crypto_generichash_blake2b_keybytes.to_i     # 32
+    KEY_SIZE_MIN = LibSodium.crypto_generichash_blake2b_keybytes_min.to_i # 16
+    KEY_SIZE_MAX = LibSodium.crypto_generichash_blake2b_keybytes_max.to_i # 64
 
-    SALT_SIZE = LibSodium.crypto_generichash_blake2b_saltbytes # 16
+    SALT_SIZE = LibSodium.crypto_generichash_blake2b_saltbytes.to_i # 16
 
-    PERSONAL_SIZE = LibSodium.crypto_generichash_blake2b_personalbytes # 16
+    PERSONAL_SIZE = LibSodium.crypto_generichash_blake2b_personalbytes.to_i # 16
 
     OUT_SIZE     = LibSodium.crypto_generichash_blake2b_bytes.to_i32     # 32
     OUT_SIZE_MIN = LibSodium.crypto_generichash_blake2b_bytes_min.to_i32 # 16
@@ -50,8 +50,9 @@ module Sodium::Digest
     #
     # `key`, `salt`, and `personal` are all optional.  Most other libsodium bindings don't support them.
     # Check the other implementation(s) you need to interoperate with before using.
-    def initialize(@digest_size : Int32 = OUT_SIZE, key : Bytes? = nil, salt : Bytes? = nil, personal : Bytes? = nil)
+    def initialize(@digest_size : Int32 = OUT_SIZE, key : Bytes? | SecureBuffer? = nil, salt : Bytes? = nil, personal : Bytes? = nil)
       if k = key
+        k = k.to_slice
         raise ArgumentError.new("key larger than KEY_SIZE_MAX(#{KEY_SIZE_MAX}), got #{k.bytesize}") if k.bytesize > KEY_SIZE_MAX
         @key_size = k.bytesize
         k.copy_to @key.to_slice

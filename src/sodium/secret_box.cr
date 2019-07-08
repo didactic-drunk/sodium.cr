@@ -30,7 +30,7 @@ module Sodium
     end
 
     # Use an existing SecureBuffer.
-    protected def initialize(@buf : SecureBuffer)
+    def initialize(@buf : SecureBuffer)
       if @buf.bytesize != KEY_SIZE
         raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{@buf.bytesize}")
       end
@@ -40,7 +40,7 @@ module Sodium
     # Copy bytes to a new SecureBuffer
     #
     # Optionally erases bytes after copying if erase is set
-    protected def initialize(bytes : Bytes, erase = false)
+    def initialize(bytes : Bytes, erase = false)
       if bytes.bytesize != KEY_SIZE
         raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{bytes.bytesize}")
       end
