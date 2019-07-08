@@ -1,17 +1,12 @@
 require "../lib_sodium"
-require "../wipe"
+require "../secure_buffer"
 
 module Sodium::Cipher
   # The great beat you can eat!
   #
   # What? They're both dance?
-  #
-  # WARNING: This class takes ownership of any key material passed to it.
-  #
-  # WARNING: Not validated against test vectors.  You should probably write some before using.
   abstract class Chalsa
-    @[Wipe::Var]
-    @key : Bytes?
+    @key : Bytes | SecureBuffer | Nil
     @nonce : Bytes?
 
     # Advanced usage.  Don't touch.
@@ -25,7 +20,7 @@ module Sodium::Cipher
       self.nonce = nonce if nonce
     end
 
-    def key=(key : Bytes)
+    def key=(key : Bytes | SecureBuffer)
       raise ArgumentError.new("key must be #{key_size} bytes, got #{key.bytesize}") if key.bytesize != key_size
       @key = key
       key
@@ -38,7 +33,7 @@ module Sodium::Cipher
     end
 
     def random_key
-      self.key = Random::Secure.random_bytes key_size
+      self.key = SecureBuffer.random key_size
     end
 
     def random_nonce
@@ -50,13 +45,13 @@ module Sodium::Cipher
       update src, Bytes.new(src.bytesize)
     end
 
-    # Provided for compatibility with block ciphers.
+    # Provided for compatibility with block or tagged ciphers.
     # Stream ciphers don't have additional data.
     def final
       Bytes.new(0)
     end
 
-    # Sadness...
+    # Always returns false. Sadness...
     def edible?
       false
     end
@@ -76,14 +71,16 @@ module Sodium::Cipher
     # This class mimicks the OpenSSL::Cipher interface with minor differences.
     #
     # See `spec/sodium/cipher/chalsa_spec.cr` for examples on how to use this class.
+    #
+    # WARNING: Not validated against test vectors.  You should probably write some before using this class.
     class {{ key.id }} < Chalsa
       # Xor's src with the cipher output and places in dst.
       #
       # src and dst may be the same object but should not overlap.
       def update(src : Bytes, dst : Bytes) : Bytes
-        if (key = @key) && (nonce = @nonce)
+        if (k = @key) && (n = @nonce)
           raise ArgumentError.new("src and dst bytesize must be identical") if src.bytesize != dst.bytesize
-          if LibSodium.crypto_stream_{{ val.id }}_xor_ic(dst, src, src.bytesize, nonce, @offset, key) != 0
+          if LibSodium.crypto_stream_{{ val.id }}_xor_ic(dst, src, src.bytesize, n, @offset, k.to_slice) != 0
             raise Sodium::Error.new("crypto_stream_{{ val.id }}_xor_ic")
           end
           @offset += src.bytesize
@@ -94,11 +91,11 @@ module Sodium::Cipher
       end
 
       def key_size
-        LibSodium.crypto_stream_chacha20_ietf_keybytes
+        LibSodium.crypto_stream_chacha20_ietf_keybytes.to_i32
       end
 
       def nonce_size
-        LibSodium.crypto_stream_chacha20_ietf_noncebytes
+        LibSodium.crypto_stream_chacha20_ietf_noncebytes.to_i32
       end
     end
   {% end %}
