@@ -68,15 +68,15 @@ Several features in libsodium are already provided by Crystal:
 | --- | --- |
 | Only use `CryptoBox::SecretKey` `Sign::SecretKey` `SecretBox` | I don't know much about crypto. |
 | [`Sodium::CryptoBox::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/CryptoBox/SecretKey.html) .box | I want to encrypt + authenticate data using public key encryption. |
-| [`Sodium::Sign::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/CryptoBox/PublicKey.html) .encrypt | I want anonymously send encrypted data. (No authentication) |
-| [`Sodium::Sign::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/Sign/SecretKey.html) | I want to sign or verify messages without encryption. |
+| [`Sodium::CryptoBox::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/CryptoBox/PublicKey.html) .encrypt | I want anonymously send encrypted data. (No signatures) |
+| [`Sodium::Sign::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/Sign/SecretKey.html) | I want to sign or verify messages. (No encryption) |
 | [`Sodium::SecretBox`](https://didactic-drunk.github.io/sodium.cr/Sodium/SecretBox.html) | I have a shared key and want to encrypt + authenticate data. |
-| AEAD | I have a shared key and want encrypt + authenticate streamed data. (Not implemented yet) |
+| [`Sodium::Cipher::SecretStream`](https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/SecretStream/XChaCha20Poly1305.html), AEAD | I have a shared key and want encrypt + authenticate streamed data. |
 | [`Sodium::Digest::Blake2b`](https://didactic-drunk.github.io/sodium.cr/Sodium/Digest::Blake2b.html) | I want to hash data fast and securely. |
 | `Sodium::Digest::SipHash` | I want to hash data really fast and less securely. (Not implemented yet) |
-| `Sodium::Pwhash` | I want to hash a password and store it. |
-| `Sodium::Pwhash` | I want to derive a key from a password. |
-| `Sodium::Kdf` | I have a high quality master key and want to make subkeys. |
+| [`Sodium::Pwhash`](https://didactic-drunk.github.io/sodium.cr/Sodium/Pwhash.html) | I want to hash a password and store it. |
+| [`Sodium::Pwhash`](https://didactic-drunk.github.io/sodium.cr/Sodium/Pwhash.html) | I want to derive a key from a password. |
+| [`Sodium::Kdf`](https://didactic-drunk.github.io/sodium.cr/Sodium/Kdf.html) | I have a high quality master key and want to make subkeys. |
 | [`Sodium::Cipher::Chalsa`](https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/Chalsa.html) | What goes with guacamole? |
 | Everything else | I want to design my own crypto protocol and probably do it wrong. |
 

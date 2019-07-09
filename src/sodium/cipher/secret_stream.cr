@@ -79,9 +79,9 @@ module Sodium::Cipher
     # [Libsodium Secret Stream API](https://libsodium.gitbook.io/doc/secret-key_cryptography/secretstream)
     #
     # This class mimicks the OpenSSL::Cipher interface with minor differences.
+    # * every .update is it's own authenticated message.  Unlike OpenSSL this class doesn't buffer data.  You must handle the framing yourself.
     # * .header must be called for encryption before calling .update
     # * .header= must be called for decryption with the data returned from .header before calling .update
-    # * every .update is it's own authenticated message.  Unlike OpenSSL this class doesn't buffer data.  You must handle the framing yourself.
     # * A tag may be set before encrypting and is set after calling .update when decrypting.
     # * .additional may be set before encrypting and must be set before decrypting.
     #

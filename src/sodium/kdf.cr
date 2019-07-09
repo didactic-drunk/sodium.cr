@@ -5,7 +5,6 @@ require "./wipe"
 module Sodium
   # Key derivation function
   #
-  # WARNING: This class takes ownership of any key material passed to it.
   # Read **each** constructor WARNING for differences in usage.
   #
   # Usage:
@@ -25,7 +24,8 @@ module Sodium
 
     # Use an existing KDF key.
     #
-    # Optionally erases bytes after copying if erase is set
+    # * Copies key to a new SecureBuffer
+    # * Optionally erases bytes after copying if erase is set
     def initialize(bytes : Bytes, erase = false)
       if bytes.bytesize != KEY_SIZE
         raise ArgumentError.new("bytes must be #{KEY_SIZE}, got #{bytes.bytesize}")
@@ -35,9 +35,6 @@ module Sodium
     end
 
     # Use an existing KDF SecureBuffer key.
-    #
-    # WARNING: This class takes ownership of any key material passed to it.
-    # If you don't want this behavior pass a duplicate of the key to initialize().
     def initialize(@sbuf : SecureBuffer)
       if @sbuf.bytesize != KEY_SIZE
         raise ArgumentError.new("bytes must be #{KEY_SIZE}, got #{sbuf.bytesize}")
