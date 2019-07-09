@@ -24,6 +24,7 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
   - Secret Box
     - [x] [Combined mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
     - [ ] [Detached mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
+  - [x] [Secret Stream](https://libsodium.gitbook.io/doc/secret-key_cryptography/secretstream)
   - [AEAD](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead)
    - [ ] AES256-GCM (Requires hardware acceleration)
    - [ ] XChaCha20-Poly1305-IETF
@@ -34,7 +35,7 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
     - [x] Complete libsodium implementation including `key`, `salt`, `personal` and fully selectable output sizes.
   - [ ] [SipHash](https://libsodium.gitbook.io/doc/hashing/short-input_hashing)
 - [Password Hashing](https://libsodium.gitbook.io/doc/password_hashing)
-  - [x] [x] [Argon2](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function) (Use for new applications)
+  - [x] ☑ [Argon2](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function) (Use for new applications)
   - [ ] [Scrypt](https://libsodium.gitbook.io/doc/advanced/scrypt) (For compatibility with older applications)
 - Other
   - [x] [Key Derivation](https://libsodium.gitbook.io/doc/key_derivation)

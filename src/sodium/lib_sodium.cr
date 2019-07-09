@@ -72,6 +72,50 @@ module Sodium
       key : Pointer(LibC::UChar)
     ) : LibC::Int
 
+    {% for name in ["_xchacha20poly1305"] %}
+      {% for name2 in %w(keybytes headerbytes statebytes abytes) %}
+        fun crypto_secretstream{{ name.id }}_{{ name2.id }} : LibC::SizeT
+      {% end %}
+
+      {% for name2 in %w(tag_rekey tag_push tag_final) %}
+        fun crypto_secretstream{{ name.id }}_{{ name2.id }} : LibC::UChar
+      {% end %}
+
+      fun crypto_secretstream{{ name.id }}_init_push(
+        state : Pointer(LibC::UChar),
+        header : Pointer(LibC::UChar),
+        key : Pointer(LibC::UChar),
+      ) : LibC::Int
+
+      fun crypto_secretstream{{ name.id }}_init_pull(
+        state : Pointer(LibC::UChar),
+        header : Pointer(LibC::UChar),
+        key : Pointer(LibC::UChar),
+      ) : LibC::Int
+
+      fun crypto_secretstream{{ name.id }}_push(
+        state : Pointer(LibC::UChar),
+        c : Pointer(LibC::UChar),
+        clen : Pointer(LibC::ULongLong),
+        m : Pointer(LibC::UChar),
+        mlen : LibC::ULongLong,
+        ad : Pointer(LibC::UChar),
+        adlen : LibC::ULongLong,
+        tag : LibC::UChar,
+      ) : LibC::Int
+
+      fun crypto_secretstream{{ name.id }}_pull(
+        state : Pointer(LibC::UChar),
+        m : Pointer(LibC::UChar),
+        mlen : Pointer(LibC::ULongLong),
+        tag : Pointer(LibC::UChar),
+        c : Pointer(LibC::UChar),
+        clen : LibC::ULongLong,
+        ad : Pointer(LibC::UChar),
+        adlen : LibC::ULongLong,
+      ) : LibC::Int
+    {% end %}
+
     # TODO: Add reduced round variants.
     {% for name in ["_chacha20", "_chacha20_ietf", "_xchacha20", "_salsa20", "_xsalsa20"] %}
       fun crypto_stream{{ name.id }}_keybytes() : LibC::SizeT
