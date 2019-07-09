@@ -1,13 +1,9 @@
 name: sodium
-version: 0.9.0
+version: 0.9.1
 
 authors:
   - Andrew Hamon <andrew@hamon.cc>
   - Didactic Drunk <1479616+didactic-drunk@users.noreply.github.com>
-
-development_dependencies:
-  ghshard:
-    github: bcardiff/ghshard
 
 crystal: 0.28.0
 

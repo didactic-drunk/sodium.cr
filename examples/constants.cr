@@ -41,3 +41,10 @@ puts ""
   puts "Sodium::Digest::Blake2b::{{ name.id }} #{Sodium::Digest::Blake2b::{{ name.id }}}"
 {% end %}
 puts ""
+
+{% for sk in [Sodium::CryptoBox::SecretKey, Sodium::Sign::SecretKey] %}
+  sk = {{sk.id}}.new
+  pk = sk.public_key
+  puts "#{sk.class} bytesize #{sk.to_slice.bytesize}"
+  puts "#{pk.class} bytesize #{pk.to_slice.bytesize}"
+{% end %}
