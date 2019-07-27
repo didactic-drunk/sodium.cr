@@ -5,7 +5,7 @@ module Sodium
   class SecureBuffer
     getter bytesize
 
-    delegate :+, :[], to: to_slice
+    delegate :+, :[], :[]=, to: to_slice
 
     # Allocate guarded memory using [sodium_malloc](https://libsodium.gitbook.io/doc/memory_management)
     def initialize(@bytesize : Int32)
@@ -28,6 +28,14 @@ module Sodium
       readonly
     end
 
+    # :nodoc:
+    # For .dup
+    def initialize(sbuf : self)
+      initialize sbuf.bytesize
+      sbuf.to_slice.copy_to self.to_slice
+      readonly
+    end
+
     def wipe
       readwrite
       Sodium.memzero self.to_slice
@@ -43,6 +51,10 @@ module Sodium
 
     def to_unsafe
       @ptr
+    end
+
+    def dup
+      self.class.new self
     end
 
     # Makes a region allocated using sodium_malloc() or sodium_allocarray() inaccessible. It cannot be read or written, but the data are preserved.

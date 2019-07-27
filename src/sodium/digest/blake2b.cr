@@ -1,5 +1,6 @@
 require "../lib_sodium"
 require "../wipe"
+require "../secure_buffer"
 require "openssl/digest/digest_base"
 
 module Sodium::Digest
@@ -76,13 +77,13 @@ module Sodium::Digest
       salt = @salt.to_unsafe
       personal = @personal.to_unsafe
 
-      if LibSodium.crypto_generichash_blake2b_init_salt_personal(@state, key, @key_size, @digest_size, salt, personal) != 0
+      if LibSodium.crypto_generichash_blake2b_init_salt_personal(@state.to_slice, key, @key_size, @digest_size, salt, personal) != 0
         raise Sodium::Error.new("blake2b_init_key_salt_personal")
       end
     end
 
     def update(data : Bytes)
-      if LibSodium.crypto_generichash_blake2b_update(@state, data, data.bytesize) != 0
+      if LibSodium.crypto_generichash_blake2b_update(@state.to_slice, data, data.bytesize) != 0
         raise Sodium::Error.new("crypto_generichash_blake2b_update")
       end
 
@@ -100,8 +101,9 @@ module Sodium::Digest
     # Destructive operation.  Assumes you know what you are doing.
     # Use .digest or .hexdigest instead.
     def finish(dst : Bytes) : Bytes
-      if LibSodium.crypto_generichash_blake2b_final(@state, dst, dst.bytesize) != 0
-        raise Sodium::Error.new("crypto_generichash_blake2b_final")
+      ret = LibSodium.crypto_generichash_blake2b_final(@state.to_slice, dst, dst.bytesize)
+      if ret != 0
+        raise Sodium::Error.new("crypto_generichash_blake2b_final #{ret.inspect}")
       end
 
       dst
