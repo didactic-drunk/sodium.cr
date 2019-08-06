@@ -2,12 +2,12 @@ require "./lib_sodium"
 require "./wipe"
 
 module Sodium
+  # Allocate guarded memory using [sodium_malloc](https://libsodium.gitbook.io/doc/memory_management)
   class SecureBuffer
     getter bytesize
 
     delegate :+, :[], :[]=, to: to_slice
 
-    # Allocate guarded memory using [sodium_malloc](https://libsodium.gitbook.io/doc/memory_management)
     def initialize(@bytesize : Int32)
       @ptr = LibSodium.sodium_malloc @bytesize
     end

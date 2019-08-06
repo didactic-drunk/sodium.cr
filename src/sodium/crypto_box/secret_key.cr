@@ -5,8 +5,6 @@ require "../crypto_box"
 
 class Sodium::CryptoBox
   # Key used for encryption + authentication or encryption without authentication, not for unencrypted signing.
-  #
-  # If you don't want this behavior pass a duplicate of the key/seed to initialize().
   class SecretKey < Key
     KEY_SIZE  = LibSodium.crypto_box_secretkeybytes.to_i
     SEED_SIZE = LibSodium.crypto_box_seedbytes.to_i

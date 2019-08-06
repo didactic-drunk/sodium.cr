@@ -3,15 +3,15 @@ require "../key"
 require "./public_key"
 
 module Sodium
-  # Key used for signing/verification only.
+  # Ed25519 secret key used for signing.
   #
-  # If you don't want this behavior pass a duplicate of the key/seed to initialize().
+  # [https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
   #
   # Usage:
   # ```
-  # key = SecretKey.new
+  # key = Sodium::Sign::SecretKey.new
   # sig = key.sign_detached data
-  # key.public_key.verify_detached data
+  # key.public_key.verify_detached data, sig
   # ```
   class Sign::SecretKey < Sodium::Key
     KEY_SIZE  = LibSodium.crypto_sign_secretkeybytes.to_i

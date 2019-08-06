@@ -12,6 +12,7 @@ module Sodium
     fun crypto_box_noncebytes : LibC::SizeT
     fun crypto_box_sealbytes : LibC::SizeT
     fun crypto_box_macbytes : LibC::SizeT
+    fun crypto_box_beforenmbytes : LibC::SizeT
     fun crypto_sign_publickeybytes : LibC::SizeT
     fun crypto_sign_secretkeybytes : LibC::SizeT
     fun crypto_sign_bytes : LibC::SizeT
@@ -148,22 +149,45 @@ module Sodium
       secret_key_output : Pointer(LibC::UChar)
     ) : LibC::Int
 
-    fun crypto_box_easy(
-      output : Pointer(LibC::UChar),
-      data : Pointer(LibC::UChar),
-      data_size : LibC::ULongLong,
-      nonce : Pointer(LibC::UChar),
-      recipient_public_key : Pointer(LibC::UChar),
-      sender_secret_key : Pointer(LibC::UChar)
+    fun crypto_box_beforenm(
+      k : Pointer(LibC::UChar),
+      pk : Pointer(LibC::UChar),
+      sk : Pointer(LibC::UChar)
     ) : LibC::Int
 
-    fun crypto_box_open_easy(
+    fun crypto_box_easy_afternm(
       output : Pointer(LibC::UChar),
       data : Pointer(LibC::UChar),
       data_size : LibC::ULongLong,
       nonce : Pointer(LibC::UChar),
-      sender_public_key : Pointer(LibC::UChar),
-      recipient_secret_key : Pointer(LibC::UChar)
+      key : Pointer(LibC::UChar)
+    ) : LibC::Int
+
+    # TODO: possibly remove after switching to detached
+    fun crypto_box_open_easy_afternm(
+      output : Pointer(LibC::UChar),
+      data : Pointer(LibC::UChar),
+      data_size : LibC::ULongLong,
+      nonce : Pointer(LibC::UChar),
+      key : Pointer(LibC::UChar)
+    ) : LibC::Int
+
+    fun crypto_box_detached_afternm(
+      output : Pointer(LibC::UChar),
+      mac : Pointer(LibC::UChar),
+      data : Pointer(LibC::UChar),
+      data_size : LibC::ULongLong,
+      nonce : Pointer(LibC::UChar),
+      key : Pointer(LibC::UChar)
+    ) : LibC::Int
+
+    fun crypto_box_open_detached_afternm(
+      output : Pointer(LibC::UChar),
+      data : Pointer(LibC::UChar),
+      mac : Pointer(LibC::UChar),
+      data_size : LibC::ULongLong,
+      nonce : Pointer(LibC::UChar),
+      key : Pointer(LibC::UChar)
     ) : LibC::Int
 
     fun crypto_box_seal(
@@ -294,8 +318,7 @@ module Sodium
     end
   end
 
-  # Constant time memory compare.
-  # Raises unless comparison succeeds.
+  # Constant time memory compare.  Raises unless comparison succeeds.
   def self.memcmp!(a, b)
     raise Error::MemcmpFailed.new unless memcmp(a, b)
     true

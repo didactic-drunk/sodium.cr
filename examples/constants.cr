@@ -7,6 +7,11 @@ require "../src/sodium"
 {% end %}
 puts ""
 
+{% for name in %w(MAC_SIZE NM_SIZE) %}
+  puts "Sodium::CryptoBox::{{ name.id }} #{Sodium::CryptoBox::{{ name.id }}}"
+{% end %}
+puts ""
+
 {% for name in %w(KEY_SIZE SEED_SIZE SIG_SIZE) %}
   puts "Sodium::Sign::SecretKey::{{ name.id }} #{Sodium::Sign::SecretKey::{{ name.id }}}"
 {% end %}
