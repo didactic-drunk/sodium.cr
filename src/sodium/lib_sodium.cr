@@ -49,6 +49,8 @@ module Sodium
     fun sodium_memcmp(Pointer(LibC::UChar), Pointer(LibC::UChar), LibC::SizeT) : LibC::Int
     fun sodium_memzero(Pointer(LibC::UChar), LibC::SizeT) : Nil
 
+    fun sodium_increment(Pointer(LibC::UChar), LibC::SizeT) : Nil
+
     fun sodium_malloc(LibC::SizeT) : Pointer(LibC::UChar)
     fun sodium_free(Pointer(LibC::UChar)) : Nil
 

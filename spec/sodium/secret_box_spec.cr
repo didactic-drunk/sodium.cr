@@ -40,6 +40,17 @@ describe Sodium::SecretBox do
     end
   end
 
+  it "can't encrypt twice using the same nonce" do
+    box = Sodium::SecretBox.new
+
+    message = "foobar"
+    encrypted, nonce = box.encrypt message
+
+    expect_raises(Sodium::Nonce::Error::Reused) do
+      box.encrypt message.to_slice, nonce: nonce
+    end
+  end
+
   it "PyNaCl combined test vectors" do
     combined_test_vectors.each do |vec|
       box, nonce, plaintext, ciphertext = box_from_test_vector vec

@@ -3,9 +3,16 @@ require "random/secure"
 
 module Sodium
   class Nonce
-    NONCE_SIZE = LibSodium::NONCE_SIZE
+    class Error < Sodium::Error
+      class Reused < Error
+      end
+    end
 
-    getter bytes : Bytes
+    NONCE_SIZE = LibSodium::NONCE_SIZE.to_i
+
+    getter? used
+    @used = false
+
     delegate to_slice, to: @bytes
 
     def initialize(@bytes : Bytes)
@@ -14,8 +21,22 @@ module Sodium
       end
     end
 
-    def initialize
-      @bytes = Random::Secure.random_bytes(NONCE_SIZE)
+    def self.random
+      self.new Random::Secure.random_bytes(NONCE_SIZE)
+    end
+
+    def self.zero
+      self.new Bytes.new(NONCE_SIZE)
+    end
+
+    def increment
+      LibSodium.sodium_increment @bytes, @bytes.bytesize
+      @used = false
+    end
+
+    def used!
+      raise Error::Reused.new("attempted nonce reuse") if @used
+      @used = true
     end
   end
 end

@@ -54,10 +54,11 @@ module Sodium
     # Encrypts data and returns {ciphertext, nonce}
     #
     # Optionally supply a destination buffer.
-    def encrypt(src : Bytes, dst : Bytes = Bytes.new(src.bytesize + MAC_SIZE), nonce : Nonce = Nonce.new) : {Bytes, Nonce}
+    def encrypt(src : Bytes, dst : Bytes = Bytes.new(src.bytesize + MAC_SIZE), nonce : Nonce = Nonce.random) : {Bytes, Nonce}
       if dst.bytesize != (src.bytesize + MAC_SIZE)
         raise ArgumentError.new("dst.bytesize must be src.bytesize + MAC_SIZE, got #{dst.bytesize}")
       end
+      nonce.used!
       if LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.to_slice, self.to_slice) != 0
         raise Sodium::Error.new("crypto_secretbox_easy")
       end

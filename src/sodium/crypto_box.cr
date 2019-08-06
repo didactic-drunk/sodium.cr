@@ -35,7 +35,8 @@ module Sodium
     # Encrypts data and returns {ciphertext, nonce}
     #
     # Optionally supply a destination buffer.
-    def encrypt(src : Bytes, dst = Bytes.new(src.bytesize + MAC_SIZE), nonce = Nonce.new) : {Bytes, Nonce}
+    def encrypt(src : Bytes, dst = Bytes.new(src.bytesize + MAC_SIZE), nonce = Nonce.random) : {Bytes, Nonce}
+      nonce.used!
       if LibSodium.crypto_box_easy_afternm(dst, src, src.bytesize, nonce.to_slice, @key.to_slice) != 0
         raise Error.new("crypto_box_easy")
       end

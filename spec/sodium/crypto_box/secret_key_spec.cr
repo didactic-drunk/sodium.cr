@@ -99,6 +99,20 @@ describe Sodium::CryptoBox::SecretKey do
     String.new(decrypted).should eq(data)
   end
 
+  it "can't encrypt twice using the same nonce" do
+    data = "Hello World!".to_slice
+
+    alice = Sodium::CryptoBox::SecretKey.new
+    bob = Sodium::CryptoBox::SecretKey.new
+
+    alice.box bob.public_key do |box|
+      encrypted, nonce = box.encrypt data
+      expect_raises Sodium::Nonce::Error::Reused do
+        box.encrypt data, nonce: nonce
+      end
+    end
+  end
+
   it "PyNaCl combined test vectors" do
     combined_test_vectors.each do |vec|
       box_from_vec(vec) do |box1, box2, nonce, plaintext, ciphertext|
