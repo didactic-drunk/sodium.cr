@@ -20,6 +20,7 @@ module Sodium
     NONCE_SIZE = LibSodium.crypto_secretbox_noncebytes.to_i
     MAC_SIZE   = LibSodium.crypto_secretbox_macbytes.to_i
 
+    # Returns key
     delegate to_slice, to: @buf
 
     # Generate a new random key held in a SecureBuffer.
@@ -37,7 +38,7 @@ module Sodium
 
     # Copy bytes to a new SecureBuffer
     #
-    # Optionally erases bytes after copying if erase is set
+    # Optionally erases bytes after copying if erase is set.
     def initialize(bytes : Bytes, erase = false)
       if bytes.bytesize != KEY_SIZE
         raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{bytes.bytesize}")
@@ -45,10 +46,14 @@ module Sodium
       @buf = SecureBuffer.new bytes, erase: erase
     end
 
+    # Encrypts data and returns {ciphertext, nonce}
     def encrypt(data)
       encrypt data.to_slice
     end
 
+    # Encrypts data and returns {ciphertext, nonce}
+    #
+    # Optionally supply a destination buffer.
     def encrypt(src : Bytes, dst : Bytes = Bytes.new(src.bytesize + MAC_SIZE), nonce : Nonce = Nonce.new) : {Bytes, Nonce}
       if dst.bytesize != (src.bytesize + MAC_SIZE)
         raise ArgumentError.new("dst.bytesize must be src.bytesize + MAC_SIZE, got #{dst.bytesize}")
@@ -59,6 +64,7 @@ module Sodium
       {dst, nonce}
     end
 
+    # Returns decrypted message.
     def decrypt(src : Bytes, nonce : Nonce) : Bytes
       dst_size = src.bytesize - MAC_SIZE
       raise Sodium::Error::DecryptionFailed.new("encrypted data too small #{src.bytesize}") if dst_size <= 0
@@ -66,6 +72,9 @@ module Sodium
       decrypt(src, dst, nonce)
     end
 
+    # Returns decrypted message.
+    #
+    # Optionally supply a destination buffer.
     def decrypt(src : Bytes, dst : Bytes, nonce : Nonce) : Bytes
       if dst.bytesize != (src.bytesize - MAC_SIZE)
         raise ArgumentError.new("dst.bytesize must be src.bytesize - MAC_SIZE, got #{dst.bytesize}")

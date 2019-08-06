@@ -6,6 +6,7 @@ class Sodium::CryptoBox
     KEY_SIZE  = LibSodium.crypto_box_publickeybytes.to_i
     SEAL_SIZE = LibSodium.crypto_box_sealbytes
 
+    # Returns key
     delegate to_slice, to: @bytes
 
     # :nodoc:

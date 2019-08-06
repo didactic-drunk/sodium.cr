@@ -283,6 +283,7 @@ module Sodium
 end
 
 module Sodium
+  # Constant time memory compare.
   def self.memcmp(a : Bytes, b : Bytes) : Bool
     if a.bytesize != b.bytesize
       false
@@ -293,6 +294,7 @@ module Sodium
     end
   end
 
+  # Constant time memory compare.
   # Raises unless comparison succeeds.
   def self.memcmp!(a, b)
     raise Error::MemcmpFailed.new unless memcmp(a, b)

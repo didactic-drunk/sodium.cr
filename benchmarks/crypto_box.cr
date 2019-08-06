@@ -14,17 +14,17 @@ ebufs1 = sizes.map { |size| Bytes.new(size + Sodium::CryptoBox::MAC_SIZE) }.to_a
 dbufs2 = sizes.map { |size| Bytes.new(size) }.to_a
 ebufs2 = sizes.map { |size| Bytes.new(size + Sodium::CryptoBox::PublicKey::SEAL_SIZE) }.to_a
 
-Benchmark.ips do |bm|
+Benchmark.ips warmup: 0.5 do |bm|
   sizes.each_with_index do |size, i|
     dbuf = dbufs1[i]
     ebuf = ebufs1[i]
 
     bm.report "box encrypt #{size}" do
-      to_alice.encrypt_easy dbuf, ebuf, nonce: nonce
+      to_alice.encrypt dbuf, ebuf, nonce: nonce
     end
 
     bm.report "box decrypt #{size}" do
-      from_bob.decrypt_easy ebuf, dbuf, nonce: nonce
+      from_bob.decrypt ebuf, dbuf, nonce: nonce
     end
   end
 
