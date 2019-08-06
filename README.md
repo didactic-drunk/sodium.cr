@@ -19,7 +19,7 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
   - [x] ☑ [Crypto Box Easy](https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption)
   - [x] [Sealed Box](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes)
   - [ ] [Combined Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
-  - [x] [Detached Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
+  - [x] ☑ [Detached Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
 - [Secret-Key Cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
   - Secret Box
     - [x] ☑ [Combined mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
