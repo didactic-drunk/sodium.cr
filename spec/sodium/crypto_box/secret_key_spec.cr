@@ -73,12 +73,12 @@ describe Sodium::CryptoBox::SecretKey do
     # Encrypt a message for Bob using his public key, signing it with Alice's
     # secret key
     box = alice.box bob.public_key
-    encrypted, nonce = box.encrypt_easy data
+    encrypted, nonce = box.encrypt data
 
     # Decrypt the message using Bob's secret key, and verify its signature against
     # Alice's public key
     bob.box alice.public_key do |box|
-      decrypted = box.decrypt_easy encrypted, nonce: nonce
+      decrypted = box.decrypt encrypted, nonce: nonce
 
       String.new(decrypted).should eq(data)
     end
@@ -102,10 +102,10 @@ describe Sodium::CryptoBox::SecretKey do
   it "PyNaCl combined test vectors" do
     combined_test_vectors.each do |vec|
       box_from_vec(vec) do |box1, box2, nonce, plaintext, ciphertext|
-        encrypted, _ = box1.encrypt_easy plaintext, nonce: nonce
+        encrypted, _ = box1.encrypt plaintext, nonce: nonce
         encrypted.should eq ciphertext
 
-        decrypted = box2.decrypt_easy ciphertext, nonce: nonce
+        decrypted = box2.decrypt ciphertext, nonce: nonce
         decrypted.should eq plaintext
       end
     end

@@ -1,5 +1,6 @@
 require "../spec_helper"
 require "../../src/sodium/pwhash"
+require "../../src/sodium/kdf"
 require "json"
 
 def test_vectors(filename, pwmode)
@@ -32,7 +33,7 @@ def test_vectors(filename, pwmode)
       pwhash.memlimit = h[:mem].to_u64
       pwhash.mode = pwmode
       # p pwhash, h
-      key = pwhash.key_derive salt: h[:salt].to_slice, pass: h[:pass], key_bytes: h[:dgst_len]
+      key = pwhash.derive_key salt: h[:salt].to_slice, pass: h[:pass], key_bytes: h[:dgst_len]
       key.should eq h[:hash].hexbytes
     else
       # p h
@@ -57,7 +58,7 @@ describe Sodium::Pwhash do
     pwhash = pw_min
 
     pass = "1234"
-    hash = pwhash.store pass
+    hash = pwhash.create pass
     pwhash.verify hash, pass
     expect_raises(Sodium::Pwhash::PasswordVerifyError) do
       pwhash.verify hash, "5678"
@@ -68,10 +69,10 @@ describe Sodium::Pwhash do
     pwhash.needs_rehash?(hash).should be_true
   end
 
-  it "key_derive fails without a mode" do
+  it "derive_key fails without a mode" do
     pwhash = pw_min
     expect_raises(ArgumentError) do
-      pwhash.key_derive pwhash.random_salt, "foo", 16
+      pwhash.derive_key pwhash.random_salt, "foo", 16
     end
   end
 
@@ -79,15 +80,22 @@ describe Sodium::Pwhash do
     pwhash = pw_min
     pwhash.mode = Sodium::Pwhash::Mode::Argon2id13
     salt = pwhash.random_salt
-    key1 = pwhash.key_derive salt, "foo", 16
-    key2 = pwhash.key_derive salt, "foo", 16
-    key3 = pwhash.key_derive salt, "bar", 16
-    key4 = pwhash.key_derive pwhash.random_salt, "foo", 16
+    key1 = pwhash.derive_key salt, "foo", 16
+    key2 = pwhash.derive_key salt, "foo", 16
+    key3 = pwhash.derive_key salt, "bar", 16
+    key4 = pwhash.derive_key pwhash.random_salt, "foo", 16
 
     key1.bytesize.should eq 16
     key1.should eq key2
     key1.should_not eq key3
     key1.should_not eq key4
+  end
+
+  it "derives a kdf from a password" do
+    pwhash = pw_min
+    pwhash.mode = Sodium::Pwhash::Mode::Argon2id13
+    salt = pwhash.random_salt
+    kdf = pwhash.derive_kdf salt, "foo", 32
   end
 
   it "PyNaCl key vectors" do
@@ -116,7 +124,7 @@ describe Sodium::Pwhash do
                "fd9fe49ece7e1f79f3ad6e9b23e0277c8ecc4b313225748dd2a80f5679534a0700e" \
                "246a79a49b3f74eb89ec6205fe1eeb941c73b1fcf1".hexbytes
 
-    key = pwhash.key_derive salt, pass, key_len
+    key = pwhash.derive_key salt, pass, key_len
     key.should eq expected
   end
 end

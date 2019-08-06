@@ -184,11 +184,11 @@ public_key.verify_detached message, signature
 key = Sodium::SecretKey.new
 
 message = "foobar"
-encrypted, nonce = key.encrypt_easy message
+encrypted, nonce = key.encrypt message
 
 # On the other side.
 key = Sodium::SecretKey.new key
-message = key.decrypt_easy encrypted, nonce
+message = key.decrypt encrypted, nonce
 ```
 
 ### Blake2b

@@ -9,11 +9,11 @@ module Sodium
   # ```crystal
   # key = Sodium::SecretBox.new
   # message = "foobar"
-  # encrypted, nonce = key.encrypt_easy message
+  # encrypted, nonce = key.encrypt message
   #
   # # On the other side.
   # key = Sodium::SecretBox.new key
-  # message = key.decrypt_easy encrypted, nonce
+  # message = key.decrypt encrypted, nonce
   # ```
   class SecretBox < Key
     KEY_SIZE   = LibSodium.crypto_secretbox_keybytes.to_i
@@ -45,43 +45,28 @@ module Sodium
       @buf = SecureBuffer.new bytes, erase: erase
     end
 
-    def encrypt_easy(data)
-      encrypt_easy data.to_slice
+    def encrypt(data)
+      encrypt data.to_slice
     end
 
-    def encrypt_easy(data, nonce : Nonce)
-      encrypt_easy data.to_slice, nonce
-    end
-
-    def encrypt_easy(data : Bytes)
-      nonce = Nonce.new
-      output = encrypt_easy data, nonce
-      {output, nonce}
-    end
-
-    def encrypt_easy(data : Bytes, nonce : Nonce) : Bytes
-      output = Bytes.new(data.bytesize + MAC_SIZE)
-      encrypt_easy(data, output, nonce)
-    end
-
-    def encrypt_easy(src : Bytes, dst : Bytes, nonce : Nonce) : Bytes
+    def encrypt(src : Bytes, dst : Bytes = Bytes.new(src.bytesize + MAC_SIZE), nonce : Nonce = Nonce.new) : {Bytes, Nonce}
       if dst.bytesize != (src.bytesize + MAC_SIZE)
         raise ArgumentError.new("dst.bytesize must be src.bytesize + MAC_SIZE, got #{dst.bytesize}")
       end
       if LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.to_slice, self.to_slice) != 0
         raise Sodium::Error.new("crypto_secretbox_easy")
       end
-      dst
+      {dst, nonce}
     end
 
-    def decrypt_easy(data : Bytes, nonce : Nonce) : Bytes
-      output_size = data.bytesize - MAC_SIZE
-      raise Sodium::Error::DecryptionFailed.new("encrypted data too small #{data.bytesize}") if output_size <= 0
-      output = Bytes.new output_size
-      decrypt_easy(data, output, nonce)
+    def decrypt(src : Bytes, nonce : Nonce) : Bytes
+      dst_size = src.bytesize - MAC_SIZE
+      raise Sodium::Error::DecryptionFailed.new("encrypted data too small #{src.bytesize}") if dst_size <= 0
+      dst = Bytes.new dst_size
+      decrypt(src, dst, nonce)
     end
 
-    def decrypt_easy(src : Bytes, dst : Bytes, nonce : Nonce) : Bytes
+    def decrypt(src : Bytes, dst : Bytes, nonce : Nonce) : Bytes
       if dst.bytesize != (src.bytesize - MAC_SIZE)
         raise ArgumentError.new("dst.bytesize must be src.bytesize - MAC_SIZE, got #{dst.bytesize}")
       end

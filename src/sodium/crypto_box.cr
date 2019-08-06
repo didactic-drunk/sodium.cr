@@ -17,22 +17,22 @@ module Sodium
       # TODO: precompute using crypto_box_beforenm
     end
 
-    def encrypt_easy(src)
-      encrypt_easy src.to_slice
+    def encrypt(src)
+      encrypt src.to_slice
     end
 
-    def encrypt_easy(src : Bytes, dst = Bytes.new(src.bytesize + MAC_SIZE), nonce = Nonce.new)
+    def encrypt(src : Bytes, dst = Bytes.new(src.bytesize + MAC_SIZE), nonce = Nonce.new)
       if LibSodium.crypto_box_easy(dst, src, src.bytesize, nonce.to_slice, @public_key.to_slice, @secret_key.to_slice) != 0
         raise Error.new("crypto_box_easy")
       end
       {dst, nonce}
     end
 
-    def decrypt_easy(src)
-      decrypt_easy src.to_slice
+    def decrypt(src)
+      decrypt src.to_slice
     end
 
-    def decrypt_easy(src : Bytes, dst = Bytes.new(src.bytesize - MAC_SIZE), nonce = Nonce.new) : Bytes
+    def decrypt(src : Bytes, dst = Bytes.new(src.bytesize - MAC_SIZE), nonce = Nonce.new) : Bytes
       if LibSodium.crypto_box_open_easy(dst, src, src.bytesize, nonce.to_slice, @public_key.to_slice, @secret_key.to_slice) != 0
         raise Error::DecryptionFailed.new("crypto_box_open_easy")
       end

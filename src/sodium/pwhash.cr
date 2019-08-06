@@ -4,7 +4,7 @@ require "./secure_buffer"
 module Sodium
   # [Argon2 Password Hashing](https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function)
   # * #store #verify #needs_rehash? are used together for password verification.
-  # * #key_derive is used on it's own to generate password based keys.
+  # * #derive_key is used on it's own to generate password based keys.
   #
   # **See `examples/pwhash_selector.cr` for help on selecting parameters.**
   class Pwhash
@@ -19,7 +19,8 @@ module Sodium
 
     MEMLIMIT_MIN         = LibSodium.crypto_pwhash_memlimit_min
     MEMLIMIT_INTERACTIVE = LibSodium.crypto_pwhash_memlimit_interactive
-    MEMLIMIT_MAX         = LibSodium.crypto_pwhash_memlimit_max # Don't use this.  Maximum of the library which is more ram than any computer.
+    # Don't use this.  Maximum of the library which is more ram than any computer.
+    MEMLIMIT_MAX = LibSodium.crypto_pwhash_memlimit_max
 
     SALT_SIZE = LibSodium.crypto_pwhash_saltbytes
     STR_SIZE  = LibSodium.crypto_pwhash_strbytes
@@ -34,7 +35,7 @@ module Sodium
     # Specified in bytes.
     property memlimit = MEMLIMIT_INTERACTIVE
 
-    # Used by and must be set before calling #key_derive
+    # Used by and must be set before calling #derive_key
     property mode : Mode?
 
     # Apply the most recent password hashing algorithm agains a password.
@@ -42,7 +43,7 @@ module Sodium
     # * the result of a memory-hard, CPU-intensive hash function applied to the password
     # * the automatically generated salt used for the previous computation
     # * the other parameters required to verify the password, including the algorithm identifier, its version, opslimit and memlimit.
-    def store(pass)
+    def create(pass)
       outstr = Bytes.new STR_SIZE
       if LibSodium.crypto_pwhash_str(outstr, pass, pass.bytesize, @opslimit, @memlimit) != 0
         raise Sodium::Error.new("crypto_pwhash_str")
@@ -78,11 +79,11 @@ module Sodium
     # Returns a consistent key based on [salt, pass, key_bytes, mode, ops_limit, mem_limit] in a SecureBuffer
     #
     # Must set a mode before calling.
-    def key_derive(salt, pass, key_bytes)
-      key_derive salt.to_slice, pass.to_slice, key_bytes
+    def derive_key(salt, pass, key_bytes)
+      derive_key salt.to_slice, pass.to_slice, key_bytes
     end
 
-    def key_derive(salt : Bytes, pass : Bytes, key_bytes) : SecureBuffer
+    def derive_key(salt : Bytes, pass : Bytes, key_bytes) : SecureBuffer
       raise "salt expected #{SALT_SIZE} bytes, got #{salt.bytesize} " if salt.bytesize != SALT_SIZE
 
       if m = mode
@@ -96,13 +97,13 @@ module Sodium
       end
     end
 
-    # Derives a key using key_derive and returns KDF.new(key)
-    def kdf_derive(salt, pass, key_bytes) : Kdf
-      key = key_derive salt, pass, key_bytes
+    # Derives a key using derive_key and returns KDF.new(key)
+    def derive_kdf(salt, pass, key_bytes) : Kdf
+      key = derive_key salt, pass, key_bytes
       Kdf.new key
     end
 
-    # Returns a random salt for use with #key_derive
+    # Returns a random salt for use with #derive_key
     def random_salt
       Random::Secure.random_bytes SALT_SIZE
     end
