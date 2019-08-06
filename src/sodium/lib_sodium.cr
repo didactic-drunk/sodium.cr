@@ -45,6 +45,7 @@ module Sodium
     fun crypto_generichash_blake2b_saltbytes : LibC::SizeT
     fun crypto_generichash_blake2b_personalbytes : LibC::SizeT
 
+    fun sodium_memcmp(Pointer(LibC::UChar), Pointer(LibC::UChar), LibC::SizeT) : LibC::Int
     fun sodium_memzero(Pointer(LibC::UChar), LibC::SizeT) : Nil
 
     fun sodium_malloc(LibC::SizeT) : Pointer(LibC::UChar)
@@ -278,5 +279,27 @@ module Sodium
 
   if LibSodium.crypto_secretbox_noncebytes != LibSodium.crypto_box_noncebytes
     raise "Assumptions in this library regarding nonce sizes may not be valid"
+  end
+end
+
+module Sodium
+  def self.memcmp(a : Bytes, b : Bytes) : Bool
+    if a.bytesize != b.bytesize
+      false
+    elsif LibSodium.sodium_memcmp(a, b, a.bytesize) == 0
+      true
+    else
+      false
+    end
+  end
+
+  # Raises unless comparison succeeds.
+  def self.memcmp!(a, b)
+    raise Error::MemcmpFailed.new unless memcmp(a, b)
+    true
+  end
+
+  def self.memzero(bytes : Bytes)
+    LibSodium.sodium_memzero bytes, bytes.bytesize
   end
 end

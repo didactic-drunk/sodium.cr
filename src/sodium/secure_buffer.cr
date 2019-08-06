@@ -82,11 +82,11 @@ module Sodium
     end
 
     def ==(other : self)
-      self.to_slice == other.to_slice
+      Sodium.memcmp self.to_slice, other.to_slice
     end
 
     def ==(other : Bytes)
-      self.to_slice == other
+      Sodium.memcmp self.to_slice, other
     end
   end
 end

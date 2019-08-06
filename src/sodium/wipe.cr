@@ -1,9 +1,3 @@
-module Sodium
-  def self.memzero(bytes : Bytes)
-    LibSodium.sodium_memzero bytes, bytes.bytesize
-  end
-end
-
 module Sodium::Wipe
   annotation Var
   end

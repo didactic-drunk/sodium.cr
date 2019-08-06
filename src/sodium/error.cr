@@ -7,5 +7,8 @@ module Sodium
 
     class DecryptionFailed < Error
     end
+
+    class MemcmpFailed < Error
+    end
   end
 end
