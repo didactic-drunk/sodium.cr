@@ -20,17 +20,25 @@ module Sodium::Digest
     include OpenSSL::DigestBase
     include Wipe
 
-    KEY_SIZE     = LibSodium.crypto_generichash_blake2b_keybytes.to_i     # 32
-    KEY_SIZE_MIN = LibSodium.crypto_generichash_blake2b_keybytes_min.to_i # 16
-    KEY_SIZE_MAX = LibSodium.crypto_generichash_blake2b_keybytes_max.to_i # 64
+    # 32
+    KEY_SIZE = LibSodium.crypto_generichash_blake2b_keybytes.to_i
+    # 16
+    KEY_SIZE_MIN = LibSodium.crypto_generichash_blake2b_keybytes_min.to_i
+    # 64
+    KEY_SIZE_MAX = LibSodium.crypto_generichash_blake2b_keybytes_max.to_i
 
-    SALT_SIZE = LibSodium.crypto_generichash_blake2b_saltbytes.to_i # 16
+    # 16
+    SALT_SIZE = LibSodium.crypto_generichash_blake2b_saltbytes.to_i
 
-    PERSONAL_SIZE = LibSodium.crypto_generichash_blake2b_personalbytes.to_i # 16
+    # 16
+    PERSONAL_SIZE = LibSodium.crypto_generichash_blake2b_personalbytes.to_i
 
-    OUT_SIZE     = LibSodium.crypto_generichash_blake2b_bytes.to_i32     # 32
-    OUT_SIZE_MIN = LibSodium.crypto_generichash_blake2b_bytes_min.to_i32 # 16
-    OUT_SIZE_MAX = LibSodium.crypto_generichash_blake2b_bytes_max.to_i32 # 64
+    # 32
+    OUT_SIZE = LibSodium.crypto_generichash_blake2b_bytes.to_i32
+    # 16
+    OUT_SIZE_MIN = LibSodium.crypto_generichash_blake2b_bytes_min.to_i32
+    # 64
+    OUT_SIZE_MAX = LibSodium.crypto_generichash_blake2b_bytes_max.to_i32
 
     getter digest_size
 

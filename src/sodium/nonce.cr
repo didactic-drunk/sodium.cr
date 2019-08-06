@@ -13,6 +13,7 @@ module Sodium
     getter? used
     @used = false
 
+    # Returns bytes
     delegate to_slice, to: @bytes
 
     def initialize(@bytes : Bytes)

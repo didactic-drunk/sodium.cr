@@ -5,8 +5,6 @@ require "./wipe"
 module Sodium
   # Key derivation function
   #
-  # Read **each** constructor WARNING for differences in usage.
-  #
   # Usage:
   # ```
   # kdf = KDF.new
@@ -20,6 +18,7 @@ module Sodium
     KEY_SIZE     = LibSodium.crypto_kdf_keybytes.to_i
     CONTEXT_SIZE = LibSodium.crypto_kdf_contextbytes
 
+    # Returns key
     delegate to_slice, to: @sbuf
 
     # Use an existing KDF key.

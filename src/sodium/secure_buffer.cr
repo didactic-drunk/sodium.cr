@@ -45,6 +45,7 @@ module Sodium
       LibSodium.sodium_free @ptr
     end
 
+    # Returns key
     def to_slice
       Slice(UInt8).new @ptr, @bytesize
     end
