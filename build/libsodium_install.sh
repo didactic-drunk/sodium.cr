@@ -10,7 +10,7 @@ set -e
 # Always use bash.  `dash` doesn't work properly with . includes.  I'm not sure why.
 . ./build/env.sh
 
-#export LIBSODIUM_INSTALL=1
+#export LIBSODIUM_INSTALL="1"
 if [ "$LIBSODIUM_INSTALL" != "1" ]; then
 	[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Skipping libsodium build."
 	exit 0
@@ -20,6 +20,8 @@ fi
 mkdir -p "$LIBSODIUM_BUILD_DIR"
 cd "$LIBSODIUM_BUILD_DIR"
 
+LIBSODIUM_MINISIGN_KEY=RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3
+
 
 if [ ! -f "$LIBSODIUM_INSTALL_PATH/include/sodium.h" ]; then
 	[ ! -z "$SODIUM_BUILD_DEBUG" ] && set -x
@@ -28,8 +30,12 @@ if [ ! -f "$LIBSODIUM_INSTALL_PATH/include/sodium.h" ]; then
 	TGZ_FILENAME="$DIRNAME".tar.gz
 
 	if [ ! -f "$TGZ_FILENAME" ]; then
+		wget https://download.libsodium.org/libsodium/releases/"$TGZ_FILENAME".minisig
 		wget https://download.libsodium.org/libsodium/releases/"$TGZ_FILENAME"
-#		wget https://download.libsodium.org/libsodium/releases/"$TGZ_FILENAME".minisign
+	fi
+
+	if `minisign -v >/dev/null 2>&1`; then
+		minisign -V -P "$LIBSODIUM_MINISIGN_KEY" -m "$TGZ_FILENAME"
 	fi
 
 	SHA=`openssl sha256 -hex < "$TGZ_FILENAME" | sed 's/^.* //'`
