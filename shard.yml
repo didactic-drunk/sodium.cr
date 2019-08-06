@@ -1,10 +1,8 @@
+---
 name: sodium
-version: 0.9.1
-
+version: 1.0.0
 authors:
-  - Andrew Hamon <andrew@hamon.cc>
-  - Didactic Drunk <1479616+didactic-drunk@users.noreply.github.com>
-
-crystal: 0.28.0
-
+- Andrew Hamon <andrew@hamon.cc>
+- Didactic Drunk <1479616+didactic-drunk@users.noreply.github.com>
+crystal: 0.29.0
 license: MIT
