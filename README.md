@@ -16,13 +16,13 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
 ## Features
 
 - [Public-Key Cryptography](https://libsodium.gitbook.io/doc/public-key_cryptography)
-  - [x] [Crypto Box Easy](https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption)
+  - [x] ☑ [Crypto Box Easy](https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption)
   - [x] [Sealed Box](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes)
   - [ ] [Combined Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
   - [x] [Detached Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
 - [Secret-Key Cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
   - Secret Box
-    - [x] [Combined mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
+    - [x] ☑ [Combined mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
     - [ ] [Detached mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
   - [x] [Secret Stream](https://libsodium.gitbook.io/doc/secret-key_cryptography/secretstream)
   - [AEAD](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead)
@@ -60,6 +60,7 @@ Several features in libsodium are already provided by Crystal:
 * Random (Use [Random::Secure](https://crystal-lang.org/api/latest/Random/Secure.html))
 * SHA-2 (Use [OpenSSL::Digest](https://crystal-lang.org/api/latest/OpenSSL/Digest.html))
 * HMAC SHA-2 (Use [OpenSSL::HMAC](https://crystal-lang.org/api/latest/OpenSSL/HMAC.html))
+* Hex conversion (Use [String#hexbytes](https://crystal-lang.org/api/latest/String.html#hexbytes%3ABytes-instance-method))
 
 
 ## What should I use for my application?
