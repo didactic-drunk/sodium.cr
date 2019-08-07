@@ -10,8 +10,10 @@ module Sodium
 
     NONCE_SIZE = LibSodium::NONCE_SIZE.to_i
 
-    getter? used
-    @used = false
+    getter? used = false
+
+    # Only use with single use keys.
+    property? reusable = false
 
     # Returns bytes
     delegate to_slice, to: @bytes
@@ -37,7 +39,7 @@ module Sodium
 
     def used!
       raise Error::Reused.new("attempted nonce reuse") if @used
-      @used = true
+      @used = true unless @reusable
     end
   end
 end

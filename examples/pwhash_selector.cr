@@ -43,7 +43,7 @@ loop do
 
   loop do
     # p pwhash
-    t = Time.measure { pwhash.store pass }.to_f
+    t = Time.measure { pwhash.create pass }.to_f
     ostr = "%7d" % pwhash.opslimit
     header << ostr if data.size == 2
     if t >= time_min
