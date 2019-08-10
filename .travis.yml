@@ -14,6 +14,7 @@ cache:
 script:
 - crystal spec
 - crystal tool format --check
+- shards build
 - crystal docs
 deploy:
   provider: pages

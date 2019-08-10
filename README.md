@@ -21,6 +21,7 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
   - [x] [Sealed Box](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes)
   - [ ] [Combined Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
   - [x] ☑ [Detached Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
+  - [ ] [Pre-hashed Signatures](https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures)
 - [Secret-Key Cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
   - Secret Box
     - [x] ☑ [Combined mode](https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption)
@@ -52,6 +53,7 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
   - [ ] Padding
 - Library features
   - [x] Faster builds by requiring what you need (`require "sodium/secret_box"`)
+  - [x] Nonce reuse detection.
   - [x] All SecretKey's held in libsodium guarded memory.
   - [ ] Controlled memory wiping (by calling `.close`)
 
