@@ -82,10 +82,12 @@ module Sodium
       self
     end
 
+    # Timing safe memory compare.
     def ==(other : self)
       Sodium.memcmp self.to_slice, other.to_slice
     end
 
+    # Timing safe memory compare.
     def ==(other : Bytes)
       Sodium.memcmp self.to_slice, other
     end

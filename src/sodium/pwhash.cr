@@ -29,6 +29,11 @@ module Sodium
     enum Mode
       Argon2i13  = 1
       Argon2id13 = 2
+
+      # The current libsodium default algorithm that may change between versions.
+      def default
+        Mode.new LibSodium.crypto_pwhash_alg_default
+      end
     end
 
     property opslimit = OPSLIMIT_INTERACTIVE

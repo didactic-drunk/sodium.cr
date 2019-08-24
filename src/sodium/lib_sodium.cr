@@ -36,6 +36,7 @@ module Sodium
     fun crypto_pwhash_saltbytes : LibC::SizeT
     fun crypto_pwhash_bytes_min : LibC::SizeT
     fun crypto_pwhash_bytes_max : LibC::SizeT
+    fun crypto_pwhash_alg_default : LibC::Int
     fun crypto_generichash_blake2b_statebytes : LibC::SizeT
     fun crypto_generichash_blake2b_bytes : LibC::SizeT
     fun crypto_generichash_blake2b_bytes_min : LibC::SizeT
