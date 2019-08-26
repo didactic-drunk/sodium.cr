@@ -37,10 +37,10 @@ module Sodium
     # Use existing secret and public keys.
     # Copies secret key to a SecureBuffer.
     # Recomputes the public key from a secret key if missing.
-    def initialize(bytes : Bytes, pkey : Bytes? = nil)
+    def initialize(bytes : Bytes, pkey : Bytes? = nil, *, erase = false)
       raise ArgumentError.new("Secret sign key must be #{KEY_SIZE}, got #{bytes.bytesize}") unless bytes.bytesize == KEY_SIZE
 
-      @sbuf = SecureBuffer.new bytes
+      @sbuf = SecureBuffer.new bytes, erase: erase
       if pk = pkey
         @public_key = PublicKey.new pkey
       else
