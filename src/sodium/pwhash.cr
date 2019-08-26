@@ -30,7 +30,7 @@ module Sodium
       Argon2i13  = 1
       Argon2id13 = 2
 
-      # The current libsodium default algorithm that may change between versions.
+      # The currently recommended algorithm, which can change from one version of libsodium to another.
       def default
         Mode.new LibSodium.crypto_pwhash_alg_default
       end
