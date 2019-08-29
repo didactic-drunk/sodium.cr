@@ -33,5 +33,24 @@ class Sodium::CryptoBox
       end
       dst
     end
+
+    module SerializeConverter
+      def self.to_json(value : PublicKey, json : JSON::Builder)
+        json.string Base64.strict_encode(value.to_slice)
+      end
+
+      def self.from_json(value : JSON::PullParser) : PublicKey
+        PublicKey.new Base64.decode(value.read_string)
+      end
+
+      def self.to_yaml(value : PublicKey, yaml : YAML::Nodes::Builder)
+        yaml.scalar Base64.strict_encode(value.to_slice)
+      end
+
+      def self.from_yaml(ctx : YAML::ParseContext, node : YAML::Nodes::Node) : PublicKey
+        node.raise "Expected scalar, not #{node.class}" unless node.is_a?(YAML::Nodes::Scalar)
+        PublicKey.new Base64.decode(node.value)
+      end
+    end
   end
 end
