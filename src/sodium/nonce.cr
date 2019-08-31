@@ -41,5 +41,24 @@ module Sodium
       raise Error::Reused.new("attempted nonce reuse") if @used
       @used = true unless @reusable
     end
+
+    module SerializeConverter
+      def self.to_json(value : Nonce, json : JSON::Builder)
+        json.string Base64.strict_encode(value.to_slice)
+      end
+
+      def self.from_json(value : JSON::PullParser) : Nonce
+        Nonce.new Base64.decode(value.read_string)
+      end
+
+      def self.to_yaml(value : Nonce, yaml : YAML::Nodes::Builder)
+        yaml.scalar Base64.strict_encode(value.to_slice)
+      end
+
+      def self.from_yaml(ctx : YAML::ParseContext, node : YAML::Nodes::Node) : Nonce
+        node.raise "Expected scalar, not #{node.class}" unless node.is_a?(YAML::Nodes::Scalar)
+        Nonce.new Base64.decode(node.value)
+      end
+    end
   end
 end
