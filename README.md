@@ -137,13 +137,13 @@ box = alice.box bob.public_key
 
 # Encrypt a message for Bob using his public key, signing it with Alice's
 # secret key
-nonce, encrypted = box.encrypt data
+encrypted, nonce = box.encrypt data
 
 # Precompute within a block.  The shared secret is wiped when the block exits.
 bob.box alice.public_key do |box|
   # Decrypt the message using Bob's secret key, and verify its signature against
   # Alice's public key
-  decrypted = Sodium.decrypt(encrypted, nonce, alice.public, bob.secret)
+  decrypted = box.decrypt encrypted, nonce: nonce
 
   String.new(decrypted) # => "Hello World!"
 end
