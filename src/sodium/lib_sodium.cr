@@ -327,7 +327,11 @@ module Sodium
     true
   end
 
-  def self.memzero(bytes : Bytes)
+  def self.memzero(bytes : Bytes) : Nil
     LibSodium.sodium_memzero bytes, bytes.bytesize
+  end
+
+  def self.memzero(str : String) : Nil
+    memzero str.to_slice
   end
 end

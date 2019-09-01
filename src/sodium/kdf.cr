@@ -11,6 +11,10 @@ module Sodium
   # subkey_id = 0
   # output_size = 16
   # subkey = kdf.derive "8bytectx", subkey_id, output_size
+  #
+  # Memory for this class is held in a sodium guarded page with noaccess.
+  # Readonly access is temporarily enabled when deriving keys.
+  # Calling #to_slice marks the page readonly permanently.
   # ```
   class Kdf
     include Wipe
@@ -30,7 +34,7 @@ module Sodium
         raise ArgumentError.new("bytes must be #{KEY_SIZE}, got #{bytes.bytesize}")
       end
 
-      @sbuf = SecureBuffer.new bytes, erase
+      @sbuf = SecureBuffer.new(bytes, erase).noaccess
     end
 
     # Use an existing KDF SecureBuffer key.
@@ -38,14 +42,14 @@ module Sodium
       if @sbuf.bytesize != KEY_SIZE
         raise ArgumentError.new("bytes must be #{KEY_SIZE}, got #{sbuf.bytesize}")
       end
-      @sbuf.readonly
+      @sbuf.noaccess
     end
 
     # Generate a new random KDF key.
     #
     # Make sure to save kdf.to_slice before kdf goes out of scope.
     def initialize
-      @sbuf = SecureBuffer.random KEY_SIZE
+      @sbuf = SecureBuffer.random(KEY_SIZE).noaccess
     end
 
     # Derive a consistent subkey based on `context` and `subkey_id`.
@@ -62,9 +66,12 @@ module Sodium
       end
 
       subkey = SecureBuffer.new subkey_size
-      if (ret = LibSodium.crypto_kdf_derive_from_key(subkey, subkey.bytesize, subkey_id, context, self.to_slice)) != 0
-        raise Sodium::Error.new("crypto_kdf_derive_from_key returned #{ret} (subkey size is probably out of range)")
+      @sbuf.readonly do
+        if (ret = LibSodium.crypto_kdf_derive_from_key(subkey, subkey.bytesize, subkey_id, context, self.to_slice)) != 0
+          raise Sodium::Error.new("crypto_kdf_derive_from_key returned #{ret} (subkey size is probably out of range)")
+        end
       end
+
       subkey
     end
 

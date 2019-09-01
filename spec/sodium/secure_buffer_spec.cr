@@ -1,6 +1,9 @@
 require "../spec_helper"
 require "../../src/sodium/secure_buffer"
 
+class FakeError < Exception
+end
+
 describe Sodium::SecureBuffer do
   it "allocates empty" do
     buf = Sodium::SecureBuffer.new 5
@@ -58,9 +61,20 @@ describe Sodium::SecureBuffer do
 
     buf.readwrite
     buf.@state.should eq Sodium::SecureBuffer::State::Readwrite
+    buf.readonly { }
+    buf.@state.should eq Sodium::SecureBuffer::State::Readwrite
 
     buf.wipe
     buf.@state.should eq Sodium::SecureBuffer::State::Wiped
+  end
+
+  it "temporarily transitions correctly with exceptions" do
+    buf = Sodium::SecureBuffer.new(5).noaccess
+    begin
+      buf.readonly { raise FakeError.new }
+    rescue FakeError
+    end
+    buf.@state.should eq Sodium::SecureBuffer::State::Noaccess
   end
 
   it "can wipe more than once" do

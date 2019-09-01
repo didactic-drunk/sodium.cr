@@ -13,10 +13,10 @@ module Sodium
     end
 
     enum State
-      Readwrite
-      Readonly
-      Noaccess
       Wiped
+      Noaccess
+      Readonly
+      Readwrite
     end
 
     @state = State::Readwrite
@@ -154,11 +154,18 @@ module Sodium
     end
 
     private def with_state(new_state : State)
-      old_state = @state
-      set_state new_state
-      yield
-    ensure
-      set_state old_state if old_state
+      # Only change when new_state needs more access than @state.
+      if new_state >= @state
+        yield
+      else
+        begin
+          old_state = @state
+          set_state new_state
+          yield
+        ensure
+          set_state old_state if old_state
+        end
+      end
     end
   end
 end
