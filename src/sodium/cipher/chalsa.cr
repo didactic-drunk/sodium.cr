@@ -51,6 +51,21 @@ module Sodium::Cipher
       Bytes.new(0)
     end
 
+    # Use as a CSPRNG.
+    def random_bytes(bytes : Bytes) : Bytes
+      # TODO: Switch to memset
+      Sodium.memzero bytes
+      update bytes, bytes
+      bytes
+    end
+
+    # Use as a CSPRNG.
+    def random_bytes(size : Int) : Bytes
+      bytes = Bytes.new size
+      update bytes, bytes
+      bytes
+    end
+
     # Always returns false. Sadness...
     def edible?
       false
