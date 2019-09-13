@@ -121,6 +121,38 @@ module Sodium
       ) : LibC::Int
     {% end %}
 
+    # AEAD
+    {% for name in ["_chacha20poly1305", "_chacha20poly1305_ietf", "_xchacha20poly1305_ietf"] %}
+      fun crypto_aead{{ name.id }}_keybytes() : LibC::SizeT
+      fun crypto_aead{{ name.id }}_abytes() : LibC::SizeT
+      fun crypto_aead{{ name.id }}_npubbytes() : LibC::SizeT # Nonce
+
+      fun crypto_aead{{ name.id }}_encrypt_detached(
+        c : Pointer(LibC::UChar),
+        mac : Pointer(LibC::UChar),
+        mac_len : Pointer(LibC::ULongLong),
+        m : Pointer(LibC::UChar),
+        len : LibC::ULongLong,
+        ad : Pointer(LibC::UChar),
+        ad_lenlen : LibC::ULongLong,
+        nsec : Pointer(LibC::UChar),
+        nonce : Pointer(LibC::UChar),
+        key : Pointer(LibC::UChar)
+      ) : LibC::Int
+
+      fun crypto_aead{{ name.id }}_decrypt_detached(
+        m : Pointer(LibC::UChar),
+        nsec : Pointer(LibC::UChar),
+        c : Pointer(LibC::UChar),
+        len : LibC::ULongLong,
+        mac : Pointer(LibC::UChar),
+        ad : Pointer(LibC::UChar),
+        ad_lenlen : LibC::ULongLong,
+        nonce : Pointer(LibC::UChar),
+        key : Pointer(LibC::UChar)
+      ) : LibC::Int
+    {% end %}
+
     # TODO: Add reduced round variants.
     {% for name in ["_chacha20", "_chacha20_ietf", "_xchacha20", "_salsa20", "_xsalsa20"] %}
       fun crypto_stream{{ name.id }}_keybytes() : LibC::SizeT

@@ -18,6 +18,8 @@ module Sodium
     # Returns bytes
     delegate to_slice, to: @bytes
 
+    delegate bytesize, to: @bytes
+
     def initialize(@bytes : Bytes)
       if bytes.bytesize != NONCE_SIZE
         raise ArgumentError.new("Nonce must be #{NONCE_SIZE} bytes, got #{bytes.bytesize}")

@@ -29,9 +29,9 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
   - [x] [Secret Stream](https://libsodium.gitbook.io/doc/secret-key_cryptography/secretstream)
   - [AEAD](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead)
    - [ ] AES256-GCM (Requires hardware acceleration)
-   - [ ] XChaCha20-Poly1305-IETF
-   - [ ] ChaCha20-Poly1305-IETF
-   - [ ] ChaCha20-Poly1305
+   - [x] [XChaCha20-Poly1305-IETF](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead/chacha20-poly1305/xchacha20-poly1305_construction)
+   - [ ] [ChaCha20-Poly1305-IETF](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead/chacha20-poly1305/ietf_chacha20-poly1305_construction)
+   - [ ] [ChaCha20-Poly1305](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead/chacha20-poly1305)
 - [Hashing](https://libsodium.gitbook.io/doc/hashing)
   - [x] ☑ [Blake2b](https://libsodium.gitbook.io/doc/hashing/generic_hashing)
     - [x] Complete libsodium implementation including `key`, `salt`, `personal` and fully selectable output sizes.
