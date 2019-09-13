@@ -98,6 +98,23 @@ describe Sodium::Pwhash do
     kdf = pwhash.derive_kdf salt, "foo", 32
   end
 
+  it "creates a key and sets parameters by time" do
+    pwhash = pw_min
+    tcost = 0.2
+    pwhash.tcost = tcost
+    salt = pwhash.random_salt
+    key, pwcreate = pwhash.create_key salt, "foo", 32
+
+    pwcreate.memlimit.should be > pwhash.memlimit
+    pwcreate.opslimit.should be > pwhash.opslimit
+
+    ts = Time.measure do
+      key.should eq pwcreate.derive_key(salt, "foo", 32)
+    end
+    # ts should be within +|- 10%.  allow up to 20%
+    (ts.to_f - tcost).abs.should be < (tcost * 0.2)
+  end
+
   it "PyNaCl key vectors" do
     test_vectors "modular_crypt_argon2i_hashes.json", Sodium::Pwhash::Mode::Argon2i13
     test_vectors "modular_crypt_argon2id_hashes.json", Sodium::Pwhash::Mode::Argon2id13
