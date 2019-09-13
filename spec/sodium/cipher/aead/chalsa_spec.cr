@@ -29,18 +29,43 @@ end
 {% for name in %w(Xchacha20Poly1305Ietf) %}
 # TODO: verify against test vectors.
   describe Sodium::Cipher::Aead::{{ name.id }} do
-    it "encrypts/decrypts" do
+    it "encrypts/decrypts in combined mode" do
       box = Sodium::Cipher::Aead::{{ name.id }}.new
 
-      message = "foobar"
-      additional = "foo"
-      mac, encrypted, nonce = box.encrypt_detached message, additional: additional
-      decrypted = box.decrypt_detached encrypted, nonce: nonce, mac: mac, additional: additional
-      message.should eq String.new(decrypted)
+      message = "foo"
+      additional = "bar"
+      encrypted, nonce = box.encrypt message, additional: additional
+      decrypted = box.decrypt_string encrypted, nonce: nonce, additional: additional
+      decrypted.should eq message
 
       # Wrong additional.
       expect_raises(Sodium::Error::DecryptionFailed) do
-        box.decrypt_detached encrypted, nonce: nonce, mac: mac, additional: "bar".to_slice
+        box.decrypt encrypted, nonce: nonce, additional: "baz".to_slice
+      end
+
+      # Missing additional.
+      expect_raises(Sodium::Error::DecryptionFailed) do
+        box.decrypt encrypted, nonce: nonce
+      end
+
+      # Wrong data.
+      expect_raises(Sodium::Error::DecryptionFailed) do
+        box.decrypt "badmsgbadmsgbadmsgbadmsgbadmsg".to_slice, nonce: nonce
+      end
+    end
+
+    it "encrypts/decrypts in detached mode" do
+      box = Sodium::Cipher::Aead::{{ name.id }}.new
+
+      message = "foo"
+      additional = "bar"
+      mac, encrypted, nonce = box.encrypt_detached message, additional: additional
+      decrypted = box.decrypt_detached_string encrypted, nonce: nonce, mac: mac, additional: additional
+      decrypted.should eq message
+
+      # Wrong additional.
+      expect_raises(Sodium::Error::DecryptionFailed) do
+        box.decrypt_detached encrypted, nonce: nonce, mac: mac, additional: "baz".to_slice
       end
 
       # Missing additional.
@@ -57,7 +82,7 @@ end
     it "can't encrypt twice using the same nonce" do
       box = Sodium::Cipher::Aead::{{ name.id }}.new
 
-      message = "foobar"
+      message = "foo"
       mac, encrypted, nonce = box.encrypt_detached message
 
       expect_raises(Sodium::Nonce::Error::Reused) do
