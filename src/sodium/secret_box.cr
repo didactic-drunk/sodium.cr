@@ -66,20 +66,26 @@ module Sodium
     end
 
     # Returns decrypted message.
-    def decrypt(src : Bytes, nonce : Nonce) : Bytes
-      dst_size = src.bytesize - MAC_SIZE
-      raise Sodium::Error::DecryptionFailed.new("encrypted data too small #{src.bytesize}") if dst_size <= 0
-      dst = Bytes.new dst_size
-      decrypt(src, dst, nonce)
+    #
+    # Optionally supply a destination buffer.
+    def decrypt(src, dst : Bytes? = nil, *, nonce : Nonce) : Bytes
+      decrypt src.to_slice, dst, nonce: nonce
     end
 
     # Returns decrypted message.
     #
     # Optionally supply a destination buffer.
-    def decrypt(src : Bytes, dst : Bytes, nonce : Nonce) : Bytes
-      if dst.bytesize != (src.bytesize - MAC_SIZE)
-        raise ArgumentError.new("dst.bytesize must be src.bytesize - MAC_SIZE, got #{dst.bytesize}")
-      end
+    def decrypt_string(src, dst : Bytes? = nil, *, nonce : Nonce) : String
+      msg = decrypt src.to_slice, dst, nonce: nonce
+      String.new msg
+    end
+
+    # :nodoc:
+    def decrypt(src : Bytes, dst : Bytes? = nil, *, nonce : Nonce) : Bytes
+      dst_size = src.bytesize - MAC_SIZE
+      dst ||= Bytes.new dst_size
+      raise ArgumentError.new("dst.bytesize must be src.bytesize - MAC_SIZE, got #{dst.bytesize}") if dst.bytesize != (src.bytesize - MAC_SIZE)
+
       r = @key.readonly do
         LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.to_slice, @key)
       end

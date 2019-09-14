@@ -32,11 +32,11 @@ describe Sodium::SecretBox do
 
     message = "foobar"
     encrypted, nonce = box.encrypt message
-    decrypted = box.decrypt encrypted, nonce: nonce
-    message.should eq String.new(decrypted)
+    decrypted = box.decrypt_string encrypted, nonce: nonce
+    decrypted.should eq message
 
     expect_raises(Sodium::Error::DecryptionFailed) do
-      box.decrypt "badmsgbadmsgbadmsgbadmsgbadmsg".to_slice, nonce
+      box.decrypt "badmsgbadmsgbadmsgbadmsgbadmsg".to_slice, nonce: nonce
     end
   end
 
@@ -59,7 +59,7 @@ describe Sodium::SecretBox do
       encrypted.should eq ciphertext
 
       decrypted = box.decrypt encrypted, nonce: nonce
-      plaintext.should eq decrypted
+      decrypted.should eq plaintext
     end
   end
 
@@ -67,11 +67,11 @@ describe Sodium::SecretBox do
     detached_test_vectors.each do |vec|
       box, nonce, plaintext, ciphertext = box_from_test_vector vec
 
-      encrypted = box.encrypt_detached plaintext, nonce
+      encrypted = box.encrypt_detached plaintext, nonce: nonce
       encrypted.should eq ciphertext
 
-      decrypted = box.decrypt_detached encrypted, nonce
-      plaintext.should eq decrypted
+      decrypted = box.decrypt_detached encrypted, nonce: nonce
+      decrypted.should eq plaintext
     end
   end
 end

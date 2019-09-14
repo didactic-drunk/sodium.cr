@@ -10,6 +10,8 @@ class Sodium::CryptoBox
   #
   # # Authenticated encryption
   # [https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption](https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption#purpose)
+  #
+  # Usage:
   # ```
   # bob = Sodium::CryptoBox::SecretKey.new
   # alice = Sodium::CryptoBox::SecretKey.new
@@ -23,6 +25,8 @@ class Sodium::CryptoBox
   #
   # # Sealed Boxes
   # [https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes#purpose)
+  #
+  # Usage:
   # ```
   # secret_key = Sodium::CryptoBox::SecretKey.new
   # public_key = secret_key.public_key
@@ -117,11 +121,28 @@ class Sodium::CryptoBox
     # Anonymously receive messages without a signature.
     #
     # For authenticated messages use `secret_key.box(recipient_public_key).decrypt`.
-    def decrypt(src)
-      encrypt src.to_slice
+    #
+    # Optionally supply a destination buffer.
+    def decrypt(src, dst : Bytes? = nil) : Bytes
+      decrypt src.to_slice, dst
     end
 
-    def decrypt(src : Bytes, dst : Bytes = Bytes.new(src.bytesize - SEAL_SIZE)) : Bytes
+    # Anonymously receive messages without a signature.
+    #
+    # For authenticated messages use `secret_key.box(recipient_public_key).decrypt`.
+    #
+    # Optionally supply a destination buffer.
+    def decrypt_string(src, dst : Bytes? = nil) : String
+      msg = decrypt src.to_slice, dst
+      String.new msg
+    end
+
+    # :nodoc:
+    def decrypt(src : Bytes, dst : Bytes? = nil) : Bytes
+      dst_size = src.bytesize - SEAL_SIZE
+      dst ||= Bytes.new dst_size
+      raise ArgumentError.new("dst.bytesize must be src.bytesize - SEAL_SIZE, got #{dst.bytesize}") unless dst.bytesize == dst_size
+
       if LibSodium.crypto_box_seal_open(dst, src, src.bytesize, @public_key.to_slice, self.to_slice) != 0
         raise Sodium::Error.new("crypto_box_seal_open")
       end
