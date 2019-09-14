@@ -50,12 +50,15 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
     - [x] XChaCha20
     - [x] ChaCha20 Ietf
     - [x] ChaCha20
+    - [x] Easy to use methods available for use as a CSPRNG that are faster and safer than Crystal's.  See `benchmarks/rand.out`.
   - [ ] [One time auth](https://libsodium.gitbook.io/doc/advanced/poly1305)
   - [ ] Padding
 - Library features
   - [x] Faster builds by requiring what you need (`require "sodium/secret_box"`)
   - [x] Nonce reuse detection.
   - [x] All SecretKey's held in libsodium guarded memory.
+  - [x] No heap allocations after #initialize when possible.
+  - [x] Fast.  Benchmarks available in `benchmarks`.
   - [ ] Controlled memory wiping (by calling `.close`)
 
 ☑ Indicate specs are compared against test vectors from another source.
@@ -76,7 +79,8 @@ Several features in libsodium are already provided by Crystal:
 | [`Sodium::CryptoBox::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/CryptoBox/PublicKey.html) .encrypt | I want anonymously send encrypted data. (No signatures) |
 | [`Sodium::Sign::SecretKey`](https://didactic-drunk.github.io/sodium.cr/Sodium/Sign/SecretKey.html) | I want to sign or verify messages. (No encryption) |
 | [`Sodium::SecretBox`](https://didactic-drunk.github.io/sodium.cr/Sodium/SecretBox.html) | I have a shared key and want to encrypt + authenticate data. |
-| [`Sodium::Cipher::SecretStream`](https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/SecretStream/XChaCha20Poly1305.html), AEAD | I have a shared key and want encrypt + authenticate streamed data. |
+| [`Sodium::Cipher::Aead::XChaCha20Poly1305Ietf`](https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/Aead/XChaCha20Poly1305Ietf.html) | I have a shared key and want to encrypt + authenticate data and authentication additional plaintext data. |
+| [`Sodium::Cipher::SecretStream`](https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/SecretStream/XChaCha20Poly1305.html) | I have a shared key and want encrypt + authenticate streamed data. |
 | [`Sodium::Digest::Blake2b`](https://didactic-drunk.github.io/sodium.cr/Sodium/Digest::Blake2b.html) | I want to hash data fast and securely. |
 | `Sodium::Digest::SipHash` | I want to hash data really fast and less securely. (Not implemented yet) |
 | [`Sodium::Pwhash`](https://didactic-drunk.github.io/sodium.cr/Sodium/Pwhash.html) | I want to hash a password and store it. |
