@@ -26,7 +26,7 @@ private def box_from_test_vector(vec)
   {box, nonce, plaintext, ciphertext}
 end
 
-{% for name in %w(Xchacha20Poly1305Ietf) %}
+{% for name in %w(XChaCha20Poly1305Ietf) %}
 # TODO: verify against test vectors.
   describe Sodium::Cipher::Aead::{{ name.id }} do
     it "encrypts/decrypts in combined mode" do
