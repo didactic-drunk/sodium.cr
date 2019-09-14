@@ -1,33 +1,31 @@
 require "../../../spec_helper"
 require "../../../../src/sodium/cipher/aead/chalsa"
 
-combined_test_vectors = [
+detached_test_vectors = [
   {
-    key:       "1b27556473e985d462cd51197a9a46c76009549eac6474f206c4ee0844f68389",
-    nonce:     "69696ee955b62b73cd62bda875fc73d68219e0036b7a0b37",
-    plaintext: "be075fc53c81f2d5cf141316ebeb0c7b5228c52a4c62cbd44b66849b64244ffce5e" \
-               "cbaaf33bd751a1ac728d45e6c61296cdc3c01233561f41db66cce314adb310e3be8" \
-               "250c46f06dceea3a7fa1348057e2f6556ad6b1318a024a838f21af1fde048977eb4" \
-               "8f59ffd4924ca1c60902e52f0a089bc76897040e082f937763848645e0705",
-    ciphertext: "f3ffc7703f9400e52a7dfb4b3d3305d98e993b9f48681273c29650ba32fc76ce483" \
-                "32ea7164d96a4476fb8c531a1186ac0dfc17c98dce87b4da7f011ec48c97271d2c2" \
-                "0f9b928fe2270d6fb863d51738b48eeee314a7cc8ab932164548e526ae902243685" \
-                "17acfeabd6bb3732bc0e9da99832b61ca01b6de56244a9e88d5f9b37973f622a43d" \
-                "14a6599b1f654cb45a74e355a5",
+    # Test vector from libsodium's xchacha20poly1305-ietf test
+    aead:       "xchacha20-poly1305",
+    key:        "808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9f",
+    nonce:      "07000000404142434445464748494a4b0000000000000000",
+    plaintext:  "4c616469657320616e642047656e746c656d656e206f662074686520636c617373206f66202739393a204966204920636f756c64206f6666657220796f75206f6e6c79206f6e652074697020666f7220746865206675747572652c2073756e73637265656e20776f756c642062652069742e",
+    additional: "50515253c0c1c2c3c4c5c6c7",
+    ciphertext: "453c0693a7407f04ff4c56aedb17a3c0a1afff01174930fc22287c33dbcf0ac8b89ad929530a1bb3ab5e69f24c7f6070c8f840c9abb4f69fbfc8a7ff5126faeebbb55805ee9c1cf2ce5a57263287aec5780f04ec324c3514122cfc3231fc1a8b718a62863730a2702bb76366116bed09e0fd",
+    tag:        "5c6d84b6b0c1abaf249d5dd0f7f5a7ea",
   },
 ]
 
 private def box_from_test_vector(vec)
-  box = Sodium::SecretBox.new vec[:key].hexbytes
+  box = Sodium::Cipher::Aead::XChaCha20Poly1305Ietf.new vec[:key].hexbytes
   nonce = Sodium::Nonce.new vec[:nonce].hexbytes
   plaintext = vec[:plaintext].hexbytes
   ciphertext = vec[:ciphertext].hexbytes
+  additional = vec[:additional].hexbytes
+  tag = vec[:tag].hexbytes
 
-  {box, nonce, plaintext, ciphertext}
+  {box, nonce, plaintext, ciphertext, additional, tag}
 end
 
 {% for name in %w(XChaCha20Poly1305Ietf) %}
-# TODO: verify against test vectors.
   describe Sodium::Cipher::Aead::{{ name.id }} do
     it "encrypts/decrypts in combined mode" do
       box = Sodium::Cipher::Aead::{{ name.id }}.new
@@ -90,31 +88,30 @@ end
       end
     end
   end
-{% end %}
 
-{% if false %}
   describe Sodium::Cipher::Aead do
-    it "PyNaCl combined test vectors" do
+    pending "Combined test vectors don't exist in libsodium, PyNaCl or RbNaCl.  no ciphertext to compare against." do
       combined_test_vectors.each do |vec|
-        box, nonce, plaintext, ciphertext = box_from_test_vector vec
+        box, nonce, plaintext, ciphertext, additional = box_from_test_vector vec
 
         encrypted, _ = box.encrypt plaintext, nonce: nonce
         encrypted.should eq ciphertext
 
-        decrypted = box.decrypt encrypted, nonce: nonce
-        plaintext.should eq decrypted
+        decrypted = box.decrypt ciphertext, nonce: nonce
+        decrypted.should eq plaintext
       end
     end
 
-    pending "detached test vectors" do
+    it "PyNaCl detached test vectors" do
       detached_test_vectors.each do |vec|
-        box, nonce, plaintext, ciphertext = box_from_test_vector vec
+        box, nonce, plaintext, ciphertext, additional, tag = box_from_test_vector vec
 
-        encrypted = box.encrypt_detached plaintext, nonce
+        mac2, encrypted, _ = box.encrypt_detached plaintext, nonce: nonce, mac: tag, additional: additional
+        mac2.should eq tag
         encrypted.should eq ciphertext
 
-        decrypted = box.decrypt_detached encrypted, nonce
-        plaintext.should eq decrypted
+        decrypted = box.decrypt_detached ciphertext, nonce: nonce, mac: tag, additional: additional
+        decrypted.should eq plaintext
       end
     end
   end
