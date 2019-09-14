@@ -8,7 +8,7 @@ class Sodium::CryptoBox
   #
   # For signing without encryption see `Sodium::Sign::SecretKey`.
   #
-  # # Authenticated encryption
+  # ## Authenticated encryption
   # [https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption](https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption#purpose)
   #
   # Usage:
@@ -23,7 +23,7 @@ class Sodium::CryptoBox
   # end
   # ```
   #
-  # # Sealed Boxes
+  # ## Sealed Boxes
   # [https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes#purpose)
   #
   # Usage:

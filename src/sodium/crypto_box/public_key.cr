@@ -22,12 +22,20 @@ class Sodium::CryptoBox
     end
 
     # Anonymously send messages to a recipient given its public key.
+    #
+    # Optionally supply a destination buffer.
+    #
     # For authenticated message use `secret_key.box(recipient_public_key).encrypt`.
-    def encrypt(src)
-      encrypt src.to_slice
+    def encrypt(src, dst : Bytes? = nil)
+      encrypt src.to_slice, dst
     end
 
-    def encrypt(src : Bytes, dst : Bytes = Bytes.new(src.bytesize + SEAL_SIZE)) : Bytes
+    # :nodoc:
+    def encrypt(src : Bytes, dst : Bytes? = nil) : Bytes
+      dst_size = src.bytesize + SEAL_SIZE
+      dst ||= Bytes.new dst_size
+      raise ArgumentError.new("dst must be #{dst_size} bytes, got #{dst.bytesize}") unless dst.bytesize == dst_size
+
       if LibSodium.crypto_box_seal(dst, src, src.bytesize, @bytes) != 0
         raise Sodium::Error.new("crypto_box_seal")
       end

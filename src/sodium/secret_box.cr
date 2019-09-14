@@ -46,17 +46,19 @@ module Sodium
     end
 
     # Encrypts data and returns {ciphertext, nonce}
-    def encrypt(data)
-      encrypt data.to_slice
-    end
-
-    # Encrypts data and returns {ciphertext, nonce}
     #
     # Optionally supply a destination buffer.
-    def encrypt(src : Bytes, dst : Bytes = Bytes.new(src.bytesize + MAC_SIZE), nonce : Nonce = Nonce.random) : {Bytes, Nonce}
-      if dst.bytesize != (src.bytesize + MAC_SIZE)
-        raise ArgumentError.new("dst.bytesize must be src.bytesize + MAC_SIZE, got #{dst.bytesize}")
-      end
+    def encrypt(src, dst : Bytes? = nil, *, nonce : Nonce? = nil)
+      encrypt src.to_slice, dst, nonce: nonce
+    end
+
+    # :nodoc:
+    def encrypt(src : Bytes, dst : Bytes? = nil, *, nonce : Nonce? = nil) : {Bytes, Nonce}
+      dst_size = src.bytesize + MAC_SIZE
+      dst ||= Bytes.new dst_size
+      raise ArgumentError.new("dst.bytesize must be src.bytesize + MAC_SIZE, got #{dst.bytesize}") if dst.bytesize != (src.bytesize + MAC_SIZE)
+      nonce ||= Nonce.random
+
       nonce.used!
       r = @key.readonly do
         LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.to_slice, @key)
@@ -72,7 +74,7 @@ module Sodium
       decrypt src.to_slice, dst, nonce: nonce
     end
 
-    # Returns decrypted message.
+    # Returns decrypted message as a `String`.
     #
     # Optionally supply a destination buffer.
     def decrypt_string(src, dst : Bytes? = nil, *, nonce : Nonce) : String
