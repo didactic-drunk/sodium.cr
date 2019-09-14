@@ -4,7 +4,32 @@ require "./public_key"
 require "../crypto_box"
 
 class Sodium::CryptoBox
-  # Key used for encryption + authentication or encryption without authentication, not for unencrypted signing.
+  # You may either send encrypted signed messages using "Authenticated encryption" or encrypt unsigned messages using "Sealed Boxes".
+  #
+  # For signing without encryption see `Sodium::Sign::SecretKey`.
+  #
+  # # Authenticated encryption
+  # [https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption](https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption#purpose)
+  # ```
+  # bob = Sodium::CryptoBox::SecretKey.new
+  # alice = Sodium::CryptoBox::SecretKey.new
+  # message = "hi"
+  #
+  # # Encrypt and sign a message from bob to alice's public_key
+  # bob.box alice.public_key do |box|
+  #   ciphertext = box.encrypt message
+  # end
+  # ```
+  #
+  # # Sealed Boxes
+  # [https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes#purpose)
+  # ```
+  # secret_key = Sodium::CryptoBox::SecretKey.new
+  # public_key = secret_key.public_key
+  #
+  # ciphertext = public_key.encrypt message
+  # secret_key.decrypt ciphertext
+  # ```
   class SecretKey < Key
     KEY_SIZE  = LibSodium.crypto_box_secretkeybytes.to_i
     SEED_SIZE = LibSodium.crypto_box_seedbytes.to_i
@@ -27,6 +52,7 @@ class Sodium::CryptoBox
     end
 
     # Use existing secret and public keys.
+    #
     # Copies secret key to a SecureBuffer.
     # Recomputes the public key from a secret key if missing.
     def initialize(bytes : Bytes, pkey : Bytes? = nil)
@@ -43,6 +69,7 @@ class Sodium::CryptoBox
     end
 
     # Derive a new secret/public key pair based on a consistent seed.
+    #
     # Copies seed to a SecureBuffer.
     def initialize(*, seed : Bytes, erase = false)
       raise ArgumentError.new("Secret sign seed must be #{SEED_SIZE}, got #{seed.bytesize}") unless seed.bytesize == SEED_SIZE
@@ -87,7 +114,8 @@ class Sodium::CryptoBox
       end
     end
 
-    # Anonymously receive messages without a signatures.
+    # Anonymously receive messages without a signature.
+    #
     # For authenticated messages use `secret_key.box(recipient_public_key).decrypt`.
     def decrypt(src)
       encrypt src.to_slice

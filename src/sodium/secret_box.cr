@@ -5,15 +5,14 @@ require "./nonce"
 module Sodium
   # [https://libsodium.gitbook.io/doc/secret-key_cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
   #
-  #
   # ```crystal
-  # key = Sodium::SecretBox.new
+  # box = Sodium::SecretBox.new
   # message = "foobar"
-  # encrypted, nonce = key.encrypt message
+  # encrypted, nonce = box.encrypt message
   #
   # # On the other side.
-  # key = Sodium::SecretBox.new key
-  # message = key.decrypt encrypted, nonce
+  # box = Sodium::SecretBox.new key
+  # message = key.decrypt encrypted, nonce: nonce
   # ```
   class SecretBox < Key
     KEY_SIZE   = LibSodium.crypto_secretbox_keybytes.to_i
