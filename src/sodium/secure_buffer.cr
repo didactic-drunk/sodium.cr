@@ -68,7 +68,12 @@ module Sodium
     # Returns key
     # May permanently set key to readonly depending on class usage.
     def to_slice
-      readonly if @state == State::Noaccess
+      case @state
+      when State::Noaccess, State::Wiped
+        readonly
+      else
+        # Ok
+      end
       Slice(UInt8).new @ptr, @bytesize
     end
 
@@ -154,16 +159,16 @@ module Sodium
     end
 
     private def with_state(new_state : State)
+      old_state = @state
       # Only change when new_state needs more access than @state.
-      if new_state >= @state
+      if old_state >= new_state
         yield
       else
         begin
-          old_state = @state
           set_state new_state
           yield
         ensure
-          set_state old_state if old_state
+          set_state old_state
         end
       end
     end

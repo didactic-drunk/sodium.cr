@@ -21,19 +21,19 @@ module Sodium
     MAC_SIZE   = LibSodium.crypto_secretbox_macbytes.to_i
 
     # Returns key
-    delegate to_slice, to: @buf
+    delegate to_slice, to: @key
 
     # Generate a new random key held in a SecureBuffer.
     def initialize
-      @buf = SecureBuffer.random KEY_SIZE
+      @key = SecureBuffer.random KEY_SIZE
     end
 
     # Use an existing SecureBuffer.
-    def initialize(@buf : SecureBuffer)
-      if @buf.bytesize != KEY_SIZE
-        raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{@buf.bytesize}")
+    def initialize(@key : SecureBuffer)
+      if @key.bytesize != KEY_SIZE
+        raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{@key.bytesize}")
       end
-      @buf.readonly
+      @key.readonly
     end
 
     # Copy bytes to a new SecureBuffer
@@ -43,7 +43,7 @@ module Sodium
       if bytes.bytesize != KEY_SIZE
         raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{bytes.bytesize}")
       end
-      @buf = SecureBuffer.new bytes, erase: erase
+      @key = SecureBuffer.new bytes, erase: erase
     end
 
     # Encrypts data and returns {ciphertext, nonce}
@@ -59,9 +59,10 @@ module Sodium
         raise ArgumentError.new("dst.bytesize must be src.bytesize + MAC_SIZE, got #{dst.bytesize}")
       end
       nonce.used!
-      if LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.to_slice, self.to_slice) != 0
-        raise Sodium::Error.new("crypto_secretbox_easy")
+      r = @key.readonly do
+        LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.to_slice, @key)
       end
+      raise Sodium::Error.new("crypto_secretbox_easy") if r != 0
       {dst, nonce}
     end
 
@@ -80,9 +81,10 @@ module Sodium
       if dst.bytesize != (src.bytesize - MAC_SIZE)
         raise ArgumentError.new("dst.bytesize must be src.bytesize - MAC_SIZE, got #{dst.bytesize}")
       end
-      if LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.to_slice, self.to_slice) != 0
-        raise Sodium::Error::DecryptionFailed.new("crypto_secretbox_easy")
+      r = @key.readonly do
+        LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.to_slice, @key)
       end
+      raise Sodium::Error::DecryptionFailed.new("crypto_secretbox_easy") if r != 0
       dst
     end
 

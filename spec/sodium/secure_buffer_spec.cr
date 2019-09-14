@@ -51,17 +51,17 @@ describe Sodium::SecureBuffer do
 
     buf.noaccess
     buf.@state.should eq Sodium::SecureBuffer::State::Noaccess
-    buf.readonly { }
+    buf.readonly { buf.@state.should eq Sodium::SecureBuffer::State::Readonly }
     buf.@state.should eq Sodium::SecureBuffer::State::Noaccess
 
     buf.readonly
     buf.@state.should eq Sodium::SecureBuffer::State::Readonly
-    buf.readwrite { }
+    buf.readwrite { buf.@state.should eq Sodium::SecureBuffer::State::Readwrite }
     buf.@state.should eq Sodium::SecureBuffer::State::Readonly
 
     buf.readwrite
     buf.@state.should eq Sodium::SecureBuffer::State::Readwrite
-    buf.readonly { }
+    buf.readonly { buf.@state.should eq Sodium::SecureBuffer::State::Readwrite }
     buf.@state.should eq Sodium::SecureBuffer::State::Readwrite
 
     buf.wipe
