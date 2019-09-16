@@ -41,5 +41,10 @@ module Sodium::Password
     def to_params(*, salt = nil, key_size = nil, tcost : Float64? = nil)
       Params.new @mode, @ops, @mem, salt: salt, key_size: key_size, tcost: tcost
     end
+
+    def random_salt!
+      raise "salt already set" if @salt
+      self.salt = random_salt
+    end
   end
 end
