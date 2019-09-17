@@ -23,17 +23,17 @@ puts ""
 puts ""
 
 {% for name in %w(OPSLIMIT_MIN OPSLIMIT_INTERACTIVE OPSLIMIT_MODERATE OPSLIMIT_SENSITIVE OPSLIMIT_MAX) %}
-  puts "Sodium::Password::{{ name.id }} #{Sodium::Pwhash::{{ name.id }}}"
+  puts "Sodium::Password::{{ name.id }} #{Sodium::Password::{{ name.id }}}"
 {% end %}
 puts ""
 
 {% for name in %w(MEMLIMIT_MIN MEMLIMIT_INTERACTIVE MEMLIMIT_MAX) %}
-  puts "Sodium::Password::{{ name.id }} #{Sodium::Pwhash::{{ name.id }}}"
+  puts "Sodium::Password::{{ name.id }} #{Sodium::Password::{{ name.id }}}"
 {% end %}
 puts ""
 
 {% for name in %w(SALT_SIZE STR_SIZE) %}
-  puts "Sodium::Password::{{ name.id }} #{Sodium::Pwhash::{{ name.id }}}"
+  puts "Sodium::Password::{{ name.id }} #{Sodium::Password::{{ name.id }}}"
 {% end %}
 puts ""
 

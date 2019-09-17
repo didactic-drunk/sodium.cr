@@ -1,14 +1,18 @@
 # Contains the params necessary for #derive_key.
 class Sodium::Password::Params
-  property mode : Mode
   property ops : UInt64
   property mem : UInt64
+  property mode : Mode?
   property salt : Bytes?
   property key_size : Int32?
-  property tcost : Float64?
-  property auth : Bytes?
 
-  def initialize(@mode, @ops, @mem, @salt = nil, @key_size = nil, @tcost = nil, @auth = nil)
+  # Information only.  Not used to derive a key.
+  property tcost : Float64?
+
+  # Application specific param to verify a password.
+  property verify : Bytes?
+
+  def initialize(@mode, @ops, @mem, @salt = nil, @key_size = nil, @tcost = nil, @verify = nil)
   end
 
   def to_h
@@ -27,14 +31,10 @@ class Sodium::Password::Params
     if ks = @key_size
       hash["key_size"] = ks
     end
-    if au = @auth
-      hash["auth"] = au
+    if v = @verify
+      hash["verify"] = v
     end
 
     hash
-  end
-
-  def self.from_h(hash)
-    self.new Pwhash::Mode.parse(hash["mode"]), hash["ops"], hash["mem"], hash["tcost"]?, hash["salt"]?
   end
 end

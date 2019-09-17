@@ -1,5 +1,4 @@
-require "../lib_sodium"
-require "../secure_buffer"
+require "../password"
 
 abstract class Sodium::Password::Abstract
   property ops = OPSLIMIT_INTERACTIVE
@@ -29,8 +28,8 @@ abstract class Sodium::Password::Abstract
     if pw.responds_to?(:tcost=) && (tcost = hash["tcost"]?)
       pw.tcost = tcost.as(Float64)
     end
-    if pw.responds_to?(:auth=) && (auth = hash["auth"]?)
-      pw.auth = auth.as(Bytes)
+    if pw.responds_to?(:verify=) && (verify = hash["verify"]?)
+      pw.verify = verify.as(Bytes)
     end
 
     pw

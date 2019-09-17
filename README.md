@@ -83,8 +83,8 @@ Several features in libsodium are already provided by Crystal:
 | [`Sodium::Cipher::SecretStream`](https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/SecretStream/XChaCha20Poly1305.html) | I have a shared key and want encrypt + authenticate streamed data. |
 | [`Sodium::Digest::Blake2b`](https://didactic-drunk.github.io/sodium.cr/Sodium/Digest::Blake2b.html) | I want to hash data fast and securely. |
 | `Sodium::Digest::SipHash` | I want to hash data really fast and less securely. (Not implemented yet) |
-| [`Sodium::Pwhash`](https://didactic-drunk.github.io/sodium.cr/Sodium/Pwhash.html) | I want to hash a password and store it. |
-| [`Sodium::Pwhash`](https://didactic-drunk.github.io/sodium.cr/Sodium/Pwhash.html) | I want to derive a key from a password. |
+| [`Sodium::Password::Hash`](https://didactic-drunk.github.io/sodium.cr/Sodium/Password/Hash.html) | I want to hash a password and store it. |
+| [`Sodium::Password::Key`](https://didactic-drunk.github.io/sodium.cr/Sodium/Password/Key.html) | I want to derive a key from a password. |
 | [`Sodium::Kdf`](https://didactic-drunk.github.io/sodium.cr/Sodium/Kdf.html) | I have a high quality master key and want to make subkeys. |
 | [`Sodium::Cipher::Chalsa`](https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/Chalsa.html) | What goes with guacamole? |
 | Everything else | I want to design my own crypto protocol and probably do it wrong. |
@@ -228,15 +228,31 @@ subkey3 = kdf.derive "context2", 0, 32
 subkey4 = kdf.derive "context2", 1, 64
 ```
 
-### Password Hashing
+### Password based keys
 ```crystal
-pwhash = Sodium::Pwhash.new
+pwcreate = Sodium::Password::Key::Create.new
 
-pwhash.memlimit = Sodium::Pwhash::MEMLIMIT_MIN
-pwhash.opslimit = Sodium::Pwhash::OPSLIMIT_MIN
+# Take approximately 1 second to derive a key.
+pwcreate.tcost = 1.0
 
 pass = "1234"
-hash = pwhash.hash_str pass
+key, params = pwcreate.create_key pass
+# Store `params` or `params.to_h` for later.
+
+# Derive the same key from the stored params.
+pwkey = Sodium::Password::Key.from_params params.to_h
+key = pekey.derive_key pass
+```
+
+### Password Hashing
+```crystal
+pwhash = Sodium::Password::Hash.new
+
+pwhash.mem = Sodium::Password::MEMLIMIT_MIN
+pwhash.ops = Sodium::Password::OPSLIMIT_MIN
+
+pass = "1234"
+hash = pwhash.create pass
 pwhash.verify hash, pass
 ```
 
@@ -259,6 +275,8 @@ Ops limit →
 |  524288K |  0.504s |  1.135s |  3.661s |
 | 2097152K |  2.119s |
 |   Memory |
+
+
 
 ## Contributing
 

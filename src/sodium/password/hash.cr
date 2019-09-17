@@ -1,6 +1,23 @@
 require "./abstract"
 
 module Sodium::Password
+  # Argon2 password hashing.  A modern substitute for scrypt, bcrypt or crypt.
+  #
+  # Often used to store password hashes on a server and authenticate clients against the stored hash.
+  #
+  # Usage:
+  # ```crystal
+  # pwhash = Sodium::Password::Hash.new
+  #
+  # pwhash.mem = Sodium::Password::MEMLIMIT_MIN
+  # pwhash.ops = Sodium::Password::OPSLIMIT_MIN
+  #
+  # pass = "1234"
+  # hash = pwhash.create pass
+  # pwhash.verify hash, pass
+  # ```
+  #
+  # Use `examples/pwhash_selector.cr` to help choose ops/mem limits.
   class Hash < Abstract
     # Apply the most recent password hashing algorithm against a password.
     # Returns a opaque String which includes:

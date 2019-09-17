@@ -20,12 +20,15 @@ require "./key"
 # key, params = pwkc.create_key pass, 32
 #
 # # Save params.[mode, ops, mem, salt, key_size] to derive the same key later.
+# # Or serialize `params.to_h`
 # ```
 #
 # ## Deriving a previously created key.
 #
 # Usage:
 # ```
+# pwkey = Sodium::Password::Key.from_params hash
+# # Or
 # pwkey = Sodium::Password::Key.new
 # pwkey.mode = Mode.parse serialized[:mode]
 # pwkey.ops = serialized[:ops]
