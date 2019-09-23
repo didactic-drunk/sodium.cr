@@ -22,6 +22,9 @@ module Sodium
     # Returns key
     delegate to_slice, to: @key
 
+    # Encryption key
+    getter key : SecureBuffer
+
     # Generate a new random key held in a SecureBuffer.
     def initialize
       @key = SecureBuffer.random KEY_SIZE

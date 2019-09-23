@@ -4,18 +4,21 @@ require "../../nonce"
 
 module Sodium::Cipher::Aead
   abstract class Chalsa
-    @key : SecureBuffer
+    # Encryption key
+    getter key : SecureBuffer
 
     # Initializes with a new random key.
     def initialize
       @key = SecureBuffer.random key_size
     end
 
-    def initialize(@key : Securebuffer)
+    # Initializes with a reference to an existing ky.
+    def initialize(@key : SecureBuffer)
       raise ArgumentError.new("key size mismatch, got #{@key.bytesize}, wanted #{key_size}") if @key.bytesize != key_size
       @key.readonly
     end
 
+    # Initializes copying the key to a `SecureBuffer`.
     def initialize(bytes : Bytes, erase = false)
       raise ArgumentError.new("key size mismatch, got #{bytes.bytesize}, wanted #{key_size}") if bytes.bytesize != key_size
       @key = SecureBuffer.new bytes, erase: erase

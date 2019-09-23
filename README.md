@@ -112,20 +112,6 @@ dependencies:
 See `examples` for help on using these classes in a complete application.
 
 The `specs` provide the best examples of how to use or misuse individual classes.
-
-
-
-You may call `.close` on any object that retains keying material to wipe it's key(s) earlier.
-Objects with a  `.close` method also respond to `Class.open` and wipe when the block returns.
-
-```crystal
-# TODO
-Sodium::CryptoBox::SecretKey.open(sec_key, pub_key) do |secret_key|
- ... Do crypto operations ...
-end
-# sec_key is wiped
-# public keys aren't wiped.
-
 ```
 
 ### CryptoBox authenticated easy encryption
