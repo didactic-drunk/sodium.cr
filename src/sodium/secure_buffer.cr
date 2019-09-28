@@ -49,7 +49,10 @@ module Sodium
     # For .dup
     def initialize(sbuf : self)
       initialize sbuf.bytesize
-      sbuf.to_slice.copy_to self.to_slice
+      # Maybe not thread safe
+      sbuf.readonly do
+        sbuf.to_slice.copy_to self.to_slice
+      end
       readonly
     end
 
