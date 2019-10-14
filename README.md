@@ -102,7 +102,7 @@ Add this to your application's `shard.yml`:
 
 ```yaml
 dependencies:
-  sodium.cr:
+  sodium:
     github: didactic-drunk/sodium.cr
 ```
 
