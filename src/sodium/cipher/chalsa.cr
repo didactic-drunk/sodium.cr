@@ -105,11 +105,11 @@ module Sodium::Cipher
         end
       end
 
-      def key_size
+      def key_size : Int32
         LibSodium.crypto_stream_chacha20_ietf_keybytes.to_i32
       end
 
-      def nonce_size
+      def nonce_size : Int32
         LibSodium.crypto_stream_chacha20_ietf_noncebytes.to_i32
       end
     end

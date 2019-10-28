@@ -137,11 +137,11 @@ module Sodium::Cipher::Aead
         dst
       end
 
-      protected def key_size
+      protected def key_size : Int32
         KEY_SIZE
       end
 
-      protected def mac_size
+      protected def mac_size : Int32
         MAC_SIZE
       end
     end

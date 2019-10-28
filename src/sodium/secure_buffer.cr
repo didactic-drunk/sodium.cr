@@ -70,7 +70,7 @@ module Sodium
 
     # Returns key
     # May permanently set key to readonly depending on class usage.
-    def to_slice
+    def to_slice : Bytes
       case @state
       when State::Noaccess, State::Wiped
         readonly
