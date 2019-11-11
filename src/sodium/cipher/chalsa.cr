@@ -72,8 +72,8 @@ module Sodium::Cipher
     end
 
     abstract def update(src : Bytes, dst : Bytes)
-    abstract def key_size
-    abstract def nonce_size
+    abstract def key_size : Int32
+    abstract def nonce_size : Int32
   end
 
   {% for key, val in {"XSalsa20" => "xsalsa20", "Salsa20" => "salsa20", "XChaCha20" => "xchacha20", "ChaCha20Ietf" => "chacha20_ietf", "ChaCha20" => "chacha20"} %}

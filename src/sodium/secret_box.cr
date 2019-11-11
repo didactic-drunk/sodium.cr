@@ -20,7 +20,7 @@ module Sodium
     MAC_SIZE   = LibSodium.crypto_secretbox_macbytes.to_i
 
     # Returns key
-    delegate to_slice, to: @key
+    delegate_to_slice to: @key
 
     # Encryption key
     getter key : SecureBuffer

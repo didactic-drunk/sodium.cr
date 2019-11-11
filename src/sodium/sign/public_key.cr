@@ -6,7 +6,7 @@ module Sodium
     SIG_SIZE = LibSodium.crypto_sign_bytes.to_i
 
     # Returns key
-    delegate to_slice, to: @bytes
+    delegate_to_slice to: @bytes
 
     # :nodoc:
     # Only used by SecretKey

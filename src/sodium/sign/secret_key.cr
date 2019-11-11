@@ -21,7 +21,7 @@ module Sodium
     getter public_key : PublicKey
 
     # Returns key
-    delegate to_slice, to: @sbuf
+    delegate_to_slice to: @sbuf
 
     @seed : SecureBuffer?
 

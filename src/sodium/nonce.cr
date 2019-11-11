@@ -16,7 +16,7 @@ module Sodium
     property? reusable = false
 
     # Returns bytes
-    delegate to_slice, to: @bytes
+    delegate_to_slice to: @bytes
 
     delegate bytesize, to: @bytes
 

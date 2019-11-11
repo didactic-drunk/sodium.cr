@@ -23,7 +23,7 @@ module Sodium
     CONTEXT_SIZE = LibSodium.crypto_kdf_contextbytes
 
     # Returns key
-    delegate to_slice, to: @sbuf
+    delegate_to_slice to: @sbuf
 
     # Use an existing KDF key.
     #

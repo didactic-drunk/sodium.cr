@@ -1,6 +1,12 @@
 require "random/secure"
 require "./error"
 
+macro delegate_to_slice(to object)
+  def to_slice() : Bytes
+    {{object.id}}.to_slice
+  end
+end
+
 module Sodium
   @[Link(ldflags: "`#{__DIR__}/../../build/pkg-libs.sh #{__DIR__}/../..`")]
   lib LibSodium
