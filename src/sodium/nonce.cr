@@ -44,6 +44,10 @@ module Sodium
       @used = true unless @reusable
     end
 
+    def dup
+      self.class.new @bytes.dup
+    end
+
     module SerializeConverter
       def self.to_json(value : Nonce, json : JSON::Builder)
         json.string Base64.strict_encode(value.to_slice)

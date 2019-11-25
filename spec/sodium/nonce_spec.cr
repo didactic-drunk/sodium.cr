@@ -28,4 +28,12 @@ describe Sodium::Nonce do
     nonce.to_slice.should eq one
     nonce.used?.should be_false
   end
+
+  it "dups" do
+    nonce1 = Sodium::Nonce.zero
+    nonce2 = nonce1.dup
+
+    nonce2.to_slice[0] = 1_u8
+    nonce1.to_slice[0].should eq 0_u8
+  end
 end

@@ -87,6 +87,18 @@ end
         box.encrypt_detached message.to_slice, nonce: nonce
       end
     end
+
+    it "dups" do
+      box1 = Sodium::Cipher::Aead::{{ name.id }}.new Bytes.new(Sodium::Cipher::Aead::{{ name.id }}::KEY_SIZE)
+      box2 = box1.dup
+
+      key1 = box1.key
+      key2 = box2.key
+      key2.readwrite
+
+      key2.to_slice[0] = 1_u8
+      key1.to_slice[0].should eq 0_u8
+    end
   end
 
   describe Sodium::Cipher::Aead do

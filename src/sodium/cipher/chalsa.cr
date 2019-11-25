@@ -12,10 +12,13 @@ module Sodium::Cipher
     # Advanced usage.  Don't touch.
     property offset = 0
 
+    getter! key
+    getter! nonce
+
     def initialize
     end
 
-    def initialize(key, nonce)
+    def initialize(key = nil, nonce = nil)
       self.key = key if key
       self.nonce = nonce if nonce
     end
@@ -45,10 +48,12 @@ module Sodium::Cipher
       update src, Bytes.new(src.bytesize)
     end
 
+    private FINAL_BYTES = Bytes.new 0
+
     # Provided for compatibility with block or tagged ciphers.
     # Stream ciphers don't have additional data.
     def final
-      Bytes.new(0)
+      FINAL_BYTES
     end
 
     # Use as a CSPRNG.
@@ -74,9 +79,15 @@ module Sodium::Cipher
     abstract def update(src : Bytes, dst : Bytes)
     abstract def key_size : Int32
     abstract def nonce_size : Int32
+
+    def dup
+      self.class.new key: @key.try(&.dup), nonce: @nonce.try(&.dup)
+    end
   end
 
-  {% for key, val in {"XSalsa20" => "xsalsa20", "Salsa20" => "salsa20", "XChaCha20" => "xchacha20", "ChaCha20Ietf" => "chacha20_ietf", "ChaCha20" => "chacha20"} %}
+  {% for key, valtup in {"Xchacha16" => {"xchacha16", false}, "XSalsa20" => {"xsalsa20", false}, "Salsa20" => {"salsa20", false}, "XChaCha20" => {"xchacha20", false}, "ChaCha20Ietf" => {"chacha20_ietf", true}, "ChaCha20" => {"chacha20", false}} %}
+    {% val = valtup[0] %}
+    {% ietf = valtup[1] %}
     # These classes can be used to generate pseudo-random data from a key,
     # or as building blocks for implementing custom constructions, but they
     # are not alternatives to secretbox.
@@ -89,6 +100,9 @@ module Sodium::Cipher
     #
     # WARNING: Not validated against test vectors.  You should probably write some before using this class.
     class {{ key.id }} < Chalsa
+      KEY_SIZE = LibSodium.crypto_stream_chacha20_{{ ietf ? "ietf_".id : "".id }}keybytes.to_i32
+      NONCE_SIZE = LibSodium.crypto_stream_chacha20_{{ ietf ? "ietf_".id : "".id }}noncebytes.to_i32
+
       # Xor's src with the cipher output and places in dst.
       #
       # src and dst may be the same object but should not overlap.
@@ -106,11 +120,11 @@ module Sodium::Cipher
       end
 
       def key_size : Int32
-        LibSodium.crypto_stream_chacha20_ietf_keybytes.to_i32
+        KEY_SIZE
       end
 
       def nonce_size : Int32
-        LibSodium.crypto_stream_chacha20_ietf_noncebytes.to_i32
+        NONCE_SIZE
       end
     end
   {% end %}

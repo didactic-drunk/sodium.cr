@@ -79,6 +79,10 @@ module Sodium::Cipher::Aead
     abstract def decrypt_detached(src : Bytes, dst : Bytes? = nil, *, nonce : Sodium::Nonce, mac : Bytes, additional : String | Bytes | Nil = nil) : Bytes
     protected abstract def key_size : Int32
     protected abstract def mac_size : Int32
+
+    def dup
+      self.class.new @key.dup
+    end
   end
 
   {% for key, val in {"XChaCha20Poly1305Ietf" => "_xchacha20poly1305_ietf"} %}

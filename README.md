@@ -178,14 +178,14 @@ public_key.verify_detached message, signature
 
 ### Secret Key Encryption
 ```crystal
-key = Sodium::SecretKey.new
+box = Sodium::SecretBox.new
 
 message = "foobar"
-encrypted, nonce = key.encrypt message
+encrypted, nonce = box.encrypt message
 
 # On the other side.
-key = Sodium::SecretKey.new key
-message = key.decrypt encrypted, nonce
+box = Sodium::SecretKey.new key
+message = box.decrypt encrypted, nonce: nonce
 ```
 
 ### Blake2b

@@ -90,4 +90,7 @@ describe Sodium::Digest::Blake2b do
       Sodium::Digest::Blake2b.new personal: Bytes.new(128)
     end
   end
+
+  pending "dups" do
+  end
 end
