@@ -84,7 +84,7 @@ Several features in libsodium are already provided by Crystal:
 | [`Sodium::SecretBox`](https://didactic-drunk.github.io/sodium.cr/Sodium/SecretBox.html) | I have a shared key and want to encrypt + authenticate data. |
 | [`Sodium::Cipher::Aead::XChaCha20Poly1305Ietf`](https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/Aead/XChaCha20Poly1305Ietf.html) | I have a shared key and want to encrypt + authenticate data and authentication additional plaintext data. |
 | [`Sodium::Cipher::SecretStream`](https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/SecretStream/XChaCha20Poly1305.html) | I have a shared key and want encrypt + authenticate streamed data. |
-| [`Sodium::Digest::Blake2b`](https://didactic-drunk.github.io/sodium.cr/Sodium/Digest::Blake2b.html) | I want to hash data fast and securely. |
+| [`Sodium::Digest::Blake2b`](https://didactic-drunk.github.io/sodium.cr/Sodium/Digest/Blake2b.html) | I want to hash data fast and securely. |
 | `Sodium::Digest::SipHash` | I want to hash data really fast and less securely. (Not implemented yet) |
 | [`Sodium::Password::Hash`](https://didactic-drunk.github.io/sodium.cr/Sodium/Password/Hash.html) | I want to hash a password and store it. |
 | [`Sodium::Password::Key`](https://didactic-drunk.github.io/sodium.cr/Sodium/Password/Key.html) | I want to derive a key from a password. |
