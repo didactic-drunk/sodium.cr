@@ -85,7 +85,7 @@ module Sodium::Cipher
     end
   end
 
-  {% for key, valtup in {"Xchacha16" => {"xchacha16", false}, "XSalsa20" => {"xsalsa20", false}, "Salsa20" => {"salsa20", false}, "XChaCha20" => {"xchacha20", false}, "ChaCha20Ietf" => {"chacha20_ietf", true}, "ChaCha20" => {"chacha20", false}} %}
+  {% for key, valtup in {"XSalsa20" => {"xsalsa20", false}, "Salsa20" => {"salsa20", false}, "XChaCha20" => {"xchacha20", false}, "ChaCha20Ietf" => {"chacha20_ietf", true}, "ChaCha20" => {"chacha20", false}} %}
     {% val = valtup[0] %}
     {% ietf = valtup[1] %}
     # These classes can be used to generate pseudo-random data from a key,
