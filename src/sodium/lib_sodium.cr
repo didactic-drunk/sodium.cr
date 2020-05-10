@@ -336,6 +336,89 @@ module Sodium
       output : Pointer(LibC::UChar),
       output_len : UInt64
     ) : LibC::Int
+
+    alias CryptoSignState = CryptoSignEd25519phState
+
+    fun crypto_core_ed25519_add(r : UInt8*, p : UInt8*, q : UInt8*) : LibC::Int
+    fun crypto_core_ed25519_bytes : LibC::SizeT
+    fun crypto_core_ed25519_from_hash(p : UInt8*, h : UInt8*) : LibC::Int
+    fun crypto_core_ed25519_from_uniform(p : UInt8*, r : UInt8*) : LibC::Int
+    fun crypto_core_ed25519_hashbytes : LibC::SizeT
+    fun crypto_core_ed25519_is_valid_point(p : UInt8*) : LibC::Int
+    fun crypto_core_ed25519_nonreducedscalarbytes : LibC::SizeT
+    fun crypto_core_ed25519_random(p : UInt8*)
+    fun crypto_core_ed25519_scalar_add(z : UInt8*, x : UInt8*, y : UInt8*)
+    fun crypto_core_ed25519_scalar_complement(comp : UInt8*, s : UInt8*)
+    fun crypto_core_ed25519_scalar_invert(recip : UInt8*, s : UInt8*) : LibC::Int
+    fun crypto_core_ed25519_scalar_mul(z : UInt8*, x : UInt8*, y : UInt8*)
+    fun crypto_core_ed25519_scalar_negate(neg : UInt8*, s : UInt8*)
+    fun crypto_core_ed25519_scalar_random(r : UInt8*)
+    fun crypto_core_ed25519_scalar_reduce(r : UInt8*, s : UInt8*)
+    fun crypto_core_ed25519_scalar_sub(z : UInt8*, x : UInt8*, y : UInt8*)
+    fun crypto_core_ed25519_scalarbytes : LibC::SizeT
+    fun crypto_core_ed25519_sub(r : UInt8*, p : UInt8*, q : UInt8*) : LibC::Int
+    fun crypto_core_ed25519_uniformbytes : LibC::SizeT
+
+    fun crypto_scalarmult_ed25519(q : UInt8*, n : UInt8*, p : UInt8*) : LibC::Int
+    fun crypto_scalarmult_ed25519_base(q : UInt8*, n : UInt8*) : LibC::Int
+    fun crypto_scalarmult_ed25519_base_noclamp(q : UInt8*, n : UInt8*) : LibC::Int
+    fun crypto_scalarmult_ed25519_bytes : LibC::SizeT
+    fun crypto_scalarmult_ed25519_noclamp(q : UInt8*, n : UInt8*, p : UInt8*) : LibC::Int
+    fun crypto_scalarmult_ed25519_scalarbytes : LibC::SizeT
+
+    fun crypto_sign_ed25519(sm : UInt8*, smlen_p : LibC::ULongLong*, m : UInt8*, mlen : LibC::ULongLong, sk : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519_bytes : LibC::SizeT
+    fun crypto_sign_ed25519_detached(sig : UInt8*, siglen_p : LibC::ULongLong*, m : UInt8*, mlen : LibC::ULongLong, sk : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519_keypair(pk : UInt8*, sk : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519_messagebytes_max : LibC::SizeT
+    fun crypto_sign_ed25519_open(m : UInt8*, mlen_p : LibC::ULongLong*, sm : UInt8*, smlen : LibC::ULongLong, pk : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519_pk_to_curve25519(curve25519_pk : UInt8*, ed25519_pk : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519_publickeybytes : LibC::SizeT
+    fun crypto_sign_ed25519_secretkeybytes : LibC::SizeT
+    fun crypto_sign_ed25519_seed_keypair(pk : UInt8*, sk : UInt8*, seed : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519_seedbytes : LibC::SizeT
+    fun crypto_sign_ed25519_sk_to_curve25519(curve25519_sk : UInt8*, ed25519_sk : UInt8*) : LibC::Int
+    #    fun crypto_sign_ed25519_sk_to_pk(pk : UInt8*, sk : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519_sk_to_seed(seed : UInt8*, sk : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519_verify_detached(sig : UInt8*, m : UInt8*, mlen : LibC::ULongLong, pk : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519ph_final_create(state : CryptoSignEd25519phState*, sig : UInt8*, siglen_p : LibC::ULongLong*, sk : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519ph_final_verify(state : CryptoSignEd25519phState*, sig : UInt8*, pk : UInt8*) : LibC::Int
+    fun crypto_sign_ed25519ph_init(state : CryptoSignEd25519phState*) : LibC::Int
+    fun crypto_sign_ed25519ph_statebytes : LibC::SizeT
+    fun crypto_sign_ed25519ph_update(state : CryptoSignEd25519phState*, m : UInt8*, mlen : LibC::ULongLong) : LibC::Int
+    fun crypto_sign_final_create(state : CryptoSignState*, sig : UInt8*, siglen_p : LibC::ULongLong*, sk : UInt8*) : LibC::Int
+    fun crypto_sign_final_verify(state : CryptoSignState*, sig : UInt8*, pk : UInt8*) : LibC::Int
+    fun crypto_sign_init(state : CryptoSignState*) : LibC::Int
+    fun crypto_sign_keypair(pk : UInt8*, sk : UInt8*) : LibC::Int
+    fun crypto_sign_messagebytes_max : LibC::SizeT
+
+    struct CryptoHashSha512State
+      state : UInt64[8]
+      count : UInt64[2]
+      buf : UInt8[128]
+    end
+
+    struct CryptoSignEd25519phState
+      hs : CryptoHashSha512State
+    end
+
+    fun crypto_core_ristretto255_add(r : UInt8*, p : UInt8*, q : UInt8*) : LibC::Int
+    fun crypto_core_ristretto255_bytes : LibC::SizeT
+    fun crypto_core_ristretto255_from_hash(p : UInt8*, r : UInt8*) : LibC::Int
+    fun crypto_core_ristretto255_hashbytes : LibC::SizeT
+    fun crypto_core_ristretto255_is_valid_point(p : UInt8*) : LibC::Int
+    fun crypto_core_ristretto255_nonreducedscalarbytes : LibC::SizeT
+    fun crypto_core_ristretto255_random(p : UInt8*)
+    fun crypto_core_ristretto255_scalar_add(z : UInt8*, x : UInt8*, y : UInt8*)
+    fun crypto_core_ristretto255_scalar_complement(comp : UInt8*, s : UInt8*)
+    fun crypto_core_ristretto255_scalar_invert(recip : UInt8*, s : UInt8*) : LibC::Int
+    fun crypto_core_ristretto255_scalar_mul(z : UInt8*, x : UInt8*, y : UInt8*)
+    fun crypto_core_ristretto255_scalar_negate(neg : UInt8*, s : UInt8*)
+    fun crypto_core_ristretto255_scalar_random(r : UInt8*)
+    fun crypto_core_ristretto255_scalar_reduce(r : UInt8*, s : UInt8*)
+    fun crypto_core_ristretto255_scalar_sub(z : UInt8*, x : UInt8*, y : UInt8*)
+    fun crypto_core_ristretto255_scalarbytes : LibC::SizeT
+    fun crypto_core_ristretto255_sub(r : UInt8*, p : UInt8*, q : UInt8*) : LibC::Int
   end
 
   if LibSodium.sodium_init != 0
