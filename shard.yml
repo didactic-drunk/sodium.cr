@@ -11,3 +11,5 @@ targets:
 libraries:
   libsodium: ">= 1.0.18"
 license: MIT
+scripts:
+  postinstall: ./build/libsodium_install.sh
