@@ -34,7 +34,7 @@ describe Sodium::Digest::Blake2b do
     test_vectors.each do |vec|
       d = Sodium::Digest::Blake2b.new 64, key: vec[:key].hexbytes
       d.update vec[:input].hexbytes
-      d.hexdigest.should eq vec[:output]
+      d.hexfinal.should eq vec[:output]
     end
 
     more_vectors.each do |vec|
@@ -42,7 +42,7 @@ describe Sodium::Digest::Blake2b do
       personal = vec[:personal].empty? ? nil : vec[:personal].hexbytes
       d = Sodium::Digest::Blake2b.new vec[:out_len], key: vec[:key].hexbytes, salt: salt, personal: personal
       d.update vec[:input].hexbytes
-      d.hexdigest.should eq vec[:output]
+      d.hexfinal.should eq vec[:output]
     end
   end
 
@@ -58,15 +58,15 @@ describe Sodium::Digest::Blake2b do
 
     d = Sodium::Digest::Blake2b.new key: key, salt: salt, personal: personal
     d.update "foo".to_slice
-    output = d.hexdigest
+    output = d.hexfinal
 
     d = Sodium::Digest::Blake2b.new key: key, salt: salt2, personal: personal
     d.update "foo".to_slice
-    saltout = d.hexdigest
+    saltout = d.hexfinal
 
     d = Sodium::Digest::Blake2b.new key: key, salt: salt, personal: personal2
     d.update "foo".to_slice
-    personalout = d.hexdigest
+    personalout = d.hexfinal
 
     output.should_not eq saltout
     output.should_not eq personalout
