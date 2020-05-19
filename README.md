@@ -199,11 +199,11 @@ data = "data".to_slice
 # output_size, key, salt, and personal are optional.
 digest = Sodium::Digest::Blake2b.new out_size, key: key, salt: salt, personal: personal
 digest.update data
-output = d.hexdigest
+output = d.hexfinal
 
 digest.reset # Reuse existing object to hash again.
 digest.update data
-output = d.hexdigest
+output = d.hexfinal
 ```
 
 ### Key derivation

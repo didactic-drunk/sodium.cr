@@ -1,6 +1,7 @@
 require "../lib_sodium"
 require "../wipe"
 require "../secure_buffer"
+require "digest/base"
 require "openssl/digest/digest_base"
 
 module Sodium::Digest
@@ -13,11 +14,9 @@ module Sodium::Digest
   # digest = Blake2b.new
   # digest.update data
   # digest.update data
-  # digest.hexdigest => String
+  # digest.hexfinal => String
   # ```
-  class Blake2b
-    # provides copying digest/hexdigest methods
-    include OpenSSL::DigestBase
+  class Blake2b < ::Digest::Base
     include Wipe
 
     # 32
@@ -40,11 +39,11 @@ module Sodium::Digest
     # 64
     OUT_SIZE_MAX = LibSodium.crypto_generichash_blake2b_bytes_max.to_i32
 
-    getter digest_size
+    getter digest_size : Int32
 
     @[Wipe::Var]
     @state = StaticArray(UInt8, 384).new 0
-    @key_size = 0
+    getter key_size = 0
 
     # implemented as static array's so clone works without jumping through hoops.
     @[Wipe::Var]
@@ -57,7 +56,7 @@ module Sodium::Digest
     # digest_size is selectable.  Use 32 for Blake2b256 (libsodium default), 64 for Blake2b512
     # or any value between OUT_SIZE_MIN and OUT_SIZE_MAX.  Many libsodium bindings only support [256] or [256 and 512] bit output.
     #
-    # `key`, `salt`, and `personal` are all optional.  Most other libsodium bindings don't support them.
+    # `key`, `salt`, and `personal` are all optional.  Many other libsodium bindings don't support them.
     # Check the other implementation(s) you need to interoperate with before using.
     def initialize(@digest_size : Int32 = OUT_SIZE, key : Bytes? | SecureBuffer? = nil, salt : Bytes? = nil, personal : Bytes? = nil)
       if k = key
@@ -80,7 +79,57 @@ module Sodium::Digest
       reset
     end
 
-    def reset
+    # Compatibility with Crystal <= 0.35?(TBD)
+    {% unless @type.has_method?(:hexfinal) %}
+      def hexfinal : String
+        final.hexstring
+      end
+    {% end %}
+
+    # Compatibility with Crystal <= 0.32
+    {% unless @type.has_method?(:final) %}
+      # provides copying digest/hexdigest methods
+      include OpenSSL::DigestBase
+
+      def update(data : Bytes) : self
+        update_impl data
+        self
+      end
+
+      def reset : self
+        reset_impl
+        self
+      end
+
+      # Destructive operation.  Assumes you know what you are doing.
+      # Use .digest or .hexdigest instead.
+      def final
+        dst = Bytes.new @digest_size
+        final_impl dst
+        dst
+      end
+
+      # Used by OpenSSL::DigestBase for #digest and #hexdigest
+      # :nodoc:
+      protected def finish
+        final
+      end
+    {% end %}
+
+    def update_impl(data : Bytes) : Nil
+      if LibSodium.crypto_generichash_blake2b_update(@state.to_slice, data, data.bytesize) != 0
+        raise Sodium::Error.new("crypto_generichash_blake2b_update")
+      end
+    end
+
+    def final_impl(dst : Bytes) : Nil
+      ret = LibSodium.crypto_generichash_blake2b_final(@state.to_slice, dst, dst.bytesize)
+      if ret != 0
+        raise Sodium::Error.new("crypto_generichash_blake2b_final #{ret.inspect}")
+      end
+    end
+
+    def reset_impl : Nil
       key = @key.to_unsafe
       salt = @salt.to_unsafe
       personal = @personal.to_unsafe
@@ -88,33 +137,6 @@ module Sodium::Digest
       if LibSodium.crypto_generichash_blake2b_init_salt_personal(@state.to_slice, key, @key_size, @digest_size, salt, personal) != 0
         raise Sodium::Error.new("blake2b_init_key_salt_personal")
       end
-    end
-
-    def update(data : Bytes)
-      if LibSodium.crypto_generichash_blake2b_update(@state.to_slice, data, data.bytesize) != 0
-        raise Sodium::Error.new("crypto_generichash_blake2b_update")
-      end
-
-      self
-    end
-
-    # Destructive operation.  Assumes you know what you are doing.
-    # Use .digest or .hexdigest instead.
-    def finish
-      dst = Bytes.new @digest_size
-      finish dst
-      dst
-    end
-
-    # Destructive operation.  Assumes you know what you are doing.
-    # Use .digest or .hexdigest instead.
-    def finish(dst : Bytes) : Bytes
-      ret = LibSodium.crypto_generichash_blake2b_final(@state.to_slice, dst, dst.bytesize)
-      if ret != 0
-        raise Sodium::Error.new("crypto_generichash_blake2b_final #{ret.inspect}")
-      end
-
-      dst
     end
 
     def clone

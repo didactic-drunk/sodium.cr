@@ -15,14 +15,14 @@ Benchmark.ips(warmup: 0.5) do |bm|
     bm.report "blake2b new obj per iter #{size}" do
       d = Sodium::Digest::Blake2b.new 64
       d.update bufs[i]
-      d.digest
+      d.final
     end
 
     d = Sodium::Digest::Blake2b.new output_size
     bm.report "blake2b reset per iter #{size}" do
       d.reset
       d.update bufs[i]
-      d.digest
+      d.final
     end
 
     d = Sodium::Digest::Blake2b.new output_size
@@ -30,7 +30,7 @@ Benchmark.ips(warmup: 0.5) do |bm|
     bm.report "blake2b reset reusing buffer per iter #{size}" do
       d.reset
       d.update bufs[i]
-      d.finish dst
+      d.final dst
     end
   end
 
@@ -39,17 +39,23 @@ Benchmark.ips(warmup: 0.5) do |bm|
       bm.report "#{arg} new obj per iter  #{size}" do
         d = OpenSSL::Digest.new arg
         d.update bufs[i]
-        d.digest
+        d.final
       end
 
       d = OpenSSL::Digest.new arg
       bm.report "#{arg} reset per iter #{size}" do
         d.reset
         d.update bufs[i]
-        d.digest
+        d.final
       end
 
-      # OpenSSL::Digest doesn't have a public .finish (yet)
+      d = OpenSSL::Digest.new arg
+      dst = Bytes.new d.digest_size
+      bm.report "#{arg} reset reusing buffer per iterr #{size}" do
+        d.reset
+        d.update bufs[i]
+        d.final dst
+      end
     end
   end
 end
