@@ -1,6 +1,6 @@
 ---
 name: sodium
-version: 1.1.1
+version: 1.2.0
 authors:
 - Andrew Hamon <andrew@hamon.cc>
 - Didactic Drunk <1479616+didactic-drunk@users.noreply.github.com>
@@ -12,4 +12,4 @@ libraries:
   libsodium: ">= 1.0.18"
 license: MIT
 scripts:
-  postinstall: ./build/libsodium_install.sh
+  postinstall: "./build/libsodium_install.sh"
