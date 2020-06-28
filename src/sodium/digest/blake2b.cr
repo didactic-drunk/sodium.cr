@@ -19,6 +19,8 @@ module Sodium::Digest
   class Blake2b < ::Digest::Base
     include Wipe
 
+    Log = ::Log.for self
+
     # 32
     KEY_SIZE = LibSodium.crypto_generichash_blake2b_keybytes.to_i
     # 16
@@ -83,6 +85,18 @@ module Sodium::Digest
     {% unless @type.has_method?(:hexfinal) %}
       def hexfinal : String
         final.hexstring
+      end
+
+      def hexfinal(dst : Bytes) : Nil
+        dsize = digest_size
+        unless dst.bytesize == dsize * 2
+          raise ArgumentError.new("Incorrect dst size: #{dst.bytesize}, expected: #{dsize * 2}")
+        end
+
+        sary = uninitialized StaticArray(UInt8, 64)
+        tmp = sary.to_slice[0, dsize]
+        final tmp
+        tmp.hexstring dst
       end
     {% end %}
 

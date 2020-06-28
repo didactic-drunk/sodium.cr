@@ -89,8 +89,45 @@ describe Sodium::Digest::Blake2b do
     expect_raises ArgumentError do
       Sodium::Digest::Blake2b.new personal: Bytes.new(128)
     end
+
+    d = Sodium::Digest::Blake2b.new
+    expect_raises ArgumentError do
+      d.hexfinal Bytes.new(1)
+    end
+    expect_raises ArgumentError do
+      d.hexfinal Bytes.new(256)
+    end
   end
 
-  pending "dups" do
+  it "can't final twice or update after final" do
+    d = Sodium::Digest::Blake2b.new
+    d.hexfinal
+
+    expect_raises Digest::FinalizedError do
+      d.hexfinal
+    end
+
+    expect_raises Digest::FinalizedError do
+      d.update Bytes.new(0)
+    end
+  end
+
+  it "dups" do
+    data = "foo".to_slice
+    d1 = Sodium::Digest::Blake2b.new
+    d2 = d1.dup
+    d3 = d2.dup
+
+    d1.update data
+    h1 = d1.hexfinal
+
+    d2.update data
+    h2 = d2.hexfinal
+
+    d3.update data
+    h3 = d3.hexfinal
+
+    h1.should eq h2
+    h1.should eq h3
   end
 end
