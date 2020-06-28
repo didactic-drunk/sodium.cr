@@ -61,9 +61,12 @@ module Sodium::Digest
     # `key`, `salt`, and `personal` are all optional.  Many other libsodium bindings don't support them.
     # Check the other implementation(s) you need to interoperate with before using.
     def initialize(@digest_size : Int32 = OUT_SIZE, key : Bytes? | SecureBuffer? = nil, salt : Bytes? = nil, personal : Bytes? = nil)
-      if k = key
+      if (k = key) && k.bytesize > 0
         k = k.to_slice
         raise ArgumentError.new("key larger than KEY_SIZE_MAX(#{KEY_SIZE_MAX}), got #{k.bytesize}") if k.bytesize > KEY_SIZE_MAX
+        # Test vectors contain small key sizes.  Small keys shouldn't be used...  Wtf?
+        Log.warn &.emit("key smaller than KEY_SIZE_MIN(#{KEY_SIZE_MIN}), got #{k.bytesize}") if k.bytesize < KEY_SIZE_MIN
+        # raise ArgumentError.new("key smaller than KEY_SIZE_MIN(#{KEY_SIZE_MIN}), got #{k.bytesize}") if k.bytesize < KEY_SIZE_MIN
         @key_size = k.bytesize
         k.copy_to @key.to_slice
       end

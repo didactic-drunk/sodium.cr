@@ -1,10 +1,18 @@
 require "benchmark"
+require "option_parser"
 require "../src/sodium"
 require "openssl"
 require "openssl/digest"
 
 output_size = 64
 sizes = [16, 64, 256, 1024, 8192, 16384]
+
+optp = OptionParser.new
+optp.on("--output-size", "default: 64") { |arg| output_size = arg.to_i }
+optp.on("--input-sizes=ARG", "comma separated list of input sizes") { |arg| sizes = arg.split(",").map(&.to_i).to_a }
+# optp.on("", "") { |arg| }
+optp.parse
+
 bufs = sizes.map { |size| Bytes.new size }.to_a
 
 puts "Compare against 'openssl speed digestname'"
