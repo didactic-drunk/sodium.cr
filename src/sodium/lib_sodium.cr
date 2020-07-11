@@ -379,7 +379,7 @@ module Sodium
     fun crypto_sign_ed25519_seed_keypair(pk : UInt8*, sk : UInt8*, seed : UInt8*) : LibC::Int
     fun crypto_sign_ed25519_seedbytes : LibC::SizeT
     fun crypto_sign_ed25519_sk_to_curve25519(curve25519_sk : UInt8*, ed25519_sk : UInt8*) : LibC::Int
-    #    fun crypto_sign_ed25519_sk_to_pk(pk : UInt8*, sk : UInt8*) : LibC::Int
+    #  fun crypto_sign_ed25519_sk_to_pk(pk : UInt8*, sk : UInt8*) : LibC::Int
     fun crypto_sign_ed25519_sk_to_seed(seed : UInt8*, sk : UInt8*) : LibC::Int
     fun crypto_sign_ed25519_verify_detached(sig : UInt8*, m : UInt8*, mlen : LibC::ULongLong, pk : UInt8*) : LibC::Int
     fun crypto_sign_ed25519ph_final_create(state : CryptoSignEd25519phState*, sig : UInt8*, siglen_p : LibC::ULongLong*, sk : UInt8*) : LibC::Int

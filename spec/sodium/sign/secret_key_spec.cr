@@ -1,5 +1,6 @@
 require "../../spec_helper"
 require "../../../src/sodium/sign/secret_key"
+require "../../../src/sodium/crypto_box/secret_key"
 
 detached_test_vectors = [
   {
@@ -69,6 +70,12 @@ describe Sodium::Sign::SecretKey do
     expect_raises Sodium::Error::VerificationFailed do
       skey.public_key.verify_detached "bar", sig
     end
+  end
+
+  it "to_curve25519" do
+    message = "foo"
+    sskey = Sodium::Sign::SecretKey.new
+    cskey = sskey.to_curve25519
   end
 
   it "RbNaCl detached test vectors" do

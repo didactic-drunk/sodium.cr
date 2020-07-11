@@ -57,6 +57,22 @@ class Sodium::CryptoBox
 
     # Use existing secret and public keys.
     #
+    # Takes ownership of an existing key in a SecureBuffer.
+    # Recomputes the public key from a secret key if missing.
+    def initialize(@sbuf : SecureBuffer, pkey : Bytes? = nil)
+      raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{@sbuf.bytesize}") if @sbuf.bytesize != KEY_SIZE
+      if pk = pkey
+        @public_key = PublicKey.new pk
+      else
+        @public_key = PublicKey.new
+        if LibSodium.crypto_scalarmult_base(@public_key.to_slice, self.to_slice) != 0
+          raise Sodium::Error.new("crypto_scalarmult_base")
+        end
+      end
+    end
+
+    # Use existing secret and public keys.
+    #
     # Copies secret key to a SecureBuffer.
     # Recomputes the public key from a secret key if missing.
     def initialize(bytes : Bytes, pkey : Bytes? = nil)

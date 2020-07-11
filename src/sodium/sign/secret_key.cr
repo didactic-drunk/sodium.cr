@@ -83,5 +83,12 @@ module Sodium
       end
       sig
     end
+
+    def to_curve25519 : CryptoBox::SecretKey
+      key = SecureBuffer.new CryptoBox::SecretKey::KEY_SIZE
+      LibSodium.crypto_sign_ed25519_sk_to_curve25519 key.to_slice, @sbuf.to_slice
+      key.readonly
+      CryptoBox::SecretKey.new key
+    end
   end
 end
