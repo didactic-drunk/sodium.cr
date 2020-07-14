@@ -35,6 +35,12 @@ module Sodium
       end
     end
 
+    def to_curve25519 : CryptoBox::PublicKey
+      pk = CryptoBox::PublicKey.new
+      LibSodium.crypto_sign_ed25519_pk_to_curve25519 pk.to_slice, @bytes
+      pk
+    end
+
     module SerializeConverter
       def self.to_json(value : PublicKey, json : JSON::Builder)
         json.string Base64.strict_encode(value.to_slice)

@@ -76,6 +76,16 @@ describe Sodium::Sign::SecretKey do
     message = "foo"
     sskey = Sodium::Sign::SecretKey.new
     cskey = sskey.to_curve25519
+
+    spkey = sskey.public_key
+    cpkey = spkey.to_curve25519
+
+    data = "foo".to_slice
+    cskey.box cpkey do |box|
+      enc, nonce = box.encrypt data
+      dec = box.decrypt enc, nonce: nonce
+      dec.should eq data
+    end
   end
 
   it "RbNaCl detached test vectors" do
