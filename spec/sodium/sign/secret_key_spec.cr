@@ -49,7 +49,7 @@ describe Sodium::Sign::SecretKey do
   it "seed keys" do
     seed = Bytes.new Sodium::Sign::SecretKey::SEED_SIZE
     key1 = Sodium::Sign::SecretKey.new seed: seed
-    key2 = Sodium::Sign::SecretKey.new seed: seed
+    key2 = Sodium::Sign::SecretKey.new seed: Sodium::Sign::SecretKey.new(key1.to_slice).seed
     key1.to_slice.should eq key2.to_slice
     key1.public_key.to_slice.should eq key2.public_key.to_slice
     key1.seed.should eq seed

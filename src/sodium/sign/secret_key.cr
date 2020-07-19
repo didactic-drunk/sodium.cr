@@ -23,8 +23,6 @@ module Sodium
     # Returns key
     delegate_to_slice to: @sbuf
 
-    @seed : SecureBuffer?
-
     # Generates a new random secret/public key pair.
     def initialize
       @sbuf = SecureBuffer.new KEY_SIZE
@@ -70,9 +68,12 @@ module Sodium
       end
     end
 
-    def seed
-      # BUG: Generate seed if not set.
-      @seed.not_nil!.to_slice
+    getter seed : SecureBuffer? do
+      SecureBuffer.new(SEED_SIZE).tap do |s|
+        if LibSodium.crypto_sign_ed25519_sk_to_seed(s.to_slice, self.to_slice) != 0
+          raise Sodium::Error.new("crypto_sign_ed25519_sk_to_seed")
+        end
+      end.readonly
     end
 
     # Signs message and returns a detached signature.
