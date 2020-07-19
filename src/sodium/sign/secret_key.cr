@@ -70,6 +70,11 @@ module Sodium
       end
     end
 
+    def seed
+      # BUG: Generate seed if not set.
+      @seed.not_nil!.to_slice
+    end
+
     # Signs message and returns a detached signature.
     # Verify using `secret_key.public_key.verify_detached(message, sig)`
     def sign_detached(message)

@@ -52,6 +52,8 @@ describe Sodium::Sign::SecretKey do
     key2 = Sodium::Sign::SecretKey.new seed: seed
     key1.to_slice.should eq key2.to_slice
     key1.public_key.to_slice.should eq key2.public_key.to_slice
+    key1.seed.should eq seed
+    key1.seed.should eq key2.seed
   end
 
   it "signs and verifies" do
