@@ -19,7 +19,7 @@ if `pkg-config libsodium --exists`; then
 	if [ $(version "$PKG_VER") -ge $(version "$MIN_LIBSODIUM_VERSION") ]; then
 		[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Using packaged libsodium."
 	else
-		[ ! -z "$SODIUM_BUILD_VERBOSE" ] echo "System packaged libsodium is too old."
+		[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "System packaged libsodium is too old."
 		export LIBSODIUM_INSTALL=1
 	fi
 else
