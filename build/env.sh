@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Overridable.
 [ -z "$LIBSODIUM_BUILD_DIR" ] && LIBSODIUM_BUILD_DIR=`pwd`/build
