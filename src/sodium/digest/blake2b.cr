@@ -1,8 +1,8 @@
 require "../lib_sodium"
 require "../wipe"
 require "../secure_buffer"
-require "digest/base"
-require "openssl/digest/digest_base"
+require "digest"
+require "openssl/digest"
 
 module Sodium::Digest
   # Hash data using Blake2b.
@@ -16,7 +16,7 @@ module Sodium::Digest
   # digest.update data
   # digest.hexfinal => String
   # ```
-  class Blake2b < ::Digest::Base
+  class Blake2b < ::Digest
     include Wipe
 
     Log = ::Log.for self
