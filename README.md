@@ -276,20 +276,6 @@ Ops limit →
 5. Push to the branch (git push origin my-new-feature)
 6. Create a new Pull Request
 
-## Project History
-
-* Originally created by [Andrew Hamon](https://github.com/andrewhamons/cox)
-* Forked by [Didactic Drunk](https://github.com/didactic-drunk/cox) for lack of updates in the original project.
-* Complaints about the name being too controversial.  Project name changed from "cox" to a more libsodium related name of "salty seaman".
-* ~50% complete libsodium API.
-* More complaints about the name.  Dead hooker jokes added.
-* None of the original API is left.
-* More complaints threatening a boycott.  Told them "Go ahead, I own Coca Cola and Water".
-* Account unsuspended.
-* Unrelated to the boycott the project name changed to "libsodium" because sodium happens to be a tasty byproduct of the two earlier names.
-* Account unsuspended.
-* Dead hooker jokes (mostly) removed.
-
 ## Contributors
 
 - [andrewhamon](https://github.com/andrewhamon) Andrew Hamon - creator, former maintainer
