@@ -6,7 +6,7 @@ module Sodium::Password
   # Often used to store password hashes on a server and authenticate clients against the stored hash.
   #
   # Usage:
-  # ```crystal
+  # ```
   # pwhash = Sodium::Password::Hash.new
   #
   # pwhash.mem = Sodium::Password::MEMLIMIT_MIN

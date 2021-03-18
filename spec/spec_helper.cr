@@ -9,7 +9,6 @@ def check_wiped(buf : Bytes)
     if b != 0_u8
       puts "not wiped #{buf.inspect}"
       #      raise "not wiped #{buf.inspect}"
-
     end
   end
 end

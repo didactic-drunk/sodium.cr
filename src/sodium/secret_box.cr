@@ -5,7 +5,7 @@ require "./nonce"
 module Sodium
   # [https://libsodium.gitbook.io/doc/secret-key_cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
   #
-  # ```crystal
+  # ```
   # box = Sodium::SecretBox.new
   # message = "foobar"
   # encrypted, nonce = box.encrypt message
