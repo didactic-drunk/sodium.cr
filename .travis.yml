@@ -1,7 +1,6 @@
 language: crystal
 os:
 - linux
-- osx
 install:
 - SODIUM_BUILD_DEBUG=1 LIBSODIUM_BUILD_DIR=$HOME/libsodium ./build/libsodium_install.sh
 before_script:
