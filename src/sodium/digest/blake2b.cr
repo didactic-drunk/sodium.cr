@@ -17,6 +17,8 @@ module Sodium::Digest
   # digest.hexfinal => String
   # ```
   class Blake2b < ::Digest
+    {{ Digest.has_constant?(:Base) ? "::Base" : "" }} # Crystal < 0.36 compatible
+
     include Wipe
 
     Log = ::Log.for self
