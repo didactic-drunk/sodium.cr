@@ -2,7 +2,7 @@ language: crystal
 os:
 - linux
 install:
-- SODIUM_BUILD_DEBUG=1 LIBSODIUM_BUILD_DIR=$HOME/libsodium ./build/libsodium_install.sh
+- SODIUM_BUILD_DEBUG=1 LIBSODIUM_BUILD_DIR=$HOME/libsodium ./build/libsodium_install
 before_script:
 - export LIBSODIUM_BUILD_DIR=$HOME/libsodium
 after_failure:
