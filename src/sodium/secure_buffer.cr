@@ -64,6 +64,12 @@ module Sodium
       noaccess!
     end
 
+    def wipe
+      yield
+    ensure
+      wipe
+    end
+
     def finalize
       LibSodium.sodium_free @ptr
     end
