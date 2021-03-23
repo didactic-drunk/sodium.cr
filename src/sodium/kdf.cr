@@ -91,6 +91,14 @@ module Sodium
       Sign::SecretKey.new seed: subkey
     end
 
+    # Convenience method to create a new CryptoBox::Aead::XChaCha20Poly1305Ietf without handling the key.
+    #
+    # See derive() for further information on context and subkey_id.
+    def derive_aead_xchacha20poly1305_ietf(context, subkey_id) : Cipher::Aead::XChaCha20Poly1305Ietf
+      subkey = derive context, subkey_id, Cipher::Aead::XChaCha20Poly1305Ietf::KEY_SIZE
+      Cipher::Aead::XChaCha20Poly1305Ietf.new subkey
+    end
+
     # Convenience method to create a new SecretBox without handling the key.
     #
     # See derive() for further information on context and subkey_id.
