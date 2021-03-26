@@ -15,6 +15,19 @@ module Sodium
   # Memory for this class is held in a sodium guarded page with noaccess.
   # Readonly access is temporarily enabled when deriving keys.
   # Calling #to_slice marks the page readonly permanently.
+  #
+  # It's recommended to use a #wipe block to erase the master key when no longer needed
+  # ```
+  # kdf = Kdf.new
+  # ...
+  # kdf.wipe do
+  #  ### Warning: abnormal exit may not wipe
+  #  # encrypt/decrypt data
+  # end # key erased
+  # # main application logic
+  # ```
+  #
+
   # ```
   class Kdf
     include Wipe
