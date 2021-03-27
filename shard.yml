@@ -4,7 +4,7 @@ version: 1.2.1
 authors:
 - Andrew Hamon <andrew@hamon.cc>
 - Didactic Drunk <1479616+didactic-drunk@users.noreply.github.com>
-crystal: 0.36.0
+crystal: ">= 0.36.0"
 targets:
   pwhash_selector:
     main: examples/pwhash_selector.cr
