@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.36.1">
+<meta name="crystal_docs.project_version" content="HEAD">
+<meta name="crystal_docs.project_name" content="sodium">
+
+
+
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/doc.js"></script>
+
+  <meta name="repository-name" content="sodium">
+  <title>sodium HEAD</title>
+  <script type="text/javascript">
+  CrystalDocs.base_path = "";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="index.html">
+          sodium
+        </a>
+      </h1>
+
+      <span class="project-version">
+        HEAD
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="sodium/toplevel" data-name="top level namespace">
+      <a href="toplevel.html">Top Level Namespace</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium" data-name="sodium">
+      <a href="Sodium.html">Sodium</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Cipher" data-name="sodium::cipher">
+      <a href="Sodium/Cipher.html">Cipher</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Cipher/Aead" data-name="sodium::cipher::aead">
+      <a href="Sodium/Cipher/Aead.html">Aead</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Aead/Chalsa" data-name="sodium::cipher::aead::chalsa">
+      <a href="Sodium/Cipher/Aead/Chalsa.html">Chalsa</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Aead/XChaCha20Poly1305Ietf" data-name="sodium::cipher::aead::xchacha20poly1305ietf">
+      <a href="Sodium/Cipher/Aead/XChaCha20Poly1305Ietf.html">XChaCha20Poly1305Ietf</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/ChaCha20" data-name="sodium::cipher::chacha20">
+      <a href="Sodium/Cipher/ChaCha20.html">ChaCha20</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/ChaCha20Ietf" data-name="sodium::cipher::chacha20ietf">
+      <a href="Sodium/Cipher/ChaCha20Ietf.html">ChaCha20Ietf</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Chalsa" data-name="sodium::cipher::chalsa">
+      <a href="Sodium/Cipher/Chalsa.html">Chalsa</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Salsa20" data-name="sodium::cipher::salsa20">
+      <a href="Sodium/Cipher/Salsa20.html">Salsa20</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Cipher/SecretStream" data-name="sodium::cipher::secretstream">
+      <a href="Sodium/Cipher/SecretStream.html">SecretStream</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/SecretStream/XChaCha20Poly1305" data-name="sodium::cipher::secretstream::xchacha20poly1305">
+      <a href="Sodium/Cipher/SecretStream/XChaCha20Poly1305.html">XChaCha20Poly1305</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/XChaCha20" data-name="sodium::cipher::xchacha20">
+      <a href="Sodium/Cipher/XChaCha20.html">XChaCha20</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/XSalsa20" data-name="sodium::cipher::xsalsa20">
+      <a href="Sodium/Cipher/XSalsa20.html">XSalsa20</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/CryptoBox" data-name="sodium::cryptobox">
+      <a href="Sodium/CryptoBox.html">CryptoBox</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/CryptoBox/PublicKey" data-name="sodium::cryptobox::publickey">
+      <a href="Sodium/CryptoBox/PublicKey.html">PublicKey</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/CryptoBox/PublicKey/SerializeConverter" data-name="sodium::cryptobox::publickey::serializeconverter">
+      <a href="Sodium/CryptoBox/PublicKey/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/CryptoBox/SecretKey" data-name="sodium::cryptobox::secretkey">
+      <a href="Sodium/CryptoBox/SecretKey.html">SecretKey</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Digest" data-name="sodium::digest">
+      <a href="Sodium/Digest.html">Digest</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Digest/Blake2b" data-name="sodium::digest::blake2b">
+      <a href="Sodium/Digest/Blake2b.html">Blake2b</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Error" data-name="sodium::error">
+      <a href="Sodium/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Error/DecryptionFailed" data-name="sodium::error::decryptionfailed">
+      <a href="Sodium/Error/DecryptionFailed.html">DecryptionFailed</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Error/MemcmpFailed" data-name="sodium::error::memcmpfailed">
+      <a href="Sodium/Error/MemcmpFailed.html">MemcmpFailed</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Error/VerificationFailed" data-name="sodium::error::verificationfailed">
+      <a href="Sodium/Error/VerificationFailed.html">VerificationFailed</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Kdf" data-name="sodium::kdf">
+      <a href="Sodium/Kdf.html">Kdf</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Key" data-name="sodium::key">
+      <a href="Sodium/Key.html">Key</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Nonce" data-name="sodium::nonce">
+      <a href="Sodium/Nonce.html">Nonce</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Nonce/Error" data-name="sodium::nonce::error">
+      <a href="Sodium/Nonce/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Nonce/Error/Reused" data-name="sodium::nonce::error::reused">
+      <a href="Sodium/Nonce/Error/Reused.html">Reused</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Nonce/SerializeConverter" data-name="sodium::nonce::serializeconverter">
+      <a href="Sodium/Nonce/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Password" data-name="sodium::password">
+      <a href="Sodium/Password.html">Password</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Abstract" data-name="sodium::password::abstract">
+      <a href="Sodium/Password/Abstract.html">Abstract</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Password/Error" data-name="sodium::password::error">
+      <a href="Sodium/Password/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Error/Verify" data-name="sodium::password::error::verify">
+      <a href="Sodium/Password/Error/Verify.html">Verify</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Hash" data-name="sodium::password::hash">
+      <a href="Sodium/Password/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Password/Key" data-name="sodium::password::key">
+      <a href="Sodium/Password/Key.html">Key</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Key/Create" data-name="sodium::password::key::create">
+      <a href="Sodium/Password/Key/Create.html">Create</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Mode" data-name="sodium::password::mode">
+      <a href="Sodium/Password/Mode.html">Mode</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Params" data-name="sodium::password::params">
+      <a href="Sodium/Password/Params.html">Params</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecretBox" data-name="sodium::secretbox">
+      <a href="Sodium/SecretBox.html">SecretBox</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/SecureBuffer" data-name="sodium::securebuffer">
+      <a href="Sodium/SecureBuffer.html">SecureBuffer</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/SecureBuffer/Error" data-name="sodium::securebuffer::error">
+      <a href="Sodium/SecureBuffer/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/Error/InvalidStateTransition" data-name="sodium::securebuffer::error::invalidstatetransition">
+      <a href="Sodium/SecureBuffer/Error/InvalidStateTransition.html">InvalidStateTransition</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/Error/KeyWiped" data-name="sodium::securebuffer::error::keywiped">
+      <a href="Sodium/SecureBuffer/Error/KeyWiped.html">KeyWiped</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/State" data-name="sodium::securebuffer::state">
+      <a href="Sodium/SecureBuffer/State.html">State</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Sign" data-name="sodium::sign">
+      <a href="Sodium/Sign.html">Sign</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Sign/PublicKey" data-name="sodium::sign::publickey">
+      <a href="Sodium/Sign/PublicKey.html">PublicKey</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Sign/PublicKey/SerializeConverter" data-name="sodium::sign::publickey::serializeconverter">
+      <a href="Sodium/Sign/PublicKey/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Sign/SecretKey" data-name="sodium::sign::secretkey">
+      <a href="Sodium/Sign/SecretKey.html">SecretKey</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1><a id="sodium.cr" class="anchor" href="#sodium.cr">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>sodium.cr</h1>
+
+<p><a href="https://travis-ci.org/didactic-drunk/sodium.cr"><img src="https://travis-ci.org/didactic-drunk/sodium.cr.svg?branch=master" alt="Build Status"/></a>
+<a href="https://github.com/didactic-drunk/sodium.cr/releases"><img src="https://img.shields.io/github/release/didactic-drunk/sodium.cr.svg" alt="GitHub release"/></a>
+<a href="https://didactic-drunk.github.io/sodium.cr/"><img src="https://img.shields.io/badge/docs-available-brightgreen.svg" alt="Docs"/></a></p>
+
+<p>Crystal bindings for the <a href="https://libsodium.gitbook.io/doc/">libsodium API</a></p>
+
+<h2><a id="goals" class="anchor" href="#goals">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Goals</h2>
+
+<ul><li>Provide the most commonly used libsodium API's.</li><li>Provide an easy to use API based on reviewing most other <a href="https://libsodium.gitbook.io/doc/bindings_for_other_languages">libsodium bindings</a>.</li><li>Test for compatibility against other libsodium bindings to ensure interoperability.</li><li>Always provide a stream interface to handle arbitrarily sized data when one is available.</li><li>Drop in replacement classes compatible with OpenSSL::{Digest,Cipher} when possible.</li><li>Use the newest system packaged libsodium or download the most recent stable version without manual configuration.</li></ul>
+
+<h2><a id="features" class="anchor" href="#features">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Features</h2>
+
+<ul><li><a href="https://libsodium.gitbook.io/doc/public-key_cryptography">Public-Key Cryptography</a></li><ul><li>[x] ☑ <a href="https://libsodium.gitbook.io/doc/public-key_cryptography/authenticated_encryption">Crypto Box Easy</a></li><li>[x] <a href="https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes">Sealed Box</a></li><li>[ ] <a href="https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures">Combined Signatures</a></li><li>[x] ☑ <a href="https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures">Detached Signatures</a></li><li>[ ] <a href="https://libsodium.gitbook.io/doc/public-key_cryptography/public-key_signatures">Pre-hashed Signatures</a></li></ul><li><a href="https://libsodium.gitbook.io/doc/secret-key_cryptography">Secret-Key Cryptography</a></li><ul><li>Secret Box</li><li>[x] ☑ <a href="https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption">Combined mode</a></li><li>[ ] <a href="https://libsodium.gitbook.io/doc/secret-key_cryptography/authenticated_encryption">Detached mode</a></li><li>[x] <a href="https://libsodium.gitbook.io/doc/secret-key_cryptography/secretstream">Secret Stream</a></li><li><a href="https://libsodium.gitbook.io/doc/secret-key_cryptography/aead">AEAD</a></li><li>[ ] AES256-GCM (Requires hardware acceleration)</li><li>[x] ☑ <a href="https://libsodium.gitbook.io/doc/secret-key_cryptography/aead/chacha20-poly1305/xchacha20-poly1305_construction">XChaCha20-Poly1305-IETF</a></li><li>[ ] <a href="https://libsodium.gitbook.io/doc/secret-key_cryptography/aead/chacha20-poly1305/ietf_chacha20-poly1305_construction">ChaCha20-Poly1305-IETF</a></li><li>[ ] <a href="https://libsodium.gitbook.io/doc/secret-key_cryptography/aead/chacha20-poly1305">ChaCha20-Poly1305</a></li><li>[x] Combined and detached mode</li></ul><li><a href="https://libsodium.gitbook.io/doc/hashing">Hashing</a></li><ul><li>[x] ☑ <a href="https://libsodium.gitbook.io/doc/hashing/generic_hashing">Blake2b</a></li><li>[x] Complete libsodium implementation including <code>key</code>, <code>salt</code>, <code>personal</code> and fully selectable output sizes.</li><li>[ ] <a href="https://libsodium.gitbook.io/doc/hashing/short-input_hashing">SipHash</a></li></ul><li><a href="https://libsodium.gitbook.io/doc/password_hashing">Password Hashing</a></li><ul><li>[x] ☑ <a href="https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function">Argon2</a> (Use for new applications)</li><li>[ ] <a href="https://libsodium.gitbook.io/doc/advanced/scrypt">Scrypt</a> (For compatibility with older applications)</li></ul><li>Other</li><ul><li>[x] <a href="https://libsodium.gitbook.io/doc/key_derivation">Key Derivation</a></li><li>[ ] <a href="https://libsodium.gitbook.io/doc/key_exchange">Key Exchange</a></li></ul><li><a href="https://libsodium.gitbook.io/doc/advanced">Advanced</a></li><ul><li><a href="https://libsodium.gitbook.io/doc/advanced/stream_ciphers">Stream Ciphers</a></li><li>[x] XSalsa20</li><li>[x] Salsa20</li><li>[x] XChaCha20</li><li>[x] ChaCha20 Ietf</li><li>[x] ChaCha20</li><li>[x] Easy to use methods available for use as a CSPRNG that are faster and safer than Crystal's.  See <code>benchmarks/rand.out</code>.</li><li>[ ] <a href="https://libsodium.gitbook.io/doc/advanced/poly1305">One time auth</a></li><li>[ ] Padding</li></ul><li>Library features</li><ul><li>[x] Faster builds by requiring what you need (<code>require "sodium/secret_box"</code>)</li><li>[x] Nonce reuse detection.</li><li>[x] All SecretKey's held in libsodium guarded memory.</li><li>[x] No heap allocations after #initialize when possible.</li><li>[x] Fast.  Benchmarks available in <code>benchmarks</code>.</li><li>[x] <a href="THREAD_SAFETY.md">Most classes are safe to share between threads.</a></li><li>[x] Tested with real crystal threads and will continue to work when crystal officially supports threading.</li><li>[x] Most classes are safe to share between threads.  Even</li><li>[ ] Controlled memory wiping (by calling <code>.close</code>)</li></ul></ul>
+
+<p>☑ Indicate specs are compared against test vectors from another source.</p>
+
+<p>Several features in libsodium are already provided by Crystal:</p>
+
+<ul><li>Random (Use <a href="https://crystal-lang.org/api/latest/Random/Secure.html">Random::Secure</a>)</li><li>SHA-2 (Use <a href="https://crystal-lang.org/api/latest/OpenSSL/Digest.html">OpenSSL::Digest</a>)</li><li>HMAC SHA-2 (Use <a href="https://crystal-lang.org/api/latest/OpenSSL/HMAC.html">OpenSSL::HMAC</a>)</li><li>Hex conversion (Use <a href="https://crystal-lang.org/api/latest/String.html#hexbytes%3ABytes-instance-method">String#hexbytes</a>)</li></ul>
+
+<h2><a id="what-should-i-use-for-my-application" class="anchor" href="#what-should-i-use-for-my-application">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>What should I use for my application?</h2>
+
+<p>| Class | |
+| --- | --- |
+| Only use <code>CryptoBox::SecretKey</code> <code>Sign::SecretKey</code> <code>Aead::XChaCha20Poly1305Ietf</code> <code>SecretBox</code> | I don't know much about crypto. |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/CryptoBox/SecretKey.html"><code>Sodium::CryptoBox::SecretKey</code></a> .box | I want to encrypt + authenticate data using public key encryption. |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/CryptoBox/PublicKey.html"><code>Sodium::CryptoBox::SecretKey</code></a> .encrypt | I want anonymously send encrypted data. (No signatures) |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/Sign/SecretKey.html"><code>Sodium::Sign::SecretKey</code></a> | I want to sign or verify messages. (No encryption) |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/Aead/XChaCha20Poly1305Ietf.html"><code>Sodium::Cipher::Aead::XChaCha20Poly1305Ietf</code> (new applications) <code>Sodium::SecretBox</code> (compatibility with older applications)</a> | I have a shared key and want to encrypt + authenticate data. |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/Aead/XChaCha20Poly1305Ietf.html"><code>Sodium::Cipher::Aead::XChaCha20Poly1305Ietf</code></a> | I have a shared key and want to encrypt + authenticate data and authenticate additional plaintext data. |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/SecretStream/XChaCha20Poly1305.html"><code>Sodium::Cipher::SecretStream</code></a> | I have a shared key and want encrypt + authenticate streamed data. |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/Digest/Blake2b.html"><code>Sodium::Digest::Blake2b</code></a> | I want to hash data fast and securely. |
+| <code>Sodium::Digest::SipHash</code> | I want to hash data really fast and less securely. (Not implemented yet) |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/Password/Hash.html"><code>Sodium::Password::Hash</code></a> | I want to hash a password and store it. |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/Password/Key.html"><code>Sodium::Password::Key</code></a> | I want to derive a key from a password. |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/Kdf.html"><code>Sodium::Kdf</code></a> | I have a high quality master key and want to make subkeys. |
+| <a href="https://didactic-drunk.github.io/sodium.cr/Sodium/Cipher/Chalsa.html"><code>Sodium::Cipher::Chalsa</code></a> | What goes with guacamole? |
+| Everything else | I want to design my own crypto protocol and probably do it wrong. |</p>
+
+<h2><a id="installation" class="anchor" href="#installation">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Installation</h2>
+
+<p><strong><a href="https://download.libsodium.org/doc/installation/">Optionally Install libsodium.</a></strong>
+A recent version of libsodium is automatically downloaded and compiled if you don't install your own version.</p>
+
+<p>Add this to your application's <code>shard.yml</code>:</p>
+
+<pre><code class="language-yaml">dependencies:
+  sodium:
+    github: didactic-drunk/sodium.cr</code></pre>
+
+<h2><a id="usage" class="anchor" href="#usage">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Usage</h2>
+
+<p>See <code>examples</code> for help on using these classes in a complete application.</p>
+
+<p>The <code>specs</code> provide the best examples of how to use or misuse individual classes.</p>
+
+<pre><code class="language-crystal">
+<span class="c">### CryptoBox authenticated easy encryption</span></code></pre>
+
+<p>require "sodium"</p>
+
+<p>data = "Hello World!"</p>
+
+<h1><a id="alice-is-the-sender" class="anchor" href="#alice-is-the-sender">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Alice is the sender</h1>
+
+<p>alice = Sodium::CryptoBox::SecretKey.new</p>
+
+<h1><a id="bob-is-the-recipient" class="anchor" href="#bob-is-the-recipient">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Bob is the recipient</h1>
+
+<p>bob = Sodium::CryptoBox::SecretKey.new</p>
+
+<h1><a id="precompute-a-shared-secret-between-alice-and-bob." class="anchor" href="#precompute-a-shared-secret-between-alice-and-bob.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Precompute a shared secret between alice and bob.</h1>
+
+<p>box = alice.box bob.public_key</p>
+
+<h1><a id="encrypt-a-message-for-bob-using-his-public-key-signing-it-with-alices" class="anchor" href="#encrypt-a-message-for-bob-using-his-public-key-signing-it-with-alices">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Encrypt a message for Bob using his public key, signing it with Alice's</h1>
+
+<h1><a id="secret-key" class="anchor" href="#secret-key">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>secret key</h1>
+
+<p>encrypted, nonce = box.encrypt data</p>
+
+<h1><a id="precompute-within-a-block.-the-shared-secret-is-wiped-when-the-block-exits." class="anchor" href="#precompute-within-a-block.-the-shared-secret-is-wiped-when-the-block-exits.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Precompute within a block.  The shared secret is wiped when the block exits.</h1>
+
+<p>bob.box alice.public_key do |box|
+  # Decrypt the message using Bob's secret key, and verify its signature against
+  # Alice's public key
+  decrypted = box.decrypt encrypted, nonce: nonce</p>
+
+<p>String.new(decrypted) # => "Hello World!"
+end</p>
+
+<pre><code class="language-crystal">
+<span class="c">### Unauthenticated public key encryption</span></code></pre>
+
+<p>data = "Hello World!"</p>
+
+<h1><a id="bob-is-the-recipient" class="anchor" href="#bob-is-the-recipient">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Bob is the recipient</h1>
+
+<p>bob = Sodium::CryptoBox::SecretKey.new</p>
+
+<h1><a id="encrypt-a-message-for-bob-using-his-public-key" class="anchor" href="#encrypt-a-message-for-bob-using-his-public-key">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Encrypt a message for Bob using his public key</h1>
+
+<p>encrypted = bob.public_key.encrypt data</p>
+
+<h1><a id="decrypt-the-message-using-bobs-secret-key" class="anchor" href="#decrypt-the-message-using-bobs-secret-key">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Decrypt the message using Bob's secret key</h1>
+
+<p>decrypted = bob.decrypt encrypted
+String.new(decrypted) # => "Hello World!"</p>
+
+<pre><code class="language-crystal">
+<span class="c">### Public key signing</span></code></pre>
+
+<p>message = "Hello World!"</p>
+
+<p>secret_key = Sodium::Sign::SecretKey.new</p>
+
+<h1><a id="sign-the-message" class="anchor" href="#sign-the-message">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Sign the message</h1>
+
+<p>signature = secret_key.sign_detached message</p>
+
+<h1><a id="send-secret-key.public-key-to-the-recipient" class="anchor" href="#send-secret-key.public-key-to-the-recipient">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Send secret_key.public_key to the recipient</h1>
+
+<h1><a id="on-the-recipient" class="anchor" href="#on-the-recipient">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>On the recipient</h1>
+
+<p>public_key = Sodium::Sign::PublicKey.new key_bytes</p>
+
+<h1><a id="raises-sodiumerrorverification-failed-on-failure." class="anchor" href="#raises-sodiumerrorverification-failed-on-failure.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>raises Sodium::Error::VerificationFailed on failure.</h1>
+
+<p>public_key.verify_detached message, signature</p>
+
+<pre><code class="language-crystal">
+<span class="c">### Secret Key Encryption</span></code></pre>
+
+<p>box = Sodium::SecretBox.new</p>
+
+<p>message = "foobar"
+encrypted, nonce = box.encrypt message</p>
+
+<h1><a id="on-the-other-side." class="anchor" href="#on-the-other-side.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>On the other side.</h1>
+
+<p>box = Sodium::SecretKey.new key
+message = box.decrypt encrypted, nonce: nonce</p>
+
+<pre><code class="language-crystal">
+<span class="c">### Blake2b</span></code></pre>
+
+<p>key = Bytes.new Sodium::Digest::Blake2B::KEY_SIZE
+salt = Bytes.new Sodium::Digest::Blake2B::SALT_SIZE
+personal = Bytes.new Sodium::Digest::Blake2B::PERSONAL_SIZE
+out_size = 64 # bytes between Sodium::Digest::Blake2B::OUT_SIZE_MIN and Sodium::Digest::Blake2B::OUT_SIZE_MAX
+data = "data".to_slice</p>
+
+<h1><a id="output-size-key-salt-and-personal-are-optional." class="anchor" href="#output-size-key-salt-and-personal-are-optional.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>output_size, key, salt, and personal are optional.</h1>
+
+<p>digest = Sodium::Digest::Blake2b.new out_size, key: key, salt: salt, personal: personal
+digest.update data
+output = d.hexfinal</p>
+
+<p>digest.reset # Reuse existing object to hash again.
+digest.update data
+output = d.hexfinal</p>
+
+<pre><code class="language-crystal">
+<span class="c">### Key derivation</span></code></pre>
+
+<p>kdf = Sodium::Kdf.new</p>
+
+<h1><a id="kdf.derive8-byte-context-subkey-id-subkey-size" class="anchor" href="#kdf.derive8-byte-context-subkey-id-subkey-size">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>kdf.derive(8_byte_context, subkey_id, subkey_size)</h1>
+
+<p>subkey1 = kdf.derive "context1", 0, 16
+subkey2 = kdf.derive "context1", 1, 16
+subkey3 = kdf.derive "context2", 0, 32
+subkey4 = kdf.derive "context2", 1, 64</p>
+
+<pre><code class="language-crystal">
+<span class="c">### Password based keys</span></code></pre>
+
+<p>pwcreate = Sodium::Password::Key::Create.new</p>
+
+<h1><a id="take-approximately-1-second-to-derive-a-key." class="anchor" href="#take-approximately-1-second-to-derive-a-key.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Take approximately 1 second to derive a key.</h1>
+
+<p>pwcreate.tcost = 1.0</p>
+
+<p>pass = "1234"
+key, params = pwcreate.create_key pass</p>
+
+<h1><a id="store-params-or-params.to-h-for-later." class="anchor" href="#store-params-or-params.to-h-for-later.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Store <code>params</code> or <code>params.to_h</code> for later.</h1>
+
+<h1><a id="derive-the-same-key-from-the-stored-params." class="anchor" href="#derive-the-same-key-from-the-stored-params.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Derive the same key from the stored params.</h1>
+
+<p>pwkey = Sodium::Password::Key.from_params params.to_h
+key = pekey.derive_key pass</p>
+
+<pre><code class="language-crystal">
+<span class="c">### Password Hashing</span></code></pre>
+
+<p>pwhash = Sodium::Password::Hash.new</p>
+
+<p>pwhash.mem = Sodium::Password::MEMLIMIT_MIN
+pwhash.ops = Sodium::Password::OPSLIMIT_MIN</p>
+
+<p>pass = "1234"
+hash = pwhash.create pass
+pwhash.verify hash, pass</p>
+
+<pre><code class="language-crystal">
+<span class="t">Use</span> <span class="s">`examples/pwhash_selector.cr`</span> to help choose ops<span class="s">/mem limits.
+
+
+Example output:
+Ops limit →
+
+|          |       1 |       4 |      16 |      64 |     256 |    1024 |    4096 |   16384 |   65536 |  262144 | 1048576 |
+| -------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
+|       8K |         |         |         |         |         |         |         |         |         |  0.542s |  2.114s |
+|      32K |         |         |         |         |         |         |         |         |  0.513s |  2.069s |
+|     128K |         |         |         |         |         |         |         |  0.530s |  2.121s |
+|     512K |         |         |         |         |         |         |  0.566s |  2.237s |
+|    2048K |         |         |         |         |         |  0.567s |  2.290s |
+|    8192K |         |         |         |         |  0.670s |  2.542s |
+|   32768K |         |         |         |  0.684s |  2.777s |
+|  131072K |         |         |  0.805s |  3.106s |
+|  524288K |  0.504s |  1.135s |  3.661s |
+| 2097152K |  2.119s |
+|   Memory |
+
+
+
+## Contributing
+
+1. Fork it ( https:/</span><span class="s">/github.com/</span>didactic<span class="o">-</span>drunk<span class="s">/sodium.cr/</span>fork )
+<span class="n">2</span>. <span class="o">**</span><span class="t">Install</span> a formatting check git hook (ln <span class="o">-</span>sf ..<span class="s">/../</span>scripts<span class="s">/git/</span>pre<span class="o">-</span>commit .git<span class="s">/hooks)**
+3. Create your feature branch (git checkout -b my-new-feature)
+4. Commit your changes (git commit -am &#39;Add some feature&#39;)
+5. Push to the branch (git push origin my-new-feature)
+6. Create a new Pull Request
+
+## Project History
+
+* Originally created by [Andrew Hamon](https:/</span><span class="s">/github.com/</span>andrewhamons<span class="s">/cox)
+* Forked by [Didactic Drunk](https:/</span><span class="s">/github.com/</span>didactic<span class="o">-</span>drunk<span class="s">/cox) for lack of updates in the original project.
+* Complaints about the name being too controversial.  Project name changed from &quot;cox&quot; to a more libsodium related name of &quot;salty seaman&quot;.
+* ~50% complete libsodium API.
+* More complaints about the name.  Dead hooker jokes added.
+* None of the original API is left.
+* More complaints threatening a boycott.  Told them &quot;Go ahead, I own Coca Cola and Water&quot;.
+* Account unsuspended.
+* Unrelated to the boycott the project name changed to &quot;libsodium&quot; because sodium happens to be a tasty byproduct of the two earlier names.
+* Account unsuspended.
+* Dead hooker jokes (mostly) removed.
+
+## Contributors
+
+- [andrewhamon](https:/</span><span class="s">/github.com/</span>andrewhamon) <span class="t">Andrew</span> <span class="t">Hamon</span> <span class="o">-</span> creator, former maintainer
+<span class="o">-</span> [dorkrawk](https<span class="n">://</span>github.com<span class="s">/dorkrawk) Dave Schwantes - contributor
+- [didactic-drunk](https:/</span><span class="s">/github.com/</span>didactic<span class="o">-</span>drunk) <span class="o">-</span> current maintainer</code></pre>
+</div>
+</body>
+</html>

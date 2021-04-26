@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.36.1">
+<meta name="crystal_docs.project_version" content="HEAD">
+<meta name="crystal_docs.project_name" content="sodium">
+
+
+
+<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../../js/doc.js"></script>
+
+  <meta name="repository-name" content="sodium">
+  <title>Sodium::Cipher::Aead::Chalsa - sodium HEAD</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../../../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../../../index.html">
+          sodium
+        </a>
+      </h1>
+
+      <span class="project-version">
+        HEAD
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="sodium/toplevel" data-name="top level namespace">
+      <a href="../../../toplevel.html">Top Level Namespace</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="sodium/Sodium" data-name="sodium">
+      <a href="../../../Sodium.html">Sodium</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="sodium/Sodium/Cipher" data-name="sodium::cipher">
+      <a href="../../../Sodium/Cipher.html">Cipher</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="sodium/Sodium/Cipher/Aead" data-name="sodium::cipher::aead">
+      <a href="../../../Sodium/Cipher/Aead.html">Aead</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="sodium/Sodium/Cipher/Aead/Chalsa" data-name="sodium::cipher::aead::chalsa">
+      <a href="../../../Sodium/Cipher/Aead/Chalsa.html">Chalsa</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Aead/XChaCha20Poly1305Ietf" data-name="sodium::cipher::aead::xchacha20poly1305ietf">
+      <a href="../../../Sodium/Cipher/Aead/XChaCha20Poly1305Ietf.html">XChaCha20Poly1305Ietf</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/ChaCha20" data-name="sodium::cipher::chacha20">
+      <a href="../../../Sodium/Cipher/ChaCha20.html">ChaCha20</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/ChaCha20Ietf" data-name="sodium::cipher::chacha20ietf">
+      <a href="../../../Sodium/Cipher/ChaCha20Ietf.html">ChaCha20Ietf</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Chalsa" data-name="sodium::cipher::chalsa">
+      <a href="../../../Sodium/Cipher/Chalsa.html">Chalsa</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Salsa20" data-name="sodium::cipher::salsa20">
+      <a href="../../../Sodium/Cipher/Salsa20.html">Salsa20</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Cipher/SecretStream" data-name="sodium::cipher::secretstream">
+      <a href="../../../Sodium/Cipher/SecretStream.html">SecretStream</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/SecretStream/XChaCha20Poly1305" data-name="sodium::cipher::secretstream::xchacha20poly1305">
+      <a href="../../../Sodium/Cipher/SecretStream/XChaCha20Poly1305.html">XChaCha20Poly1305</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/XChaCha20" data-name="sodium::cipher::xchacha20">
+      <a href="../../../Sodium/Cipher/XChaCha20.html">XChaCha20</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/XSalsa20" data-name="sodium::cipher::xsalsa20">
+      <a href="../../../Sodium/Cipher/XSalsa20.html">XSalsa20</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/CryptoBox" data-name="sodium::cryptobox">
+      <a href="../../../Sodium/CryptoBox.html">CryptoBox</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/CryptoBox/PublicKey" data-name="sodium::cryptobox::publickey">
+      <a href="../../../Sodium/CryptoBox/PublicKey.html">PublicKey</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/CryptoBox/PublicKey/SerializeConverter" data-name="sodium::cryptobox::publickey::serializeconverter">
+      <a href="../../../Sodium/CryptoBox/PublicKey/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/CryptoBox/SecretKey" data-name="sodium::cryptobox::secretkey">
+      <a href="../../../Sodium/CryptoBox/SecretKey.html">SecretKey</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Digest" data-name="sodium::digest">
+      <a href="../../../Sodium/Digest.html">Digest</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Digest/Blake2b" data-name="sodium::digest::blake2b">
+      <a href="../../../Sodium/Digest/Blake2b.html">Blake2b</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Error" data-name="sodium::error">
+      <a href="../../../Sodium/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Error/DecryptionFailed" data-name="sodium::error::decryptionfailed">
+      <a href="../../../Sodium/Error/DecryptionFailed.html">DecryptionFailed</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Error/MemcmpFailed" data-name="sodium::error::memcmpfailed">
+      <a href="../../../Sodium/Error/MemcmpFailed.html">MemcmpFailed</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Error/VerificationFailed" data-name="sodium::error::verificationfailed">
+      <a href="../../../Sodium/Error/VerificationFailed.html">VerificationFailed</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Kdf" data-name="sodium::kdf">
+      <a href="../../../Sodium/Kdf.html">Kdf</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Key" data-name="sodium::key">
+      <a href="../../../Sodium/Key.html">Key</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Nonce" data-name="sodium::nonce">
+      <a href="../../../Sodium/Nonce.html">Nonce</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Nonce/Error" data-name="sodium::nonce::error">
+      <a href="../../../Sodium/Nonce/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Nonce/Error/Reused" data-name="sodium::nonce::error::reused">
+      <a href="../../../Sodium/Nonce/Error/Reused.html">Reused</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Nonce/SerializeConverter" data-name="sodium::nonce::serializeconverter">
+      <a href="../../../Sodium/Nonce/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Password" data-name="sodium::password">
+      <a href="../../../Sodium/Password.html">Password</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Abstract" data-name="sodium::password::abstract">
+      <a href="../../../Sodium/Password/Abstract.html">Abstract</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Password/Error" data-name="sodium::password::error">
+      <a href="../../../Sodium/Password/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Error/Verify" data-name="sodium::password::error::verify">
+      <a href="../../../Sodium/Password/Error/Verify.html">Verify</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Hash" data-name="sodium::password::hash">
+      <a href="../../../Sodium/Password/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Password/Key" data-name="sodium::password::key">
+      <a href="../../../Sodium/Password/Key.html">Key</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Key/Create" data-name="sodium::password::key::create">
+      <a href="../../../Sodium/Password/Key/Create.html">Create</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Mode" data-name="sodium::password::mode">
+      <a href="../../../Sodium/Password/Mode.html">Mode</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Params" data-name="sodium::password::params">
+      <a href="../../../Sodium/Password/Params.html">Params</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecretBox" data-name="sodium::secretbox">
+      <a href="../../../Sodium/SecretBox.html">SecretBox</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/SecureBuffer" data-name="sodium::securebuffer">
+      <a href="../../../Sodium/SecureBuffer.html">SecureBuffer</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/SecureBuffer/Error" data-name="sodium::securebuffer::error">
+      <a href="../../../Sodium/SecureBuffer/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/Error/InvalidStateTransition" data-name="sodium::securebuffer::error::invalidstatetransition">
+      <a href="../../../Sodium/SecureBuffer/Error/InvalidStateTransition.html">InvalidStateTransition</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/Error/KeyWiped" data-name="sodium::securebuffer::error::keywiped">
+      <a href="../../../Sodium/SecureBuffer/Error/KeyWiped.html">KeyWiped</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/State" data-name="sodium::securebuffer::state">
+      <a href="../../../Sodium/SecureBuffer/State.html">State</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Sign" data-name="sodium::sign">
+      <a href="../../../Sodium/Sign.html">Sign</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Sign/PublicKey" data-name="sodium::sign::publickey">
+      <a href="../../../Sodium/Sign/PublicKey.html">PublicKey</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Sign/PublicKey/SerializeConverter" data-name="sodium::sign::publickey::serializeconverter">
+      <a href="../../../Sodium/Sign/PublicKey/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Sign/SecretKey" data-name="sodium::sign::secretkey">
+      <a href="../../../Sodium/Sign/SecretKey.html">SecretKey</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">abstract class</span> Sodium::Cipher::Aead::Chalsa
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../Sodium/Cipher/Aead/Chalsa.html">Sodium::Cipher::Aead::Chalsa</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="direct-known-subclasses" class="anchor" href="#direct-known-subclasses">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Direct Known Subclasses
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type"><a href="../../../Sodium/Cipher/Aead/XChaCha20Poly1305Ietf.html">Sodium::Cipher::Aead::XChaCha20Poly1305Ietf</a></li>
+    
+  </ul>
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L6" target="_blank">
+        sodium/cipher/aead/chalsa.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new(key:SecureBuffer)-class-method" class="signature"><strong>.new</strong>(key : SecureBuffer)</a>
+        
+          <div class="summary"><p>Initializes with a reference to an existing ky.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new(bytes:Bytes,erase=false)-class-method" class="signature"><strong>.new</strong>(bytes : Bytes, erase = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Initializes copying the key to a <code><a href="../../../Sodium/SecureBuffer.html">SecureBuffer</a></code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
+        
+          <div class="summary"><p>Initializes with a new random key.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#decrypt(src,dst:Bytes?=nil,*,nonce:Nonce,additional=nil):Bytes-instance-method" class="signature"><strong>#decrypt</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce : Nonce, additional = <span class="n">nil</span>) : Bytes</a>
+        
+          <div class="summary"><p>Decrypts <code>src</code> and returns plaintext Must supply <code>nonce</code> Must supply <code>additional</code> if supplied to #encrypt</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decrypt_detached(src,dst:Bytes?=nil,*,nonce=nil,mac:Bytes?=nil,additional=nil):Bytes-instance-method" class="signature"><strong>#decrypt_detached</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce = <span class="n">nil</span>, mac : Bytes? = <span class="n">nil</span>, additional = <span class="n">nil</span>) : Bytes</a>
+        
+          <div class="summary"><p>Decrypts <code>src</code> and returns plaintext Must supply <code>mac</code> and <code>nonce</code> Must supply <code>additional</code> if supplied to #encrypt</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decrypt_detached(src:Bytes,dst:Bytes?=nil,*,nonce:Sodium::Nonce,mac:Bytes,additional:String%7CBytes%7CNil=nil):Bytes-instance-method" class="signature"><strong>#decrypt_detached</strong>(src : Bytes, dst : Bytes? = <span class="n">nil</span>, *, nonce : Sodium::Nonce, mac : Bytes, additional : String | Bytes | Nil = <span class="n">nil</span>) : Bytes</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decrypt_detached_string(src,dst:Bytes?=nil,*,nonce=nil,mac:Bytes?=nil,additional=nil):String-instance-method" class="signature"><strong>#decrypt_detached_string</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce = <span class="n">nil</span>, mac : Bytes? = <span class="n">nil</span>, additional = <span class="n">nil</span>) : String</a>
+        
+          <div class="summary"><p>Decrypts <code>src</code> and returns plaintext Must supply <code>mac</code> and <code>nonce</code> Must supply <code>additional</code> if supplied to #encrypt</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decrypt_string(src,dst:Bytes?=nil,*,nonce:Nonce,additional=nil):String-instance-method" class="signature"><strong>#decrypt_string</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce : Nonce, additional = <span class="n">nil</span>) : String</a>
+        
+          <div class="summary"><p>Decrypts <code>src</code> and returns plaintext Must supply <code>nonce</code> Must supply <code>additional</code> if supplied to #encrypt</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#dup-instance-method" class="signature"><strong>#dup</strong></a>
+        
+          <div class="summary"><p>Returns a shallow copy of this object.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#encrypt(src,dst:Bytes?=nil,*,nonce=nil,additional=nil)-instance-method" class="signature"><strong>#encrypt</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce = <span class="n">nil</span>, additional = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Encrypts <code>src</code> and returns {ciphertext, nonce}</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#encrypt_detached(src:Bytes,dst:Bytes?=nil,*,nonce:Sodium::Nonce?=nil,mac:Bytes?=nil,additional:String%7CBytes%7CNil=nil):Tuple(Bytes,Bytes,Sodium::Nonce)-instance-method" class="signature"><strong>#encrypt_detached</strong>(src : Bytes, dst : Bytes? = <span class="n">nil</span>, *, nonce : Sodium::Nonce? = <span class="n">nil</span>, mac : Bytes? = <span class="n">nil</span>, additional : String | Bytes | Nil = <span class="n">nil</span>) : Tuple(Bytes, Bytes, Sodium::Nonce)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#encrypt_detached(src,dst:Bytes?=nil,*,nonce=nil,mac:Bytes?=nil,additional=nil):Tuple(Bytes,Bytes,Nonce)-instance-method" class="signature"><strong>#encrypt_detached</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce = <span class="n">nil</span>, mac : Bytes? = <span class="n">nil</span>, additional = <span class="n">nil</span>) : Tuple(Bytes, Bytes, Nonce)</a>
+        
+          <div class="summary"><p>Encrypts <code>src</code> and returns {mac, ciphertext, nonce}</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#key:SecureBuffer-instance-method" class="signature"><strong>#key</strong> : SecureBuffer</a>
+        
+          <div class="summary"><p>Encryption key</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(key:SecureBuffer)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(key : <a href="../../../Sodium/SecureBuffer.html">SecureBuffer</a>)
+
+        <a class="method-permalink" href="#new(key:SecureBuffer)-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Initializes with a reference to an existing ky.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L16" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(bytes:Bytes,erase=false)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(bytes : Bytes, erase = <span class="n">false</span>)
+
+        <a class="method-permalink" href="#new(bytes:Bytes,erase=false)-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Initializes copying the key to a <code><a href="../../../Sodium/SecureBuffer.html">SecureBuffer</a></code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L22" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>
+
+        <a class="method-permalink" href="#new-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Initializes with a new random key.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L11" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="decrypt(src,dst:Bytes?=nil,*,nonce:Nonce,additional=nil):Bytes-instance-method">
+      <div class="signature">
+        
+        def <strong>decrypt</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce : <a href="../../../Sodium/Nonce.html">Nonce</a>, additional = <span class="n">nil</span>) : Bytes
+
+        <a class="method-permalink" href="#decrypt(src,dst:Bytes?=nil,*,nonce:Nonce,additional=nil):Bytes-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Decrypts <code>src</code> and returns plaintext
+Must supply <code>nonce</code>
+Must supply <code>additional</code> if supplied to #encrypt</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L40" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decrypt_detached(src,dst:Bytes?=nil,*,nonce=nil,mac:Bytes?=nil,additional=nil):Bytes-instance-method">
+      <div class="signature">
+        
+        def <strong>decrypt_detached</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce = <span class="n">nil</span>, mac : Bytes? = <span class="n">nil</span>, additional = <span class="n">nil</span>) : Bytes
+
+        <a class="method-permalink" href="#decrypt_detached(src,dst:Bytes?=nil,*,nonce=nil,mac:Bytes?=nil,additional=nil):Bytes-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Decrypts <code>src</code> and returns plaintext
+Must supply <code>mac</code> and <code>nonce</code>
+Must supply <code>additional</code> if supplied to #encrypt</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L65" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decrypt_detached(src:Bytes,dst:Bytes?=nil,*,nonce:Sodium::Nonce,mac:Bytes,additional:String|Bytes|Nil=nil):Bytes-instance-method">
+      <div class="signature">
+        abstract 
+        def <strong>decrypt_detached</strong>(src : Bytes, dst : Bytes? = <span class="n">nil</span>, *, nonce : <a href="../../../Sodium/Nonce.html">Sodium::Nonce</a>, mac : Bytes, additional : String | Bytes | Nil = <span class="n">nil</span>) : Bytes
+
+        <a class="method-permalink" href="#decrypt_detached(src:Bytes,dst:Bytes?=nil,*,nonce:Sodium::Nonce,mac:Bytes,additional:String%7CBytes%7CNil=nil):Bytes-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L79" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decrypt_detached_string(src,dst:Bytes?=nil,*,nonce=nil,mac:Bytes?=nil,additional=nil):String-instance-method">
+      <div class="signature">
+        
+        def <strong>decrypt_detached_string</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce = <span class="n">nil</span>, mac : Bytes? = <span class="n">nil</span>, additional = <span class="n">nil</span>) : String
+
+        <a class="method-permalink" href="#decrypt_detached_string(src,dst:Bytes?=nil,*,nonce=nil,mac:Bytes?=nil,additional=nil):String-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Decrypts <code>src</code> and returns plaintext
+Must supply <code>mac</code> and <code>nonce</code>
+Must supply <code>additional</code> if supplied to #encrypt</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L72" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decrypt_string(src,dst:Bytes?=nil,*,nonce:Nonce,additional=nil):String-instance-method">
+      <div class="signature">
+        
+        def <strong>decrypt_string</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce : <a href="../../../Sodium/Nonce.html">Nonce</a>, additional = <span class="n">nil</span>) : String
+
+        <a class="method-permalink" href="#decrypt_string(src,dst:Bytes?=nil,*,nonce:Nonce,additional=nil):String-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Decrypts <code>src</code> and returns plaintext
+Must supply <code>nonce</code>
+Must supply <code>additional</code> if supplied to #encrypt</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L51" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="dup-instance-method">
+      <div class="signature">
+        
+        def <strong>dup</strong>
+
+        <a class="method-permalink" href="#dup-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from class Reference
+            </div>
+          
+          <p>Returns a shallow copy of this object.</p>
+
+<p>This allocates a new object and copies the contents of
+<code>self</code> into it.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L83" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="encrypt(src,dst:Bytes?=nil,*,nonce=nil,additional=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>encrypt</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce = <span class="n">nil</span>, additional = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#encrypt(src,dst:Bytes?=nil,*,nonce=nil,additional=nil)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Encrypts <code>src</code> and returns {ciphertext, nonce}</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L28" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="encrypt_detached(src:Bytes,dst:Bytes?=nil,*,nonce:Sodium::Nonce?=nil,mac:Bytes?=nil,additional:String|Bytes|Nil=nil):Tuple(Bytes,Bytes,Sodium::Nonce)-instance-method">
+      <div class="signature">
+        abstract 
+        def <strong>encrypt_detached</strong>(src : Bytes, dst : Bytes? = <span class="n">nil</span>, *, nonce : <a href="../../../Sodium/Nonce.html">Sodium::Nonce</a>? = <span class="n">nil</span>, mac : Bytes? = <span class="n">nil</span>, additional : String | Bytes | Nil = <span class="n">nil</span>) : Tuple(Bytes, Bytes, <a href="../../../Sodium/Nonce.html">Sodium::Nonce</a>)
+
+        <a class="method-permalink" href="#encrypt_detached(src:Bytes,dst:Bytes?=nil,*,nonce:Sodium::Nonce?=nil,mac:Bytes?=nil,additional:String%7CBytes%7CNil=nil):Tuple(Bytes,Bytes,Sodium::Nonce)-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L78" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="encrypt_detached(src,dst:Bytes?=nil,*,nonce=nil,mac:Bytes?=nil,additional=nil):Tuple(Bytes,Bytes,Nonce)-instance-method">
+      <div class="signature">
+        
+        def <strong>encrypt_detached</strong>(src, dst : Bytes? = <span class="n">nil</span>, *, nonce = <span class="n">nil</span>, mac : Bytes? = <span class="n">nil</span>, additional = <span class="n">nil</span>) : Tuple(Bytes, Bytes, <a href="../../../Sodium/Nonce.html">Nonce</a>)
+
+        <a class="method-permalink" href="#encrypt_detached(src,dst:Bytes?=nil,*,nonce=nil,mac:Bytes?=nil,additional=nil):Tuple(Bytes,Bytes,Nonce)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Encrypts <code>src</code> and returns {mac, ciphertext, nonce}</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L58" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="key:SecureBuffer-instance-method">
+      <div class="signature">
+        
+        def <strong>key</strong> : <a href="../../../Sodium/SecureBuffer.html">SecureBuffer</a>
+
+        <a class="method-permalink" href="#key:SecureBuffer-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Encryption key</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/cipher/aead/chalsa.cr#L8" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

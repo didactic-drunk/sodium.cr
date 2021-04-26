@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.36.1">
+<meta name="crystal_docs.project_version" content="HEAD">
+<meta name="crystal_docs.project_name" content="sodium">
+
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/doc.js"></script>
+
+  <meta name="repository-name" content="sodium">
+  <title>Sodium::Error::DecryptionFailed - sodium HEAD</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../../index.html">
+          sodium
+        </a>
+      </h1>
+
+      <span class="project-version">
+        HEAD
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="sodium/toplevel" data-name="top level namespace">
+      <a href="../../toplevel.html">Top Level Namespace</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="sodium/Sodium" data-name="sodium">
+      <a href="../../Sodium.html">Sodium</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Cipher" data-name="sodium::cipher">
+      <a href="../../Sodium/Cipher.html">Cipher</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Cipher/Aead" data-name="sodium::cipher::aead">
+      <a href="../../Sodium/Cipher/Aead.html">Aead</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Aead/Chalsa" data-name="sodium::cipher::aead::chalsa">
+      <a href="../../Sodium/Cipher/Aead/Chalsa.html">Chalsa</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Aead/XChaCha20Poly1305Ietf" data-name="sodium::cipher::aead::xchacha20poly1305ietf">
+      <a href="../../Sodium/Cipher/Aead/XChaCha20Poly1305Ietf.html">XChaCha20Poly1305Ietf</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/ChaCha20" data-name="sodium::cipher::chacha20">
+      <a href="../../Sodium/Cipher/ChaCha20.html">ChaCha20</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/ChaCha20Ietf" data-name="sodium::cipher::chacha20ietf">
+      <a href="../../Sodium/Cipher/ChaCha20Ietf.html">ChaCha20Ietf</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Chalsa" data-name="sodium::cipher::chalsa">
+      <a href="../../Sodium/Cipher/Chalsa.html">Chalsa</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Salsa20" data-name="sodium::cipher::salsa20">
+      <a href="../../Sodium/Cipher/Salsa20.html">Salsa20</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Cipher/SecretStream" data-name="sodium::cipher::secretstream">
+      <a href="../../Sodium/Cipher/SecretStream.html">SecretStream</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/SecretStream/XChaCha20Poly1305" data-name="sodium::cipher::secretstream::xchacha20poly1305">
+      <a href="../../Sodium/Cipher/SecretStream/XChaCha20Poly1305.html">XChaCha20Poly1305</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/XChaCha20" data-name="sodium::cipher::xchacha20">
+      <a href="../../Sodium/Cipher/XChaCha20.html">XChaCha20</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/XSalsa20" data-name="sodium::cipher::xsalsa20">
+      <a href="../../Sodium/Cipher/XSalsa20.html">XSalsa20</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/CryptoBox" data-name="sodium::cryptobox">
+      <a href="../../Sodium/CryptoBox.html">CryptoBox</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/CryptoBox/PublicKey" data-name="sodium::cryptobox::publickey">
+      <a href="../../Sodium/CryptoBox/PublicKey.html">PublicKey</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/CryptoBox/PublicKey/SerializeConverter" data-name="sodium::cryptobox::publickey::serializeconverter">
+      <a href="../../Sodium/CryptoBox/PublicKey/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/CryptoBox/SecretKey" data-name="sodium::cryptobox::secretkey">
+      <a href="../../Sodium/CryptoBox/SecretKey.html">SecretKey</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Digest" data-name="sodium::digest">
+      <a href="../../Sodium/Digest.html">Digest</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Digest/Blake2b" data-name="sodium::digest::blake2b">
+      <a href="../../Sodium/Digest/Blake2b.html">Blake2b</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="sodium/Sodium/Error" data-name="sodium::error">
+      <a href="../../Sodium/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="sodium/Sodium/Error/DecryptionFailed" data-name="sodium::error::decryptionfailed">
+      <a href="../../Sodium/Error/DecryptionFailed.html">DecryptionFailed</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Error/MemcmpFailed" data-name="sodium::error::memcmpfailed">
+      <a href="../../Sodium/Error/MemcmpFailed.html">MemcmpFailed</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Error/VerificationFailed" data-name="sodium::error::verificationfailed">
+      <a href="../../Sodium/Error/VerificationFailed.html">VerificationFailed</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Kdf" data-name="sodium::kdf">
+      <a href="../../Sodium/Kdf.html">Kdf</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Key" data-name="sodium::key">
+      <a href="../../Sodium/Key.html">Key</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Nonce" data-name="sodium::nonce">
+      <a href="../../Sodium/Nonce.html">Nonce</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Nonce/Error" data-name="sodium::nonce::error">
+      <a href="../../Sodium/Nonce/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Nonce/Error/Reused" data-name="sodium::nonce::error::reused">
+      <a href="../../Sodium/Nonce/Error/Reused.html">Reused</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Nonce/SerializeConverter" data-name="sodium::nonce::serializeconverter">
+      <a href="../../Sodium/Nonce/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Password" data-name="sodium::password">
+      <a href="../../Sodium/Password.html">Password</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Abstract" data-name="sodium::password::abstract">
+      <a href="../../Sodium/Password/Abstract.html">Abstract</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Password/Error" data-name="sodium::password::error">
+      <a href="../../Sodium/Password/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Error/Verify" data-name="sodium::password::error::verify">
+      <a href="../../Sodium/Password/Error/Verify.html">Verify</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Hash" data-name="sodium::password::hash">
+      <a href="../../Sodium/Password/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Password/Key" data-name="sodium::password::key">
+      <a href="../../Sodium/Password/Key.html">Key</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Key/Create" data-name="sodium::password::key::create">
+      <a href="../../Sodium/Password/Key/Create.html">Create</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Mode" data-name="sodium::password::mode">
+      <a href="../../Sodium/Password/Mode.html">Mode</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Params" data-name="sodium::password::params">
+      <a href="../../Sodium/Password/Params.html">Params</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecretBox" data-name="sodium::secretbox">
+      <a href="../../Sodium/SecretBox.html">SecretBox</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/SecureBuffer" data-name="sodium::securebuffer">
+      <a href="../../Sodium/SecureBuffer.html">SecureBuffer</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/SecureBuffer/Error" data-name="sodium::securebuffer::error">
+      <a href="../../Sodium/SecureBuffer/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/Error/InvalidStateTransition" data-name="sodium::securebuffer::error::invalidstatetransition">
+      <a href="../../Sodium/SecureBuffer/Error/InvalidStateTransition.html">InvalidStateTransition</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/Error/KeyWiped" data-name="sodium::securebuffer::error::keywiped">
+      <a href="../../Sodium/SecureBuffer/Error/KeyWiped.html">KeyWiped</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/State" data-name="sodium::securebuffer::state">
+      <a href="../../Sodium/SecureBuffer/State.html">State</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Sign" data-name="sodium::sign">
+      <a href="../../Sodium/Sign.html">Sign</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Sign/PublicKey" data-name="sodium::sign::publickey">
+      <a href="../../Sodium/Sign/PublicKey.html">PublicKey</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Sign/PublicKey/SerializeConverter" data-name="sodium::sign::publickey::serializeconverter">
+      <a href="../../Sodium/Sign/PublicKey/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Sign/SecretKey" data-name="sodium::sign::secretkey">
+      <a href="../../Sodium/Sign/SecretKey.html">SecretKey</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> Sodium::Error::DecryptionFailed
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Sodium/Error/DecryptionFailed.html">Sodium::Error::DecryptionFailed</a></li><li class="superclass"><a href="../../Sodium/Error.html">Sodium::Error</a></li><li class="superclass">Exception</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/error.cr#L8" target="_blank">
+        sodium/error.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+</body>
+</html>

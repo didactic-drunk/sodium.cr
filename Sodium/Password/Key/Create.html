@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.36.1">
+<meta name="crystal_docs.project_version" content="HEAD">
+<meta name="crystal_docs.project_name" content="sodium">
+
+
+
+<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../../js/doc.js"></script>
+
+  <meta name="repository-name" content="sodium">
+  <title>Sodium::Password::Key::Create - sodium HEAD</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../../../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../../../index.html">
+          sodium
+        </a>
+      </h1>
+
+      <span class="project-version">
+        HEAD
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="sodium/toplevel" data-name="top level namespace">
+      <a href="../../../toplevel.html">Top Level Namespace</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="sodium/Sodium" data-name="sodium">
+      <a href="../../../Sodium.html">Sodium</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Cipher" data-name="sodium::cipher">
+      <a href="../../../Sodium/Cipher.html">Cipher</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Cipher/Aead" data-name="sodium::cipher::aead">
+      <a href="../../../Sodium/Cipher/Aead.html">Aead</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Aead/Chalsa" data-name="sodium::cipher::aead::chalsa">
+      <a href="../../../Sodium/Cipher/Aead/Chalsa.html">Chalsa</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Aead/XChaCha20Poly1305Ietf" data-name="sodium::cipher::aead::xchacha20poly1305ietf">
+      <a href="../../../Sodium/Cipher/Aead/XChaCha20Poly1305Ietf.html">XChaCha20Poly1305Ietf</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/ChaCha20" data-name="sodium::cipher::chacha20">
+      <a href="../../../Sodium/Cipher/ChaCha20.html">ChaCha20</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/ChaCha20Ietf" data-name="sodium::cipher::chacha20ietf">
+      <a href="../../../Sodium/Cipher/ChaCha20Ietf.html">ChaCha20Ietf</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Chalsa" data-name="sodium::cipher::chalsa">
+      <a href="../../../Sodium/Cipher/Chalsa.html">Chalsa</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/Salsa20" data-name="sodium::cipher::salsa20">
+      <a href="../../../Sodium/Cipher/Salsa20.html">Salsa20</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Cipher/SecretStream" data-name="sodium::cipher::secretstream">
+      <a href="../../../Sodium/Cipher/SecretStream.html">SecretStream</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/SecretStream/XChaCha20Poly1305" data-name="sodium::cipher::secretstream::xchacha20poly1305">
+      <a href="../../../Sodium/Cipher/SecretStream/XChaCha20Poly1305.html">XChaCha20Poly1305</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/XChaCha20" data-name="sodium::cipher::xchacha20">
+      <a href="../../../Sodium/Cipher/XChaCha20.html">XChaCha20</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Cipher/XSalsa20" data-name="sodium::cipher::xsalsa20">
+      <a href="../../../Sodium/Cipher/XSalsa20.html">XSalsa20</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/CryptoBox" data-name="sodium::cryptobox">
+      <a href="../../../Sodium/CryptoBox.html">CryptoBox</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/CryptoBox/PublicKey" data-name="sodium::cryptobox::publickey">
+      <a href="../../../Sodium/CryptoBox/PublicKey.html">PublicKey</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/CryptoBox/PublicKey/SerializeConverter" data-name="sodium::cryptobox::publickey::serializeconverter">
+      <a href="../../../Sodium/CryptoBox/PublicKey/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/CryptoBox/SecretKey" data-name="sodium::cryptobox::secretkey">
+      <a href="../../../Sodium/CryptoBox/SecretKey.html">SecretKey</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Digest" data-name="sodium::digest">
+      <a href="../../../Sodium/Digest.html">Digest</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Digest/Blake2b" data-name="sodium::digest::blake2b">
+      <a href="../../../Sodium/Digest/Blake2b.html">Blake2b</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Error" data-name="sodium::error">
+      <a href="../../../Sodium/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Error/DecryptionFailed" data-name="sodium::error::decryptionfailed">
+      <a href="../../../Sodium/Error/DecryptionFailed.html">DecryptionFailed</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Error/MemcmpFailed" data-name="sodium::error::memcmpfailed">
+      <a href="../../../Sodium/Error/MemcmpFailed.html">MemcmpFailed</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Error/VerificationFailed" data-name="sodium::error::verificationfailed">
+      <a href="../../../Sodium/Error/VerificationFailed.html">VerificationFailed</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Kdf" data-name="sodium::kdf">
+      <a href="../../../Sodium/Kdf.html">Kdf</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Key" data-name="sodium::key">
+      <a href="../../../Sodium/Key.html">Key</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Nonce" data-name="sodium::nonce">
+      <a href="../../../Sodium/Nonce.html">Nonce</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Nonce/Error" data-name="sodium::nonce::error">
+      <a href="../../../Sodium/Nonce/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Nonce/Error/Reused" data-name="sodium::nonce::error::reused">
+      <a href="../../../Sodium/Nonce/Error/Reused.html">Reused</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Nonce/SerializeConverter" data-name="sodium::nonce::serializeconverter">
+      <a href="../../../Sodium/Nonce/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="sodium/Sodium/Password" data-name="sodium::password">
+      <a href="../../../Sodium/Password.html">Password</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Abstract" data-name="sodium::password::abstract">
+      <a href="../../../Sodium/Password/Abstract.html">Abstract</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Password/Error" data-name="sodium::password::error">
+      <a href="../../../Sodium/Password/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Error/Verify" data-name="sodium::password::error::verify">
+      <a href="../../../Sodium/Password/Error/Verify.html">Verify</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Hash" data-name="sodium::password::hash">
+      <a href="../../../Sodium/Password/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="sodium/Sodium/Password/Key" data-name="sodium::password::key">
+      <a href="../../../Sodium/Password/Key.html">Key</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="sodium/Sodium/Password/Key/Create" data-name="sodium::password::key::create">
+      <a href="../../../Sodium/Password/Key/Create.html">Create</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Mode" data-name="sodium::password::mode">
+      <a href="../../../Sodium/Password/Mode.html">Mode</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Password/Params" data-name="sodium::password::params">
+      <a href="../../../Sodium/Password/Params.html">Params</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecretBox" data-name="sodium::secretbox">
+      <a href="../../../Sodium/SecretBox.html">SecretBox</a>
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/SecureBuffer" data-name="sodium::securebuffer">
+      <a href="../../../Sodium/SecureBuffer.html">SecureBuffer</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/SecureBuffer/Error" data-name="sodium::securebuffer::error">
+      <a href="../../../Sodium/SecureBuffer/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/Error/InvalidStateTransition" data-name="sodium::securebuffer::error::invalidstatetransition">
+      <a href="../../../Sodium/SecureBuffer/Error/InvalidStateTransition.html">InvalidStateTransition</a>
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/Error/KeyWiped" data-name="sodium::securebuffer::error::keywiped">
+      <a href="../../../Sodium/SecureBuffer/Error/KeyWiped.html">KeyWiped</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/SecureBuffer/State" data-name="sodium::securebuffer::state">
+      <a href="../../../Sodium/SecureBuffer/State.html">State</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="sodium/Sodium/Sign" data-name="sodium::sign">
+      <a href="../../../Sodium/Sign.html">Sign</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="sodium/Sodium/Sign/PublicKey" data-name="sodium::sign::publickey">
+      <a href="../../../Sodium/Sign/PublicKey.html">PublicKey</a>
+      
+        <ul>
+  
+  <li class=" " data-id="sodium/Sodium/Sign/PublicKey/SerializeConverter" data-name="sodium::sign::publickey::serializeconverter">
+      <a href="../../../Sodium/Sign/PublicKey/SerializeConverter.html">SerializeConverter</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="sodium/Sodium/Sign/SecretKey" data-name="sodium::sign::secretkey">
+      <a href="../../../Sodium/Sign/SecretKey.html">SecretKey</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> Sodium::Password::Key::Create
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../Sodium/Password/Key/Create.html">Sodium::Password::Key::Create</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p><a href="https://libsodium.gitbook.io/doc/password_hashing/the_argon2i_function">Argon2 Password Hashing</a></p>
+
+<h2><a id="create-a-key-for-encryption-with-auto-set-parameters-based-on-time." class="anchor" href="#create-a-key-for-encryption-with-auto-set-parameters-based-on-time.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Create a key for encryption with auto set parameters based on time.</h2>
+
+<p>Usage:</p>
+
+<pre><code class="language-crystal">pwkc <span class="o">=</span> <span class="t">Sodium</span><span class="t">::</span><span class="t">Password</span><span class="t">::</span><span class="t">Key</span><span class="t">::</span><span class="t">Create</span>.<span class="k">new</span>
+
+<span class="c"># Take approximately 1 second to generate a key.</span>
+pwkc.tcost <span class="o">=</span> <span class="n">1.0</span>
+
+<span class="c"># Memory use will end up between `mem_min` and `mem_max`</span>
+pwkc.mem_min <span class="o">=</span> <span class="n">128</span> <span class="o">*</span> <span class="n">1024</span> <span class="o">*</span> <span class="n">1024</span> <span class="c"># 128M</span>
+pwkc.mem_max <span class="o">=</span> <span class="n">256</span> <span class="o">*</span> <span class="n">1024</span> <span class="o">*</span> <span class="n">1024</span> <span class="c"># 256M</span>
+
+kdf, params <span class="o">=</span> pwkc.create_kdf pass
+<span class="c"># Or</span>
+key, params <span class="o">=</span> pwkc.create_key pass, <span class="n">32</span>
+
+<span class="c"># Save params.[mode, ops, mem, salt, key_size] to derive the same key later.</span>
+<span class="c"># Or serialize `params.to_h`</span></code></pre>
+
+<h2><a id="deriving-a-previously-created-key." class="anchor" href="#deriving-a-previously-created-key.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Deriving a previously created key.</h2>
+
+<p>Usage:</p>
+
+<pre><code class="language-crystal">pwkey <span class="o">=</span> <span class="t">Sodium</span><span class="t">::</span><span class="t">Password</span><span class="t">::</span><span class="t">Key</span>.from_params hash
+<span class="c"># Or</span>
+pwkey <span class="o">=</span> <span class="t">Sodium</span><span class="t">::</span><span class="t">Password</span><span class="t">::</span><span class="t">Key</span>.<span class="k">new</span>
+pwkey.mode <span class="o">=</span> <span class="t">Mode</span>.parse serialized[<span class="n">:mode</span>]
+pwkey.ops <span class="o">=</span> serialized[<span class="n">:ops</span>]
+pwkey.mem <span class="o">=</span> serialized[<span class="n">:mem</span>]
+pwkey.salt <span class="o">=</span> serialized[<span class="n">:salt</span>]
+key_size <span class="o">=</span> serialized[<span class="n">:key_size</span>]
+
+kdf <span class="o">=</span> pwhash.derive_kdf pass
+<span class="c"># Or</span>
+key <span class="o">=</span> pwkey.derive_key pass, key_size</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L43" target="_blank">
+        sodium/password/create_key.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#create_kdf(pass,*,salt:Bytes%7CString%7CNil=nil):Tuple(Kdf,Params)-instance-method" class="signature"><strong>#create_kdf</strong>(pass, *, salt : Bytes | String | Nil = <span class="n">nil</span>) : Tuple(Kdf, Params)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#create_key(pass:Bytes%7CString,key_size,*,salt:Bytes%7CString%7CNil=nil):Tuple(SecureBuffer,Params)-instance-method" class="signature"><strong>#create_key</strong>(pass : Bytes | String, key_size, *, salt : Bytes | String | Nil = <span class="n">nil</span>) : Tuple(SecureBuffer, Params)</a>
+        
+          <div class="summary"><p>Returns a consistent key based on [salt, pass, key_size, mode] in a SecureBuffer <strong>and</strong> Params.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mem_max:UInt64-instance-method" class="signature"><strong>#mem_max</strong> : UInt64</a>
+        
+          <div class="summary"><p>Specified in bytes.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mem_max=(mem_max:UInt64)-instance-method" class="signature"><strong>#mem_max=</strong>(mem_max : UInt64)</a>
+        
+          <div class="summary"><p>Specified in bytes.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mem_min:UInt64-instance-method" class="signature"><strong>#mem_min</strong> : UInt64</a>
+        
+          <div class="summary"><p>Specified in bytes.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mem_min=(mem_min)-instance-method" class="signature"><strong>#mem_min=</strong>(mem_min)</a>
+        
+          <div class="summary"><p>Specified in bytes.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mode:Mode-instance-method" class="signature"><strong>#mode</strong> : Mode</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mode=(mode:Mode)-instance-method" class="signature"><strong>#mode=</strong>(mode : Mode)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#tcost:Float64-instance-method" class="signature"><strong>#tcost</strong> : Float64</a>
+        
+          <div class="summary"><p>Specified in seconds.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#tcost=(tcost)-instance-method" class="signature"><strong>#tcost=</strong>(tcost)</a>
+        
+          <div class="summary"><p>Specified in seconds.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="create_kdf(pass,*,salt:Bytes|String|Nil=nil):Tuple(Kdf,Params)-instance-method">
+      <div class="signature">
+        
+        def <strong>create_kdf</strong>(pass, *, salt : Bytes | String | Nil = <span class="n">nil</span>) : Tuple(<a href="../../../Sodium/Kdf.html">Kdf</a>, <a href="../../../Sodium/Password/Params.html">Params</a>)
+
+        <a class="method-permalink" href="#create_kdf(pass,*,salt:Bytes%7CString%7CNil=nil):Tuple(Kdf,Params)-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L75" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="create_key(pass:Bytes|String,key_size,*,salt:Bytes|String|Nil=nil):Tuple(SecureBuffer,Params)-instance-method">
+      <div class="signature">
+        
+        def <strong>create_key</strong>(pass : Bytes | String, key_size, *, salt : Bytes | String | Nil = <span class="n">nil</span>) : Tuple(<a href="../../../Sodium/SecureBuffer.html">SecureBuffer</a>, <a href="../../../Sodium/Password/Params.html">Params</a>)
+
+        <a class="method-permalink" href="#create_key(pass:Bytes%7CString,key_size,*,salt:Bytes%7CString%7CNil=nil):Tuple(SecureBuffer,Params)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns a consistent key based on [salt, pass, key_size, mode] in a SecureBuffer <strong>and</strong> Params.</p>
+
+<p>Params are set to run in approximately <code><a href="../../../Sodium/Password/Key/Create.html#tcost:Float64-instance-method">#tcost</a></code> seconds.</p>
+
+<p>Make sure you store <code><a href="../../../Sodium/Password/Params.html">Params</a></code> for later use with #derive_key.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L66" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mem_max:UInt64-instance-method">
+      <div class="signature">
+        
+        def <strong>mem_max</strong> : UInt64
+
+        <a class="method-permalink" href="#mem_max:UInt64-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Specified in bytes.
+Currently defaults to 256M.  May increase between version.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L53" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mem_max=(mem_max:UInt64)-instance-method">
+      <div class="signature">
+        
+        def <strong>mem_max=</strong>(mem_max : UInt64)
+
+        <a class="method-permalink" href="#mem_max=(mem_max:UInt64)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Specified in bytes.
+Currently defaults to 256M.  May increase between version.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L53" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mem_min:UInt64-instance-method">
+      <div class="signature">
+        
+        def <strong>mem_min</strong> : UInt64
+
+        <a class="method-permalink" href="#mem_min:UInt64-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Specified in bytes.
+Currently the libsodium default.  May increase between version.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L49" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mem_min=(mem_min)-instance-method">
+      <div class="signature">
+        
+        def <strong>mem_min=</strong>(mem_min)
+
+        <a class="method-permalink" href="#mem_min=(mem_min)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Specified in bytes.
+Currently the libsodium default.  May increase between version.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L49" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mode:Mode-instance-method">
+      <div class="signature">
+        
+        def <strong>mode</strong> : <a href="../../../Sodium/Password/Mode.html">Mode</a>
+
+        <a class="method-permalink" href="#mode:Mode-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L55" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mode=(mode:Mode)-instance-method">
+      <div class="signature">
+        
+        def <strong>mode=</strong>(mode : <a href="../../../Sodium/Password/Mode.html">Mode</a>)
+
+        <a class="method-permalink" href="#mode=(mode:Mode)-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L55" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="tcost:Float64-instance-method">
+      <div class="signature">
+        
+        def <strong>tcost</strong> : Float64
+
+        <a class="method-permalink" href="#tcost:Float64-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Specified in seconds.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L45" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="tcost=(tcost)-instance-method">
+      <div class="signature">
+        
+        def <strong>tcost=</strong>(tcost)
+
+        <a class="method-permalink" href="#tcost=(tcost)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Specified in seconds.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/3124048a439b1e392dd0ef7b55ae2f9634b2013f/src/sodium/password/create_key.cr#L45" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
