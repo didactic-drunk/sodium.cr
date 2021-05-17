@@ -41,9 +41,10 @@ describe Sodium::SecureBuffer do
     buf.readwrite
 
     buf2 = buf.dup
-    buf2.readonly
+    buf2.@state.should eq Sodium::SecureBuffer::State::Readwrite
 
     buf[0] = 0_u8
+    buf2[0] = 0_u8
   end
 
   it "transitions correctly" do

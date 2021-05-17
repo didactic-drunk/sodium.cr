@@ -23,6 +23,7 @@ Notes:
 * Sodium::Cipher::SecretStream
 * Sodium::Digest::Blake2b
 * Sodium::Kdf
+* Sodium::SecureBuffer
 
 Notes:
 * Use one instance per thread or wrap in a `Mutex`.

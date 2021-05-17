@@ -13,6 +13,7 @@ module Sodium
     end
 
     enum State
+      Cloning
       Wiped
       Noaccess
       Readonly
@@ -49,11 +50,14 @@ module Sodium
     # For .dup
     def initialize(sbuf : self)
       initialize sbuf.bytesize
+
       # Maybe not thread safe
       sbuf.readonly do
         sbuf.to_slice.copy_to self.to_slice
       end
-      readonly
+
+      @state = State::Cloning
+      set_state sbuf.@state
     end
 
     def wipe
