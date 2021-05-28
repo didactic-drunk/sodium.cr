@@ -3,6 +3,9 @@ require "./wipe"
 
 module Sodium
   # Allocate guarded memory using [sodium_malloc](https://libsodium.gitbook.io/doc/memory_management)
+  #
+  # #initialize returns readonly or readwrite for thread safety
+  # When state changes are required (such as using #noaccess) and the buffer is accessed from multiple threads wrap each #readonly/#readwrite block in a lock.
   class SecureBuffer
     class Error < Sodium::Error
       class KeyWiped < Error
@@ -24,7 +27,7 @@ module Sodium
 
     getter bytesize
 
-    delegate :+, :[], :[]=, to: to_slice
+    delegate :+, :[], :[]=, :hexstring, to: to_slice
 
     def initialize(@bytesize : Int32)
       @ptr = LibSodium.sodium_malloc @bytesize
@@ -39,6 +42,7 @@ module Sodium
 
     # Copies bytes to a **readonly** SecureBuffer.
     # Optionally erases bytes after copying if erase is set
+    # Returns a **readonly** SecureBuffer.
     def initialize(bytes : Bytes, erase = false)
       initialize bytes.bytesize
       bytes.copy_to self.to_slice
@@ -60,6 +64,7 @@ module Sodium
       set_state sbuf.@state
     end
 
+    # WARNING: Not thread safe
     def wipe
       return if @state == State::Wiped
       readwrite
@@ -68,18 +73,21 @@ module Sodium
       noaccess!
     end
 
+    # WARNING: Not thread safe
     def wipe
       yield
     ensure
       wipe
     end
 
+    # :nodoc:
     def finalize
       LibSodium.sodium_free @ptr
     end
 
     # Returns key
     # May permanently set key to readonly depending on class usage.
+    # WARNING: Not thread safe unless this object is readonly or readwrite
     def to_slice : Bytes
       case @state
       when State::Noaccess, State::Wiped
@@ -94,11 +102,13 @@ module Sodium
       @ptr
     end
 
+    # WARNING: Not thread safe unless this object is readonly or readwrite
     def dup
       self.class.new self
     end
 
     # Temporarily make buffer readonly within the block returning to the prior state on exit.
+    # WARNING: Not thread safe unless this object is readonly or readwrite
     def readonly
       with_state State::Readonly do
         yield
@@ -106,6 +116,7 @@ module Sodium
     end
 
     # Temporarily make buffer readonly within the block returning to the prior state on exit.
+    # WARNING: Not thread safe unless this object is readonly or readwrite
     def readwrite
       with_state State::Readwrite do
         yield
@@ -113,6 +124,7 @@ module Sodium
     end
 
     # Makes a region allocated using sodium_malloc() or sodium_allocarray() inaccessible. It cannot be read or written, but the data are preserved.
+    # WARNING: Not thread safe
     def noaccess
       raise Error::KeyWiped.new if @state == State::Wiped
       noaccess!
@@ -129,6 +141,7 @@ module Sodium
     end
 
     # Marks a region allocated using sodium_malloc() or sodium_allocarray() as read-only.
+    # WARNING: Not thread safe
     def readonly
       raise Error::KeyWiped.new if @state == State::Wiped
       if LibSodium.sodium_mprotect_readonly(@ptr) != 0
@@ -139,6 +152,7 @@ module Sodium
     end
 
     # Marks a region allocated using sodium_malloc() or sodium_allocarray() as readable and writable, after having been protected using sodium_mprotect_readonly() or sodium_mprotect_noaccess().
+    # WARNING: Not thread safe
     def readwrite
       raise Error::KeyWiped.new if @state == State::Wiped
       if LibSodium.sodium_mprotect_readwrite(@ptr) != 0
@@ -158,6 +172,7 @@ module Sodium
       Sodium.memcmp self.to_slice, other
     end
 
+    # WARNING: Not thread safe
     private def set_state(new_state : State)
       return if @state == new_state
 
@@ -171,6 +186,7 @@ module Sodium
       end
     end
 
+    # WARNING: Only thread safe when current state >= requested state
     private def with_state(new_state : State)
       old_state = @state
       # Only change when new_state needs more access than @state.

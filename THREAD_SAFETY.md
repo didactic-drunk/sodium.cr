@@ -23,7 +23,7 @@ Notes:
 * Sodium::Cipher::SecretStream
 * Sodium::Digest::Blake2b
 * Sodium::Kdf
-* Sodium::SecureBuffer
+* Sodium::SecureBuffer (Half thread safe.  Thread safety is documented with each method)
 
 Notes:
 * Use one instance per thread or wrap in a `Mutex`.
