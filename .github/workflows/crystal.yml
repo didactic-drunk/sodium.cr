@@ -1,0 +1,33 @@
+name: Crystal CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    container:
+      image: crystallang/crystal
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install wget
+      run: sudo apt-get install wget
+    - name: setenv DEBUG
+      run: echo "SODIUM_BUILD_DEBUG=1" >> $GITHUB_ENV
+    - name: setenv BUILD_DIR
+      run: echo "LIBSODIUM_BUILD_DIR=$HOME/libsodium" >> $GITHUB_ENV
+    - name: Install dependencies
+      run: shards install
+    - name: Run tests
+      run: crystal spec -Dpreview_mt --order random --error-on-warnings
+    - name: Run bulid
+      run: shards build -Dpreview_mt
+    - name: Run format
+      run: crystal tool format --check
+

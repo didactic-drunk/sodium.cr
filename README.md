@@ -61,7 +61,6 @@ Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
   - [x] Fast.  Benchmarks available in `benchmarks`.
   - [x] [Most classes are safe to share between threads.](THREAD_SAFETY.md)
     - [x] Tested with real crystal threads and will continue to work when crystal officially supports threading.
-  - [x] Most classes are safe to share between threads.  Even
   - [ ] Controlled memory wiping (by calling `.close`)
 
 ☑ Indicate specs are compared against test vectors from another source.
