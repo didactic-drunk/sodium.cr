@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     container:
@@ -16,8 +15,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: apt update
+      run: apt update
+    - name: Install lsb_release
+      run: apt-get install -y lsb-release
+    - name: lsb_release
+      run: lsb_release -a
     - name: Install wget
-      run: sudo apt-get install wget
+      run: apt-get install -y wget
     - name: setenv DEBUG
       run: echo "SODIUM_BUILD_DEBUG=1" >> $GITHUB_ENV
     - name: setenv BUILD_DIR
@@ -30,4 +35,7 @@ jobs:
       run: shards build -Dpreview_mt
     - name: Run format
       run: crystal tool format --check
+    - name: Failed
+      if: ${{ failure() }}
+      run: "[ -f libsodium_install.out ] && cat libsodium_install.out"
 

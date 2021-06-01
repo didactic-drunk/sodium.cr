@@ -12,7 +12,7 @@ set -e
 
 #export LIBSODIUM_INSTALL="1"
 if [ "$LIBSODIUM_INSTALL" != "1" ]; then
-	[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Skipping libsodium build."
+	[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Skipping libsodium build." 1>&2
 	exit 0
 fi
 
@@ -40,8 +40,8 @@ if [ ! -f "$LIBSODIUM_INSTALL_PATH/include/sodium.h" ]; then
 
 	SHA=`openssl sha256 -hex < "$TGZ_FILENAME" | sed 's/^.* //'`
 	if [ "$SHA" != "$LIBSODIUM_SHA256" ]; then
-		echo "SHA256 sum doesn't match."
-		echo "$SHA" != "$LIBSODIUM_SHA256"
+		echo "SHA256 sum doesn't match." 1>&2
+		echo "$SHA" != "$LIBSODIUM_SHA256" 1>&2
 		exit 1
 	fi
 
@@ -64,11 +64,11 @@ if [ ! -f "$LIBSODIUM_INSTALL_PATH/include/sodium.h" ]; then
 		touch .make.install.done
 	fi
 
-	[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Finished building libsodium."
+	[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Finished building libsodium." 1>&2
 else
 #	find "$LIBSODIUM_INSTALL_PATH"
 
-	[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Using already built libsodium."
+	[ ! -z "$SODIUM_BUILD_VERBOSE" ] && echo "Using already built libsodium." 1>&2
 fi
 
 exit 0
