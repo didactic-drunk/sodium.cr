@@ -43,8 +43,10 @@ describe Sodium::SecureBuffer do
     buf2 = buf.dup
     buf2.@state.should eq Sodium::SecureBuffer::State::Readwrite
 
-    buf[0] = 0_u8
-    buf2[0] = 0_u8
+    buf[0] = 1_u8
+    buf.to_slice.hexstring.should_not eq buf2.to_slice.hexstring
+    buf2[0] = 1_u8
+    buf.to_slice.hexstring.should eq buf2.to_slice.hexstring
   end
 
   it "transitions correctly" do

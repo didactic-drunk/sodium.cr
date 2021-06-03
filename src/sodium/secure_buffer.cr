@@ -13,6 +13,10 @@ module Sodium
 
       class InvalidStateTransition < Error
       end
+
+      # Check RLIMIT_MEMLOCK if you receive this
+      class OutOfMemory < Error
+      end
     end
 
     enum State
@@ -31,6 +35,7 @@ module Sodium
 
     def initialize(@bytesize : Int32)
       @ptr = LibSodium.sodium_malloc @bytesize
+      raise Error::OutOfMemory.new if @ptr.null?
     end
 
     # Returns a **readonly** random SecureBuffer.
@@ -115,8 +120,8 @@ module Sodium
       end
     end
 
-    # Temporarily make buffer readonly within the block returning to the prior state on exit.
-    # WARNING: Not thread safe unless this object is readonly or readwrite
+    # Temporarily make buffer readwrite within the block returning to the prior state on exit.
+    # WARNING: Not thread safe unless this object is **readwrite**
     def readwrite
       with_state State::Readwrite do
         yield
