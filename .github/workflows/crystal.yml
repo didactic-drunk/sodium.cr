@@ -17,16 +17,17 @@ jobs:
     - uses: actions/checkout@v2
     - name: apt update
       run: apt update
-    - name: Install lsb_release
-      run: apt-get install -y lsb-release
-    - name: lsb_release
-      run: lsb_release -a
     - name: Install wget
       run: apt-get install -y wget
     - name: setenv DEBUG
       run: echo "SODIUM_BUILD_DEBUG=1" >> $GITHUB_ENV
     - name: setenv BUILD_DIR
       run: echo "LIBSODIUM_BUILD_DIR=$HOME/libsodium" >> $GITHUB_ENV
+    - name: Cache libsodium
+      uses: actions/cache@v2
+      with:
+        path: ~/libsodium
+        key: ${{ runner.os }}-libsodium-${{ hashFiles('build/env.sh') }}
     - name: Install dependencies
       run: shards install
     - name: Run tests
