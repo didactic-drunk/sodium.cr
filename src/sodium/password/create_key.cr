@@ -79,13 +79,13 @@ class Sodium::Password::Key::Create
 
   protected def create_key!(pw, pass : Bytes, key_size : Int32) : SecureBuffer
     pw.ops = OPSLIMIT_MIN
-    mem = MEMLIMIT_MIN
+    pw.mem = MEMLIMIT_MIN
 
     key = SecureBuffer.new key_size
 
     nsamples = 10
     samples = nsamples.times.map do
-      ts = time_derive_key key, pw, pass
+      time_derive_key key, pw, pass
     end.to_a
     mean = samples.sum / nsamples
     return key.readonly if mean.to_f >= @tcost
