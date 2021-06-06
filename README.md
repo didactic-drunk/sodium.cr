@@ -1,6 +1,7 @@
 # sodium.cr
 [![Crystal CI](https://github.com/didactic-drunk/sodium.cr/actions/workflows/crystal.yml/badge.svg)](https://github.com/didactic-drunk/sodium.cr/actions/workflows/crystal.yml)
 [![GitHub release](https://img.shields.io/github/release/didactic-drunk/sodium.cr.svg)](https://github.com/didactic-drunk/sodium.cr/releases)
+![GitHub commits since latest release (by date) for a branch](https://img.shields.io/github/commits-since/didactic-drunk/sodium.cr/latest)
 [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://didactic-drunk.github.io/sodium.cr/master)
 
 Crystal bindings for the [libsodium API](https://libsodium.gitbook.io/doc/)
