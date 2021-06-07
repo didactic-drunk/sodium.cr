@@ -405,6 +405,18 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>This class implements best effort nonce reuse detection <strong>when multithreading is disabled</strong>
+Race conditions may occur if using the same object in multiple Fibers with multithreading enabled.</p>
+
 
 
 
@@ -428,7 +440,7 @@
   </h2>
   
     
-      <a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L5" target="_blank">
+      <a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L7" target="_blank">
         sodium/nonce.cr
       </a>
     
@@ -488,7 +500,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#random-class-method" class="signature"><strong>.random</strong></a>
+        <a href="#random(random_source=Random::Secure)-class-method" class="signature"><strong>.random</strong>(random_source = <span class="t">Random</span><span class="t">::</span><span class="t">Secure</span>)</a>
         
       </li>
     
@@ -529,21 +541,24 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#increment-instance-method" class="signature"><strong>#increment</strong></a>
+        <a href="#increment:Nil-instance-method" class="signature"><strong>#increment</strong> : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#reusable=(reusable)-instance-method" class="signature"><strong>#reusable=</strong>(reusable)</a>
+        <a href="#random(random_source=Random::Secure):Nil-instance-method" class="signature"><strong>#random</strong>(random_source = <span class="t">Random</span><span class="t">::</span><span class="t">Secure</span>) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#reusable:Bool-instance-method" class="signature"><strong>#reusable</strong> : Bool</a>
         
           <div class="summary"><p>Only use with single use keys.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#reusable?:Bool-instance-method" class="signature"><strong>#reusable?</strong> : Bool</a>
-        
-          <div class="summary"><p>Only use with single use keys.</p></div>
+        <a href="#reusable=(val:Bool):Bool-instance-method" class="signature"><strong>#reusable=</strong>(val : Bool) : Bool</a>
         
       </li>
     
@@ -555,7 +570,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#used!-instance-method" class="signature"><strong>#used!</strong></a>
+        <a href="#used!:Nil-instance-method" class="signature"><strong>#used!</strong> : Nil</a>
         
       </li>
     
@@ -615,7 +630,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L23" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -632,18 +647,18 @@
     Class Method Detail
   </h2>
   
-    <div class="entry-detail" id="random-class-method">
+    <div class="entry-detail" id="random(random_source=Random::Secure)-class-method">
       <div class="signature">
         
-        def self.<strong>random</strong>
+        def self.<strong>random</strong>(random_source = <span class="t">Random</span><span class="t">::</span><span class="t">Secure</span>)
 
-        <a class="method-permalink" href="#random-class-method">#</a>
+        <a class="method-permalink" href="#random(random_source=Random::Secure)-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -659,7 +674,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L33" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L35" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -687,7 +702,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L21" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L23" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -703,7 +718,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L21" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L23" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -731,33 +746,49 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L47" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L62" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="increment-instance-method">
+    <div class="entry-detail" id="increment:Nil-instance-method">
       <div class="signature">
         
-        def <strong>increment</strong>
+        def <strong>increment</strong> : Nil
 
-        <a class="method-permalink" href="#increment-instance-method">#</a>
+        <a class="method-permalink" href="#increment:Nil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="reusable=(reusable)-instance-method">
+    <div class="entry-detail" id="random(random_source=Random::Secure):Nil-instance-method">
       <div class="signature">
         
-        def <strong>reusable=</strong>(reusable)
+        def <strong>random</strong>(random_source = <span class="t">Random</span><span class="t">::</span><span class="t">Secure</span>) : Nil
 
-        <a class="method-permalink" href="#reusable=(reusable)-instance-method">#</a>
+        <a class="method-permalink" href="#random(random_source=Random::Secure):Nil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L44" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="reusable:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>reusable</strong> : Bool
+
+        <a class="method-permalink" href="#reusable:Bool-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -768,28 +799,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="reusable?:Bool-instance-method">
+    <div class="entry-detail" id="reusable=(val:Bool):Bool-instance-method">
       <div class="signature">
         
-        def <strong>reusable?</strong> : Bool
+        def <strong>reusable=</strong>(val : Bool) : Bool
 
-        <a class="method-permalink" href="#reusable?:Bool-instance-method">#</a>
+        <a class="method-permalink" href="#reusable=(val:Bool):Bool-instance-method">#</a>
       </div>
-      
-        <div class="doc">
-          
-          <p>Only use with single use keys.</p>
-        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L55" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -810,23 +836,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L21" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="used!-instance-method">
+    <div class="entry-detail" id="used!:Nil-instance-method">
       <div class="signature">
         
-        def <strong>used!</strong>
+        def <strong>used!</strong> : Nil
 
-        <a class="method-permalink" href="#used!-instance-method">#</a>
+        <a class="method-permalink" href="#used!:Nil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L49" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -842,7 +868,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/ca9b905b739e46af9f10cd47e583077fe6f34916/src/sodium/nonce.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/c75a51c078421d884d9d896e0ce9347b5281256f/src/sodium/nonce.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
