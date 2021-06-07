@@ -40,7 +40,7 @@ module Sodium
 
       @sbuf = SecureBuffer.new bytes, erase: erase
       if pk = pkey
-        @public_key = PublicKey.new pkey
+        @public_key = PublicKey.new pk
       else
         @public_key = PublicKey.new
         if LibSodium.crypto_sign_ed25519_sk_to_pk(@public_key.to_slice, self.to_slice) != 0

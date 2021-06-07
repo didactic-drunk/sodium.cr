@@ -2,6 +2,8 @@ require "./lib_sodium"
 require "random/secure"
 
 module Sodium
+  # This class implements best effort nonce reuse detection **when multithreading is disabled**
+  # Race conditions may occur if using the same object in multiple Fibers with multithreading enabled.
   class Nonce
     class Error < Sodium::Error
       class Reused < Error
@@ -13,7 +15,7 @@ module Sodium
     getter? used = false
 
     # Only use with single use keys.
-    property? reusable = false
+    getter reusable = false
 
     # Returns bytes
     delegate_to_slice to: @bytes
@@ -26,22 +28,35 @@ module Sodium
       end
     end
 
-    def self.random
-      self.new Random::Secure.random_bytes(NONCE_SIZE)
+    def self.random(random_source = Random::Secure)
+      self.new random_source.random_bytes(NONCE_SIZE)
     end
 
     def self.zero
       self.new Bytes.new(NONCE_SIZE)
     end
 
-    def increment
+    def increment : Nil
       LibSodium.sodium_increment @bytes, @bytes.bytesize
       @used = false
     end
 
-    def used!
+    def random(random_source = Random::Secure) : Nil
+      random_source.random_bytes @bytes
+      @used = false
+    end
+
+    def used! : Nil
+      return if @reusable
       raise Error::Reused.new("attempted nonce reuse") if @used
-      @used = true unless @reusable
+      @used = true
+    end
+
+    def reusable=(val : Bool) : Bool
+      raise Error.new("trying to set reusable=true but already used") if val && @used
+      @reusable = val
+      @used = false if val
+      val
     end
 
     def dup
