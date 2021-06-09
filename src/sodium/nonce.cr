@@ -53,7 +53,6 @@ module Sodium
     end
 
     def reusable=(val : Bool) : Bool
-      raise Error.new("trying to set reusable=true but already used") if val && @used
       @reusable = val
       @used = false if val
       val
