@@ -7,8 +7,10 @@ end
 describe Sodium::SecureBuffer do
   it "allocates empty" do
     buf = Sodium::SecureBuffer.new 5
-    buf.to_slice.each do |b|
-      b.should eq 0xdb_u8
+    buf.readonly do |slice|
+      slice.each do |b|
+        b.should eq 0xdb_u8
+      end
     end
 
     buf.noaccess
@@ -17,18 +19,22 @@ describe Sodium::SecureBuffer do
   end
 
   it "allocates random" do
-    buf = Sodium::SecureBuffer.random 5
-    buf.to_slice.bytesize.should eq 5
-    buf.wipe
+    buf1 = Sodium::SecureBuffer.random 5
+    buf2 = Sodium::SecureBuffer.random 5
+    (buf1 == buf2).should be_false
+    buf1.wipe
   end
 
   it "copies and erases" do
     bytes = Bytes.new(5) { 1_u8 }
 
     buf = Sodium::SecureBuffer.new bytes, erase: true
-    buf.to_slice.bytesize.should eq 5
-    buf.to_slice.each do |b|
-      b.should eq 1_u8
+    buf.readonly do |slice|
+      slice.bytesize.should eq 5
+
+      slice.each do |b|
+        b.should eq 1_u8
+      end
     end
 
     bytes.to_slice.each do |b|
@@ -37,16 +43,21 @@ describe Sodium::SecureBuffer do
   end
 
   it "dups without crashing" do
-    buf = Sodium::SecureBuffer.new 5
-    buf.readwrite
+    buf1 = Sodium::SecureBuffer.new 5
+    buf1.noaccess
 
-    buf2 = buf.dup
-    buf2.@state.should eq Sodium::SecureBuffer::State::Readwrite
+    buf2 = buf1.dup
+    buf2.@state.should eq Sodium::SecureBuffer::State::Noaccess
 
-    buf[0] = 1_u8
-    buf.to_slice.hexstring.should_not eq buf2.to_slice.hexstring
-    buf2[0] = 1_u8
-    buf.to_slice.hexstring.should eq buf2.to_slice.hexstring
+    buf1.readwrite do |slice|
+      slice[0] = 1_u8
+    end
+    buf1.hexstring.should_not eq buf2.hexstring
+
+    buf2.readwrite do |slice|
+      slice[0] = 1_u8
+    end
+    buf1.hexstring.should eq buf2.hexstring
   end
 
   it "transitions correctly" do

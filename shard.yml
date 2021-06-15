@@ -10,6 +10,10 @@ targets:
     main: examples/blake2b_hash.cr
   pwhash_selector:
     main: examples/pwhash_selector.cr
+dependencies:
+  crypto-secret:
+    github: didactic-drunk/crypto-secret.cr
+    branch: main
 libraries:
   libsodium: ">= 1.0.18"
 license: MIT

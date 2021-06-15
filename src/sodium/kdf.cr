@@ -79,9 +79,11 @@ module Sodium
       end
 
       subkey = SecureBuffer.new subkey_size
-      @sbuf.readonly do
-        if (ret = LibSodium.crypto_kdf_derive_from_key(subkey, subkey.bytesize, subkey_id, context, self.to_slice)) != 0
-          raise Sodium::Error.new("crypto_kdf_derive_from_key returned #{ret} (subkey size is probably out of range)")
+      subkey.readwrite do |sub_slice|
+        @sbuf.readonly do
+          if (ret = LibSodium.crypto_kdf_derive_from_key(sub_slice, sub_slice.bytesize, subkey_id, context, self.to_slice)) != 0
+            raise Sodium::Error.new("crypto_kdf_derive_from_key returned #{ret} (subkey size is probably out of range)")
+          end
         end
       end
 
