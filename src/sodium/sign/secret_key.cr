@@ -20,15 +20,20 @@ module Sodium
 
     getter public_key : PublicKey
 
-    # Returns key
-    delegate_to_slice to: @sbuf
+    @[Deprecated("Switching to Crypto::Secret.  Use `key.readonly` or `key.readwrite`")]
+    delegate_to_slice to: @key
+
+    getter key : Crypto::Secret
+    @seed : Crypto::Secret?
 
     # Generates a new random secret/public key pair.
     def initialize
-      @sbuf = SecureBuffer.new KEY_SIZE
+      @key = SecureBuffer.new KEY_SIZE
       @public_key = PublicKey.new
-      if LibSodium.crypto_sign_keypair(@public_key.to_slice, self.to_slice) != 0
-        raise Sodium::Error.new("crypto_sign_keypair")
+      @key.readwrite do |kslice|
+        if LibSodium.crypto_sign_keypair(@public_key.to_slice, kslice) != 0
+          raise Sodium::Error.new("crypto_sign_keypair")
+        end
       end
     end
 
@@ -38,13 +43,15 @@ module Sodium
     def initialize(bytes : Bytes, pkey : Bytes? = nil, *, erase = false)
       raise ArgumentError.new("Secret sign key must be #{KEY_SIZE}, got #{bytes.bytesize}") unless bytes.bytesize == KEY_SIZE
 
-      @sbuf = SecureBuffer.new bytes, erase: erase
+      @key = SecureBuffer.new bytes, erase: erase
       if pk = pkey
         @public_key = PublicKey.new pk
       else
         @public_key = PublicKey.new
-        if LibSodium.crypto_sign_ed25519_sk_to_pk(@public_key.to_slice, self.to_slice) != 0
-          raise Sodium::Error.new("crypto_sign_ed25519_sk_to_pk")
+        @key.readwrite do |kslice|
+          if LibSodium.crypto_sign_ed25519_sk_to_pk(@public_key.to_slice, kslice) != 0
+            raise Sodium::Error.new("crypto_sign_ed25519_sk_to_pk")
+          end
         end
       end
     end
@@ -61,17 +68,25 @@ module Sodium
       raise ArgumentError.new("Secret sign seed must be #{SEED_SIZE}, got #{seed.bytesize}") unless seed.bytesize == SEED_SIZE
       @seed = seed
 
-      @sbuf = SecureBuffer.new KEY_SIZE
+      @key = SecureBuffer.new KEY_SIZE
       @public_key = PublicKey.new
-      if LibSodium.crypto_sign_seed_keypair(@public_key.to_slice, self.to_slice, seed.to_slice) != 0
-        raise Sodium::Error.new("crypto_sign_seed_keypair")
+      seed.readonly do |seed_slice|
+        @key.readwrite do |kslice|
+          if LibSodium.crypto_sign_seed_keypair(@public_key.to_slice, kslice, seed_slice) != 0
+            raise Sodium::Error.new("crypto_sign_seed_keypair")
+          end
+        end
       end
     end
 
-    getter seed : SecureBuffer? do
-      SecureBuffer.new(SEED_SIZE).tap do |s|
-        if LibSodium.crypto_sign_ed25519_sk_to_seed(s.to_slice, self.to_slice) != 0
-          raise Sodium::Error.new("crypto_sign_ed25519_sk_to_seed")
+    getter seed : Crypto::Secret? do
+      SecureBuffer.new(SEED_SIZE).tap do |seed_buf|
+        @key.readonly do |kslice|
+          seed_buf.readwrite do |seed_slice|
+            if LibSodium.crypto_sign_ed25519_sk_to_seed(seed_slice, kslice) != 0
+              raise Sodium::Error.new("crypto_sign_ed25519_sk_to_seed")
+            end
+          end
         end
       end.readonly
     end
@@ -84,17 +99,24 @@ module Sodium
 
     def sign_detached(message : Bytes)
       sig = Bytes.new(SIG_SIZE)
-      if LibSodium.crypto_sign_detached(sig, out sig_len, message, message.bytesize, self.to_slice) != 0
-        raise Error.new("crypto_sign_detached")
+      @key.readonly do |kslice|
+        if LibSodium.crypto_sign_detached(sig, out sig_len, message, message.bytesize, kslice) != 0
+          raise Error.new("crypto_sign_detached")
+        end
+        raise "expected #{sig.bytesize}, got #{sig_len}" if sig.bytesize != sig_len
       end
       sig
     end
 
     def to_curve25519 : CryptoBox::SecretKey
-      key = SecureBuffer.new CryptoBox::SecretKey::KEY_SIZE
-      LibSodium.crypto_sign_ed25519_sk_to_curve25519 key.to_slice, @sbuf.to_slice
-      key.readonly
-      CryptoBox::SecretKey.new key
+      sbuf = SecureBuffer.new CryptoBox::SecretKey::KEY_SIZE
+      sbuf.readwrite do |sbuf_slice|
+        @key.readonly do |kslice|
+          LibSodium.crypto_sign_ed25519_sk_to_curve25519 sbuf_slice, kslice
+        end
+      end
+      sbuf.readonly
+      CryptoBox::SecretKey.new sbuf
     end
   end
 end

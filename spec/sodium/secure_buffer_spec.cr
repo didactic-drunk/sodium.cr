@@ -1,8 +1,11 @@
 require "../spec_helper"
 require "../../src/sodium/secure_buffer"
+require "crypto-secret/test"
 
 class FakeError < Exception
 end
+
+test_secret_class Sodium::SecureBuffer
 
 describe Sodium::SecureBuffer do
   it "allocates empty" do
@@ -16,13 +19,6 @@ describe Sodium::SecureBuffer do
     buf.noaccess
     buf.readonly
     buf.readwrite
-  end
-
-  it "allocates random" do
-    buf1 = Sodium::SecureBuffer.random 5
-    buf2 = Sodium::SecureBuffer.random 5
-    (buf1 == buf2).should be_false
-    buf1.wipe
   end
 
   it "copies and erases" do

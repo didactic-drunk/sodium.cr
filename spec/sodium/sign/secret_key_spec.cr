@@ -20,40 +20,48 @@ detached_test_vectors = [
 
 private def sign_from_vec(vec)
   seckey = Sodium::Sign::SecretKey.new seed: vec[:seed].hexbytes
-  seckey.to_slice.should eq vec[:secret_key].hexbytes
+  seckey.key.readonly do |sslice|
+    sslice.should eq vec[:secret_key].hexbytes
+  end
   seckey.public_key.to_slice.should eq vec[:public_key].hexbytes
   plaintext = vec[:plaintext].hexbytes
   signature = vec[:signature].hexbytes
   {seckey, plaintext, signature}
 end
 
-private def new_sign_key_to_slice
-  Sodium::Sign::SecretKey.new.to_slice
-end
-
 describe Sodium::Sign::SecretKey do
   it "loads keys" do
     key1 = Sodium::Sign::SecretKey.new
-    key2 = Sodium::Sign::SecretKey.new key1.to_slice, key1.public_key.to_slice
-    key1.to_slice.should eq key2.to_slice
+    key2 = key1.key.readonly do |kslice|
+      Sodium::Sign::SecretKey.new kslice, key1.public_key.to_slice
+    end
+    key1.key.should eq key2.key
     key1.public_key.to_slice.should eq key2.public_key.to_slice
   end
 
   it "recomputes the public key" do
     key1 = Sodium::Sign::SecretKey.new
-    key2 = Sodium::Sign::SecretKey.new key1.to_slice
-    key1.to_slice.should eq key2.to_slice
+    key2 = key1.key.readonly do |kslice|
+      Sodium::Sign::SecretKey.new kslice
+    end
+    key1.key.should eq key2.key
     key1.public_key.to_slice.should eq key2.public_key.to_slice
   end
 
-  it "seed keys" do
+  it "loading seed -> key -> seed" do
     seed = Bytes.new Sodium::Sign::SecretKey::SEED_SIZE
     key1 = Sodium::Sign::SecretKey.new seed: seed
-    key2 = Sodium::Sign::SecretKey.new seed: Sodium::Sign::SecretKey.new(key1.to_slice).seed
-    key1.to_slice.should eq key2.to_slice
+    key2 = key1.key.readonly do |kslice|
+      Sodium::Sign::SecretKey.new kslice
+    end
+    key3 = Sodium::Sign::SecretKey.new seed: key2.seed
+    key1.key.should eq key2.key
+    key1.key.should eq key3.key
     key1.public_key.to_slice.should eq key2.public_key.to_slice
+    key1.public_key.to_slice.should eq key3.public_key.to_slice
     key1.seed.should eq seed
     key1.seed.should eq key2.seed
+    key1.seed.should eq key3.seed
   end
 
   it "signs and verifies" do

@@ -6,27 +6,29 @@ module Sodium::Cipher
   #
   # What? They're both dance?
   abstract class Chalsa
-    @key : Bytes | SecureBuffer | Nil
-    @nonce : Bytes?
+    getter key : Crypto::Secret
+    getter! nonce : Bytes?
 
     # Advanced usage.  Don't touch.
     property offset = 0
 
-    getter! key
-    getter! nonce
-
-    def initialize
-    end
-
-    def initialize(key = nil, nonce = nil)
-      self.key = key if key
+    def initialize(key : Crypto::Secret | Bytes, nonce = nil)
+      raise ArgumentError.new("key must be #{key_size} bytes, got #{key.bytesize}") if key.bytesize != key_size
+      @key = key.is_a?(Crypto::Secret) ? key : Sodium::SecureBuffer.new(key)
+#      self.key = key if key
       self.nonce = nonce if nonce
     end
 
-    def key=(key : Bytes | SecureBuffer)
+    @[Deprecated("Use constructor to set key")]
+    def key=(key : Bytes | Crypto::Secret) : Crypto::Secret
       raise ArgumentError.new("key must be #{key_size} bytes, got #{key.bytesize}") if key.bytesize != key_size
-      @key = key
-      key
+      @key = case key
+             in Crypto::Secret
+               key
+             in Bytes
+               Sodium::SecureBuffer.new key
+             end
+      @key.not_nil!
     end
 
     def nonce=(nonce : Bytes)
@@ -35,6 +37,7 @@ module Sodium::Cipher
       nonce
     end
 
+    @[Deprecated("Use constructor to set key")]
     def random_key
       self.key = SecureBuffer.random key_size
     end
@@ -102,6 +105,10 @@ module Sodium::Cipher
     class {{ key.id }} < Chalsa
       KEY_SIZE = LibSodium.crypto_stream_chacha20_{{ ietf ? "ietf_".id : "".id }}keybytes.to_i32
       NONCE_SIZE = LibSodium.crypto_stream_chacha20_{{ ietf ? "ietf_".id : "".id }}noncebytes.to_i32
+
+      def self.random
+        new key: Sodium::SecureBuffer.random(KEY_SIZE), nonce: Random::Secure.random_bytes(NONCE_SIZE)
+      end
 
       # Xor's src with the cipher output and places in dst.
       #

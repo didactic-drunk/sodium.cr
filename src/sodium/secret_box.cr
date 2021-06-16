@@ -19,19 +19,19 @@ module Sodium
     NONCE_SIZE = LibSodium.crypto_secretbox_noncebytes.to_i
     MAC_SIZE   = LibSodium.crypto_secretbox_macbytes.to_i
 
-    # Returns key
+    @[Deprecated("Use `key.readonly` or `key.readwrite`")]
     delegate_to_slice to: @key
 
     # Encryption key
-    getter key : SecureBuffer
+    getter key : Crypto::Secret
 
     # Generate a new random key held in a SecureBuffer.
     def initialize
       @key = SecureBuffer.random KEY_SIZE
     end
 
-    # Use an existing SecureBuffer.
-    def initialize(@key : SecureBuffer)
+    # Use an existing Crypto::Secret.
+    def initialize(@key : Crypto::Secret)
       if @key.bytesize != KEY_SIZE
         raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{@key.bytesize}")
       end
@@ -91,8 +91,8 @@ module Sodium
       dst ||= Bytes.new dst_size
       raise ArgumentError.new("dst.bytesize must be src.bytesize - MAC_SIZE, got #{dst.bytesize}") if dst.bytesize != (src.bytesize - MAC_SIZE)
 
-      r = @key.readonly do
-        LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.to_slice, @key)
+      r = @key.readonly do |kslice|
+        LibSodium.crypto_secretbox_open_easy(dst, src, src.bytesize, nonce.to_slice, kslice)
       end
       raise Sodium::Error::DecryptionFailed.new("crypto_secretbox_easy") if r != 0
       dst

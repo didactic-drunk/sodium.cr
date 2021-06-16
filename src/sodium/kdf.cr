@@ -38,6 +38,8 @@ module Sodium
     # Returns key
     delegate_to_slice to: @sbuf
 
+    @sbuf : Crypto::Secret
+
     # Use an existing KDF key.
     #
     # * Copies key to a new SecureBuffer
@@ -50,8 +52,8 @@ module Sodium
       @sbuf = SecureBuffer.new(bytes, erase).noaccess
     end
 
-    # Use an existing KDF SecureBuffer key.
-    def initialize(@sbuf : SecureBuffer)
+    # Use an existing KDF Crypto::Secret key.
+    def initialize(@sbuf : Crypto::Secret)
       if @sbuf.bytesize != KEY_SIZE
         raise ArgumentError.new("bytes must be #{KEY_SIZE}, got #{sbuf.bytesize}")
       end

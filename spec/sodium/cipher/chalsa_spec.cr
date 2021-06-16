@@ -7,15 +7,8 @@ require "../../../src/sodium/cipher/chalsa"
     it "xors" do
       data = Bytes.new(100)
 
-      cipher1 = Sodium::Cipher::{{ name.id }}.new
-      cipher2 = Sodium::Cipher::{{ name.id }}.new
-
-      key = cipher1.random_key
-      cipher2.key = key
-
-      nonce = cipher1.random_nonce
-      cipher2.nonce = nonce
-
+      cipher1 = Sodium::Cipher::{{ name.id }}.random
+      cipher2 = Sodium::Cipher::{{ name.id }}.new key: cipher1.key, nonce: cipher1.nonce
 
       output = cipher1.update data
       output.should_not eq data # Verify encryption did something.

@@ -10,8 +10,6 @@ module Sodium
   class SecureBuffer
     include Crypto::Secret::Stateful
 
-    #    @state = State::Readwrite
-
     getter bytesize : Int32
 
     def initialize(@bytesize : Int32)
@@ -31,13 +29,13 @@ module Sodium
 
     # :nodoc:
     # For .dup
-    def initialize(sbuf : self)
+    def initialize(sbuf : Crypto::Secret)
       initialize sbuf.bytesize
 
       # Maybe not thread safe
-      sbuf.readonly do |s1|
-        self.to_slice do |s2|
-          s1.copy_to s2.to_slice
+      sbuf.readonly do |sslice|
+        readwrite do |dslice|
+          s1.copy_to s2
         end
       end
 
@@ -63,18 +61,14 @@ module Sodium
       Slice(UInt8).new @ptr, @bytesize
     end
 
-    def to_slice(& : Bytes -> Nil)
-      yield Bytes.new @ptr, @bytesize
+    protected def to_slice(& : Bytes -> Nil)
+      ro = @state < State::Readonly
+      yield Bytes.new(@ptr, @bytesize, read_only: ro)
     end
 
     # :nodoc:
     def to_unsafe
       @ptr
-    end
-
-    # WARNING: Not thread safe unless this object is readonly or readwrite
-    def dup
-      self.class.new self
     end
 
     protected def readwrite_impl : Nil

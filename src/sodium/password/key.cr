@@ -25,7 +25,7 @@ module Sodium::Password
     end
 
     # :nodoc:
-    def derive_key(key : SecureBuffer, pass : Bytes | String, *, salt : Bytes? = nil) : Nil
+    def derive_key(key : Crypto::Secret, pass : Bytes | String, *, salt : Bytes? = nil) : Nil
       m = mode || raise ArgumentError.new("mode not set")
 
       salt ||= @salt
@@ -33,8 +33,10 @@ module Sodium::Password
       salt = salt.not_nil!
       raise "salt expected #{SALT_SIZE} bytes, got #{salt.bytesize} " if salt.bytesize != SALT_SIZE
 
-      if LibSodium.crypto_pwhash(key.to_slice, key.bytesize, pass.to_slice, pass.bytesize, salt.to_slice, @ops, @mem, m) != 0
-        raise Sodium::Error.new("crypto_pwhash")
+      key.readwrite do |key_slice|
+        if LibSodium.crypto_pwhash(key_slice, key_slice.bytesize, pass.to_slice, pass.bytesize, salt.to_slice, @ops, @mem, m) != 0
+          raise Sodium::Error.new("crypto_pwhash")
+        end
       end
     end
 

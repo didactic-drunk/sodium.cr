@@ -3,7 +3,7 @@ require "../secure_buffer"
 
 module Sodium::Cipher
   abstract class SecretStream
-    @state : SecureBuffer
+    @state : Crypto::Secret
     @encrypt_decrypt = 0
     @initialized = false
 
@@ -17,7 +17,7 @@ module Sodium::Cipher
     # * This property is set to nil after calling .update.
     property additional : Bytes? = nil
 
-    @key : Bytes | SecureBuffer | Nil = nil
+    @key : Crypto::Secret | Nil = nil
 
     def initialize
       @state = SecureBuffer.new state_size
@@ -31,15 +31,18 @@ module Sodium::Cipher
       @encrypt_decrypt = -1
     end
 
-    def key=(key : Bytes | SecureBuffer)
+    def key=(key : Bytes | Crypto::Secret) : Crypto::Secret
       raise ArgumentError.new("key must be #{key_size} bytes, got #{key.bytesize}") if key.bytesize != key_size
+      key = key.is_a?(Crypto::Secret) ? key : Sodium::SecureBuffer.new(key)
       @key = key
       key
     end
 
     # Returns a random key in a SecureBuffer.
-    def random_key
-      self.key = SecureBuffer.random key_size
+    def random_key : Crypto::Secret
+      k = SecureBuffer.random key_size
+      self.key = k
+      k
     end
 
     # Only used for encryption.
@@ -102,15 +105,21 @@ module Sodium::Cipher
 
         case @encrypt_decrypt
         when 1
-          if LibSodium.crypto_secretstream_{{ val.id }}_push(@state.to_slice, dst.to_slice, out dst_size, src, src.bytesize, ad, ad_size, @tag) != 0
-            raise Sodium::Error.new("crypto_streamsecret_{{ val.id }}_xor_ic")
+          dst_size = @state.readwrite do |stslice|
+            if LibSodium.crypto_secretstream_{{ val.id }}_push(stslice, dst.to_slice, out dsize, src, src.bytesize, ad, ad_size, @tag) != 0
+              raise Sodium::Error.new("crypto_streamsecret_{{ val.id }}_xor_ic")
+            end
+            dsize
           end
           @tag = 0
           @additional = nil
           dst[0, dst_size]
         when -1
-          if LibSodium.crypto_secretstream_{{ val.id }}_pull(@state.to_slice, dst.to_slice, out dst_size2, out @tag, src, src.bytesize, ad, ad_size) != 0
-            raise Sodium::Error.new("crypto_streamsecret_{{ val.id }}_xor_ic")
+          dst_size2 = @state.readwrite do |stslice|
+            if LibSodium.crypto_secretstream_{{ val.id }}_pull(stslice, dst.to_slice, out dsize2, out @tag, src, src.bytesize, ad, ad_size) != 0
+              raise Sodium::Error.new("crypto_streamsecret_{{ val.id }}_xor_ic")
+            end
+            dsize2
           end
           @additional = nil
           dst[0, dst_size2]
@@ -123,19 +132,25 @@ module Sodium::Cipher
         raise Sodium::Error.new("can't initialize more than once") if @initialized
 
         if k = @key
-          case @encrypt_decrypt
-          when 1
-            if LibSodium.crypto_secretstream_xchacha20poly1305_init_push(@state.to_slice, header_buf.to_slice, k.to_slice) != 0
-              raise Sodium::Error.new("crypto_secretstream_xchacha20poly1305_init_push")
+          k.readonly do |kslice|
+            case @encrypt_decrypt
+            when 1
+              @state.readwrite do |stslice|
+                if LibSodium.crypto_secretstream_xchacha20poly1305_init_push(stslice, header_buf.to_slice, kslice) != 0
+                  raise Sodium::Error.new("crypto_secretstream_xchacha20poly1305_init_push")
+                end
+              end
+            when -1
+              @state.readwrite do |stslice|
+               if LibSodium.crypto_secretstream_xchacha20poly1305_init_pull(stslice, header_buf.to_slice, kslice) != 0
+                  raise Sodium::Error.new("crypto_secretstream_xchacha20poly1305_init_push")
+                end
+              end
+            when 0
+              raise Sodium::Error.new("must call .encrypt or .decrypt first")
+            else
+              abort "invalid encrypt_decrypt state #{@encrypt_decrypt}"
             end
-          when -1
-            if LibSodium.crypto_secretstream_xchacha20poly1305_init_pull(@state.to_slice, header_buf.to_slice, k.to_slice) != 0
-              raise Sodium::Error.new("crypto_secretstream_xchacha20poly1305_init_push")
-            end
-          when 0
-            raise Sodium::Error.new("must call .encrypt or .decrypt first")
-          else
-            abort "invalid encrypt_decrypt state #{@encrypt_decrypt}"
           end
         else
             raise Sodium::Error.new("must set an encryption/decryption key")

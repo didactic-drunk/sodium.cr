@@ -12,7 +12,7 @@ module Sodium::Cipher::Aead
       @key = SecureBuffer.random key_size
     end
 
-    # Initializes with a reference to an existing ky.
+    # Initializes with a reference to an existing key.
     def initialize(@key : SecureBuffer)
       raise ArgumentError.new("key size mismatch, got #{@key.bytesize}, wanted #{key_size}") if @key.bytesize != key_size
       @key.readonly
@@ -30,6 +30,7 @@ module Sodium::Cipher::Aead
       offset = src.bytesize
       dst ||= Bytes.new (offset + mac_size)
       mac = dst[offset, mac_size]
+
       _, _, nonce = encrypt_detached src.to_slice, dst[0, offset], mac: mac, nonce: nonce, additional: additional
       {dst, nonce}
     end
@@ -114,8 +115,8 @@ module Sodium::Cipher::Aead
         ad_len = additional.try(&.bytesize) || 0
 
         nonce.used!
-        @key.readonly do
-          r = LibSodium.crypto_aead{{ val.id }}_encrypt_detached(dst, mac, out mac_len, src, src.bytesize, additional, ad_len, nil, nonce.to_slice, @key.to_slice)
+        @key.readonly do |kslice|
+          r = LibSodium.crypto_aead{{ val.id }}_encrypt_detached(dst, mac, out mac_len, src, src.bytesize, additional, ad_len, nil, nonce.to_slice, kslice)
           raise Sodium::Error.new("crypto_aead_{{ val.id }}_encrypt_detached") if r != 0
           raise Sodium::Error.new("crypto_aead_{{ val.id }}_encrypt_detached mac size mismatch") if mac_len != MAC_SIZE
         end
@@ -134,8 +135,9 @@ module Sodium::Cipher::Aead
 
         ad_len = additional.try(&.bytesize) || 0
 
-        r = @key.readonly do
-          LibSodium.crypto_aead{{ val.id }}_decrypt_detached(dst, nil, src, src.bytesize, mac, additional, ad_len, nonce.to_slice, @key.to_slice)
+        r = @key.readonly do |kslice|
+          LibSodium.crypto_aead{{ val.id }}_decrypt_detached(dst, nil, src, src.bytesize, mac, additional, ad_len, nonce.
+          to_slice, kslice)
         end
         raise Sodium::Error::DecryptionFailed.new("crypto_aead_{{ val.id }}_decrypt_detached") if r != 0
         dst
