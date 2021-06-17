@@ -31,7 +31,8 @@ jobs:
     - name: Install dependencies
       run: shards install
     - name: Run tests
-      run: crystal spec -Dpreview_mt --order random --error-on-warnings
+      run: crystal spec -Dpreview_mt --order random 
+#      run: crystal spec -Dpreview_mt --order random --error-on-warnings
     - name: Run bulid
       run: shards build -Dpreview_mt
     - name: Run format

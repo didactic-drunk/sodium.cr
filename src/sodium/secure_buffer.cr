@@ -51,6 +51,8 @@ module Sodium
     # Returns key
     # May permanently set key to readonly depending on class usage.
     # WARNING: Not thread safe unless this object is readonly or readwrite
+    #
+    @[Deprecated("Use the Slice provided within a `readonly` or `readwrite` block")]
     def to_slice : Bytes
       case @state
       when State::Noaccess, State::Wiped
