@@ -39,19 +39,22 @@ class Sodium::CryptoBox
     SEED_SIZE = LibSodium.crypto_box_seedbytes.to_i
     SEAL_SIZE = LibSodium.crypto_box_sealbytes.to_i
 
+    getter key : Crypto::Secret
     getter public_key : PublicKey
 
     # Returns key
-    delegate_to_slice to: @sbuf
+    delegate_to_slice to: @key
 
-    @seed : SecureBuffer?
+    @seed : Crypto::Secret?
 
     # Generate a new random secret/public key pair.
     def initialize
-      @sbuf = SecureBuffer.new KEY_SIZE
+      @key = SecureBuffer.new KEY_SIZE
       @public_key = PublicKey.new
-      if LibSodium.crypto_box_keypair(@public_key.to_slice, self.to_slice) != 0
-        raise Sodium::Error.new("crypto_box_keypair")
+      @key.readwrite do |kslice|
+        if LibSodium.crypto_box_keypair(@public_key.to_slice, kslice) != 0
+          raise Sodium::Error.new("crypto_box_keypair")
+        end
       end
     end
 
@@ -59,14 +62,16 @@ class Sodium::CryptoBox
     #
     # Takes ownership of an existing key in a SecureBuffer.
     # Recomputes the public key from a secret key if missing.
-    def initialize(@sbuf : SecureBuffer, pkey : Bytes? = nil)
-      raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{@sbuf.bytesize}") if @sbuf.bytesize != KEY_SIZE
+    def initialize(@key : Crypto::Secret, pkey : Bytes? = nil)
+      raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{@key.bytesize}") if @key.bytesize != KEY_SIZE
       if pk = pkey
         @public_key = PublicKey.new pk
       else
         @public_key = PublicKey.new
-        if LibSodium.crypto_scalarmult_base(@public_key.to_slice, self.to_slice) != 0
-          raise Sodium::Error.new("crypto_scalarmult_base")
+        @key.readonly do |kslice|
+          if LibSodium.crypto_scalarmult_base(@public_key.to_slice, kslice) != 0
+            raise Sodium::Error.new("crypto_scalarmult_base")
+          end
         end
       end
     end
@@ -77,13 +82,15 @@ class Sodium::CryptoBox
     # Recomputes the public key from a secret key if missing.
     def initialize(bytes : Bytes, pkey : Bytes? = nil)
       raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{bytes.bytesize}") if bytes.bytesize != KEY_SIZE
-      @sbuf = SecureBuffer.new bytes
+      @key = SecureBuffer.new bytes
       if pk = pkey
         @public_key = PublicKey.new pk
       else
         @public_key = PublicKey.new
-        if LibSodium.crypto_scalarmult_base(@public_key.to_slice, self.to_slice) != 0
-          raise Sodium::Error.new("crypto_scalarmult_base")
+        @key.readonly do |kslice|
+          if LibSodium.crypto_scalarmult_base(@public_key.to_slice, kslice) != 0
+            raise Sodium::Error.new("crypto_scalarmult_base")
+          end
         end
       end
     end
@@ -93,30 +100,38 @@ class Sodium::CryptoBox
     # Copies seed to a SecureBuffer.
     def initialize(*, seed : Bytes, erase = false)
       raise ArgumentError.new("Secret sign seed must be #{SEED_SIZE}, got #{seed.bytesize}") unless seed.bytesize == SEED_SIZE
-      @seed = SecureBuffer.new seed, erase: erase
+      @seed = seed = SecureBuffer.new seed, erase: erase
 
-      @sbuf = SecureBuffer.new KEY_SIZE
+      @key = SecureBuffer.new KEY_SIZE
       @public_key = PublicKey.new
-      if LibSodium.crypto_box_seed_keypair(@public_key.to_slice, self.to_slice, seed) != 0
-        raise Sodium::Error.new("crypto_box_seed_keypair")
+      seed.readonly do |seed_slice|
+        @key.readwrite do |kslice|
+          if LibSodium.crypto_box_seed_keypair(@public_key.to_slice, kslice, seed_slice) != 0
+            raise Sodium::Error.new("crypto_box_seed_keypair")
+          end
+        end
       end
     end
 
     # Derive a new secret/public key pair based on a consistent seed.
-    def initialize(*, seed : SecureBuffer)
+    def initialize(*, seed : Crypto::Secret)
       raise ArgumentError.new("Secret sign seed must be #{SEED_SIZE}, got #{seed.bytesize}") unless seed.bytesize == SEED_SIZE
       @seed = seed
 
-      @sbuf = SecureBuffer.new KEY_SIZE
+      @key = SecureBuffer.new KEY_SIZE
       @public_key = PublicKey.new
-      if LibSodium.crypto_box_seed_keypair(@public_key.to_slice, self.to_slice, seed) != 0
-        raise Sodium::Error.new("crypto_box_seed_keypair")
+      seed.readonly do |seed_slice|
+        @key.readwrite do |kslice|
+          if LibSodium.crypto_box_seed_keypair(@public_key.to_slice, kslice, seed_slice) != 0
+            raise Sodium::Error.new("crypto_box_seed_keypair")
+          end
+        end
       end
     end
 
-    def seed
+    def seed : Crypto::Secret
       # BUG: Generate seed if not set.
-      @seed.not_nil!.to_slice
+      @seed.not_nil!
     end
 
     # Return a Box containing a precomputed shared secret for use with authenticated encryption/decryption.
@@ -159,8 +174,10 @@ class Sodium::CryptoBox
       dst ||= Bytes.new dst_size
       raise ArgumentError.new("dst.bytesize must be src.bytesize - SEAL_SIZE, got #{dst.bytesize}") unless dst.bytesize == dst_size
 
-      if LibSodium.crypto_box_seal_open(dst, src, src.bytesize, @public_key.to_slice, self.to_slice) != 0
-        raise Sodium::Error.new("crypto_box_seal_open")
+      @key.readonly do |kslice|
+        if LibSodium.crypto_box_seal_open(dst, src, src.bytesize, @public_key.to_slice, kslice) != 0
+          raise Sodium::Error.new("crypto_box_seal_open")
+        end
       end
       dst
     end

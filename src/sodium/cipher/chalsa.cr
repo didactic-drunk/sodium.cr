@@ -15,7 +15,6 @@ module Sodium::Cipher
     def initialize(key : Crypto::Secret | Bytes, nonce = nil)
       raise ArgumentError.new("key must be #{key_size} bytes, got #{key.bytesize}") if key.bytesize != key_size
       @key = key.is_a?(Crypto::Secret) ? key : Sodium::SecureBuffer.new(key)
-#      self.key = key if key
       self.nonce = nonce if nonce
     end
 
@@ -116,8 +115,11 @@ module Sodium::Cipher
       def update(src : Bytes, dst : Bytes) : Bytes
         if (k = @key) && (n = @nonce)
           raise ArgumentError.new("src and dst bytesize must be identical") if src.bytesize != dst.bytesize
-          if LibSodium.crypto_stream_{{ val.id }}_xor_ic(dst, src, src.bytesize, n, @offset, k.to_slice) != 0
-            raise Sodium::Error.new("crypto_stream_{{ val.id }}_xor_ic")
+
+          k.readonly do |kslice|
+            if LibSodium.crypto_stream_{{ val.id }}_xor_ic(dst, src, src.bytesize, n, @offset, kslice) != 0
+              raise Sodium::Error.new("crypto_stream_{{ val.id }}_xor_ic")
+            end
           end
           @offset += src.bytesize
           dst

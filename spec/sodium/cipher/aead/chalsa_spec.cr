@@ -89,15 +89,20 @@ end
     end
 
     it "dups" do
-      box1 = Sodium::Cipher::Aead::{{ name.id }}.new Bytes.new(Sodium::Cipher::Aead::{{ name.id }}::KEY_SIZE)
+      key = Bytes.new Sodium::Cipher::Aead::{{ name.id }}::KEY_SIZE
+      box1 = Sodium::Cipher::Aead::{{ name.id }}.new key
       box2 = box1.dup
 
       key1 = box1.key
       key2 = box2.key
-      key2.readwrite
-
-      key2.to_slice[0] = 1_u8
-      key1.to_slice[0].should eq 0_u8
+      key1.should eq key2
+      key2.readwrite do |ks|
+        ks[0] = 1_u8
+      end
+      key1.readonly do |ks|
+        ks[0].should eq 0_u8
+      end
+      key1.should_not eq key2
     end
   end
 

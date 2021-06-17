@@ -34,14 +34,12 @@ private def box_from_vec(vec)
   end
 end
 
-private def new_key_bytes
-  Sodium::CryptoBox::SecretKey.new.to_slice
-end
-
 describe Sodium::CryptoBox::SecretKey do
   it "loads keys" do
     key1 = Sodium::CryptoBox::SecretKey.new
-    key2 = Sodium::CryptoBox::SecretKey.new key1.to_slice, key1.public_key.to_slice
+    key2 = key1.key.readonly do |ks|
+      Sodium::CryptoBox::SecretKey.new ks, key1.public_key.to_slice
+    end
     key1.to_slice.should eq key2.to_slice
     key1.public_key.to_slice.should eq key2.public_key.to_slice
   end

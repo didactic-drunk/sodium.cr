@@ -26,8 +26,14 @@ require "../../../src/sodium/cipher/chalsa"
       key1 = cipher1.key
       key2 = cipher2.key
 
-      key2.to_slice[0] = 1_u8
-      key1.to_slice[0].should eq 0_u8
+      key1.should eq key2
+      key2.readwrite do |ks|
+        ks[0] = 1_u8
+      end
+      key1.readonly do |ks|
+        ks[0].should eq 0_u8
+      end
+      key1.should_not eq key2
     end
   end
 {% end %}
