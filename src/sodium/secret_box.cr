@@ -63,8 +63,8 @@ module Sodium
       nonce ||= Nonce.random
 
       nonce.used!
-      r = @key.readonly do
-        LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.to_slice, @key)
+      r = @key.readonly do |kslice|
+        LibSodium.crypto_secretbox_easy(dst, src, src.bytesize, nonce.to_slice, kslice)
       end
       raise Sodium::Error.new("crypto_secretbox_easy") if r != 0
       {dst, nonce}

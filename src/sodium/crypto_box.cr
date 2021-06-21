@@ -22,8 +22,10 @@ module Sodium
       # Precalculate key for later use.
       # Large speed gains with small data sizes and many messages.
       # Small speed gains with large data sizes or few messages.
-      if LibSodium.crypto_box_beforenm(@key, @public_key.to_slice, @secret_key.to_slice) != 0
-        raise Error.new("crypto_box_beforenm")
+      @secret_key.key.readonly do |skslice|
+        if LibSodium.crypto_box_beforenm(@key, @public_key.to_slice, skslice) != 0
+          raise Error.new("crypto_box_beforenm")
+        end
       end
     end
 
