@@ -418,7 +418,7 @@
   </h2>
   
     
-      <a href="https://github.com/didactic-drunk/sodium.cr/blob/a1706055e1ccf03404fba0cb3054bc826a043f30/src/sodium/kdf.cr#L32" target="_blank">
+      <a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L32" target="_blank">
         sodium/kdf.cr
       </a>
     
@@ -471,7 +471,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#new(sbuf:Crypto::Secret)-class-method" class="signature"><strong>.new</strong>(sbuf : Crypto::Secret)</a>
+        <a href="#new(key:Crypto::Secret)-class-method" class="signature"><strong>.new</strong>(key : Crypto::Secret)</a>
         
           <div class="summary"><p>Use an existing KDF Crypto::Secret key.</p></div>
         
@@ -536,9 +536,18 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#key:Crypto::Secret-instance-method" class="signature"><strong>#key</strong> : Crypto::Secret</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#to_slice:Bytes-instance-method" class="signature"><strong>#to_slice</strong> : Bytes</a>
         
-          <div class="summary"><p>Returns key</p></div>
+          <div class="summary"><p>Returns key</p>
+
+<p><span class="flag red">DEPRECATED</span>  Use .key instead</p>
+
+</div>
         
       </li>
     
@@ -624,17 +633,17 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/a1706055e1ccf03404fba0cb3054bc826a043f30/src/sodium/kdf.cr#L47" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L48" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(sbuf:Crypto::Secret)-class-method">
+    <div class="entry-detail" id="new(key:Crypto::Secret)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(sbuf : Crypto::Secret)
+        def self.<strong>new</strong>(key : Crypto::Secret)
 
-        <a class="method-permalink" href="#new(sbuf:Crypto::Secret)-class-method">#</a>
+        <a class="method-permalink" href="#new(key:Crypto::Secret)-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -645,7 +654,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/a1706055e1ccf03404fba0cb3054bc826a043f30/src/sodium/kdf.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L57" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -668,7 +677,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/a1706055e1ccf03404fba0cb3054bc826a043f30/src/sodium/kdf.cr#L66" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L67" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -709,7 +718,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/a1706055e1ccf03404fba0cb3054bc826a043f30/src/sodium/kdf.cr#L77" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L78" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -732,7 +741,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/a1706055e1ccf03404fba0cb3054bc826a043f30/src/sodium/kdf.cr#L114" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -755,7 +764,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/a1706055e1ccf03404fba0cb3054bc826a043f30/src/sodium/kdf.cr#L98" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -778,7 +787,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/a1706055e1ccf03404fba0cb3054bc826a043f30/src/sodium/kdf.cr#L122" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L123" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -801,7 +810,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/a1706055e1ccf03404fba0cb3054bc826a043f30/src/sodium/kdf.cr#L106" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L107" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="key:Crypto::Secret-instance-method">
+      <div class="signature">
+        
+        def <strong>key</strong> : Crypto::Secret
+
+        <a class="method-permalink" href="#key:Crypto::Secret-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L42" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -817,12 +842,16 @@
         <div class="doc">
           
           <p>Returns key</p>
+
+<p><span class="flag red">DEPRECATED</span>  Use .key instead</p>
+
+
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/a1706055e1ccf03404fba0cb3054bc826a043f30/src/sodium/kdf.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/didactic-drunk/sodium.cr/blob/910666bcdf66c7995639525155ec76be67c908d1/src/sodium/kdf.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
