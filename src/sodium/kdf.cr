@@ -36,9 +36,10 @@ module Sodium
     CONTEXT_SIZE = LibSodium.crypto_kdf_contextbytes
 
     # Returns key
-    delegate_to_slice to: @sbuf
+    @[Deprecated("Use .key instead")]
+    delegate_to_slice to: @key
 
-    @sbuf : Crypto::Secret
+    getter key : Crypto::Secret
 
     # Use an existing KDF key.
     #
@@ -49,22 +50,22 @@ module Sodium
         raise ArgumentError.new("bytes must be #{KEY_SIZE}, got #{bytes.bytesize}")
       end
 
-      @sbuf = SecureBuffer.new(bytes, erase).noaccess
+      @key = SecureBuffer.new(bytes, erase).noaccess
     end
 
     # Use an existing KDF Crypto::Secret key.
-    def initialize(@sbuf : Crypto::Secret)
-      if @sbuf.bytesize != KEY_SIZE
-        raise ArgumentError.new("bytes must be #{KEY_SIZE}, got #{sbuf.bytesize}")
+    def initialize(@key : Crypto::Secret)
+      if @key.bytesize != KEY_SIZE
+        raise ArgumentError.new("bytes must be #{KEY_SIZE}, got #{@key.bytesize}")
       end
-      @sbuf.noaccess
+      @key.noaccess
     end
 
     # Generate a new random KDF key.
     #
     # Make sure to save kdf.to_slice before kdf goes out of scope.
     def initialize
-      @sbuf = SecureBuffer.random(KEY_SIZE).noaccess
+      @key = SecureBuffer.random(KEY_SIZE).noaccess
     end
 
     # Derive a consistent subkey based on `context` and `subkey_id`.
@@ -82,7 +83,7 @@ module Sodium
 
       subkey = SecureBuffer.new subkey_size
       subkey.readwrite do |sub_slice|
-        @sbuf.readonly do |sslice|
+        @key.readonly do |sslice|
           if (ret = LibSodium.crypto_kdf_derive_from_key(sub_slice, sub_slice.bytesize, subkey_id, context, sslice)) != 0
             raise Sodium::Error.new("crypto_kdf_derive_from_key returned #{ret} (subkey size is probably out of range)")
           end

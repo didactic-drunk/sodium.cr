@@ -21,23 +21,6 @@ describe Sodium::SecureBuffer do
     buf.readwrite
   end
 
-  it "copies and erases" do
-    bytes = Bytes.new(5) { 1_u8 }
-
-    buf = Sodium::SecureBuffer.new bytes, erase: true
-    buf.readonly do |slice|
-      slice.bytesize.should eq 5
-
-      slice.each do |b|
-        b.should eq 1_u8
-      end
-    end
-
-    bytes.to_slice.each do |b|
-      b.should eq 0_u8
-    end
-  end
-
   it "dups without crashing" do
     buf1 = Sodium::SecureBuffer.new 5
     buf1.noaccess

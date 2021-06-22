@@ -22,7 +22,9 @@ module Sodium
     # Returns a **readonly** SecureBuffer.
     def initialize(bytes : Bytes, erase = false)
       initialize bytes.bytesize
-      bytes.copy_to self.to_slice
+      readwrite do |slice|
+        slice.copy_from bytes
+      end
       Sodium.memzero(bytes) if erase
       readonly
     end

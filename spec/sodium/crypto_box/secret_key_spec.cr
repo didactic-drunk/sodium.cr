@@ -40,14 +40,16 @@ describe Sodium::CryptoBox::SecretKey do
     key2 = key1.key.readonly do |ks|
       Sodium::CryptoBox::SecretKey.new ks, key1.public_key.to_slice
     end
-    key1.to_slice.should eq key2.to_slice
+    key1.key.should eq key2.key
     key1.public_key.to_slice.should eq key2.public_key.to_slice
   end
 
   it "recomputes the public_key" do
     key1 = Sodium::CryptoBox::SecretKey.new
-    key2 = Sodium::CryptoBox::SecretKey.new key1.to_slice
-    key1.to_slice.should eq key2.to_slice
+    key2 = key1.key.readonly do |ks|
+      Sodium::CryptoBox::SecretKey.new ks
+    end
+    key1.key.should eq key2.key
     key1.public_key.to_slice.should eq key2.public_key.to_slice
   end
 
@@ -55,7 +57,7 @@ describe Sodium::CryptoBox::SecretKey do
     seed = Bytes.new Sodium::CryptoBox::SecretKey::SEED_SIZE
     key1 = Sodium::CryptoBox::SecretKey.new seed: seed
     key2 = Sodium::CryptoBox::SecretKey.new seed: seed
-    key1.to_slice.should eq key2.to_slice
+    key1.key.should eq key2.key
     key1.public_key.to_slice.should eq key2.public_key.to_slice
   end
 
