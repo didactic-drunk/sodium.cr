@@ -78,8 +78,9 @@ module Sodium::Cipher::Aead
 
     abstract def encrypt_detached(src : Bytes, dst : Bytes? = nil, *, nonce : Sodium::Nonce? = nil, mac : Bytes? = nil, additional : String | Bytes | Nil = nil) : {Bytes, Bytes, Sodium::Nonce}
     abstract def decrypt_detached(src : Bytes, dst : Bytes? = nil, *, nonce : Sodium::Nonce, mac : Bytes, additional : String | Bytes | Nil = nil) : Bytes
-    protected abstract def key_size : Int32
-    protected abstract def mac_size : Int32
+    abstract def key_size : Int32
+    abstract def mac_size : Int32
+    abstract def nonce_size : Int32
 
     def dup
       self.class.new @key.dup
@@ -143,12 +144,16 @@ module Sodium::Cipher::Aead
         dst
       end
 
-      protected def key_size : Int32
+      def key_size : Int32
         KEY_SIZE
       end
 
-      protected def mac_size : Int32
+      def mac_size : Int32
         MAC_SIZE
+      end
+
+      def nonce_size : Int32
+        NONCE_SIZE
       end
     end
   {% end %}
