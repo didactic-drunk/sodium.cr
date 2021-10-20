@@ -12,6 +12,7 @@ jobs:
     name: "crystal: ${{ matrix.crystal }}, stable: ${{ matrix.stable }}"
     continue-on-error: ${{ !matrix.stable }}
     strategy:
+      fail-fast: false
       matrix:
         stable: [true]
         crystal:
@@ -54,4 +55,3 @@ jobs:
     - name: Failed
       if: ${{ failure() }}
       run: "[ -f libsodium_install.out ] && cat libsodium_install.out"
-
