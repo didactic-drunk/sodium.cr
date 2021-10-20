@@ -9,9 +9,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    name: "crystal: ${{ matrix.crystal }}, stable: ${{ matrix.stable }}"
+    continue-on-error: ${{ !matrix.stable }}
+    strategy:
+      matrix:
+        stable: [true]
+        crystal:
+          - 0.36.0
+          - 0.36.1
+          - 1.0.0
+          - 1.1.0
+          - 1.1.1
+          - 1.2.0
+        include:
+          - crystal: nightly
+            stable: false
 
     container:
-      image: crystallang/crystal
+      image: crystallang/crystal:${{ matrix.crystal }}
 
     steps:
     - uses: actions/checkout@v2
@@ -31,8 +46,7 @@ jobs:
     - name: Install dependencies
       run: shards install
     - name: Run tests
-      run: crystal spec -Dpreview_mt --order random 
-#      run: crystal spec -Dpreview_mt --order random --error-on-warnings
+      run: crystal spec -Dpreview_mt --order random
     - name: Run bulid
       run: shards build -Dpreview_mt
     - name: Run format
