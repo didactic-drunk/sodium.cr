@@ -4,7 +4,7 @@ version: 1.2.3
 authors:
 - Andrew Hamon <andrew@hamon.cc>
 - Didactic Drunk <1479616+didactic-drunk@users.noreply.github.com>
-crystal: ">= 0.36.0"
+crystal: ">= 1.0.0"
 targets:
   blake2b_hash:
     main: examples/blake2b_hash.cr
