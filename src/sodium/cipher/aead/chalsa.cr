@@ -103,7 +103,7 @@ module Sodium::Cipher::Aead
       # `src` and `dst` may be the same object but should not overlap.
       # May supply `mac`, otherwise a new one is returned.
       # May supply `additional`
-      def encrypt_detached(src : Bytes, dst : Bytes? = nil, nonce : Sodium::Nonce? = nil, *, mac : Bytes? = nil, additional : String | Bytes | Nil = nil) : {Bytes, Bytes, Sodium::Nonce}
+      def encrypt_detached(src : Bytes, dst : Bytes? = nil, *, nonce : Sodium::Nonce? = nil, mac : Bytes? = nil, additional : String | Bytes | Nil = nil) : {Bytes, Bytes, Sodium::Nonce}
         dst ||= Bytes.new src.bytesize
         nonce ||= Sodium::Nonce.random
         mac ||= Bytes.new MAC_SIZE
