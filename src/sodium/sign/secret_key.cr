@@ -91,14 +91,28 @@ module Sodium
       end.readonly
     end
 
+    # Signs message and returns a combined signature.
+    # Verify using `secret_key.public_key.verify(messagesig).dup`
+    # See warning about object reuse in `#verify` if you don't `#dup`
+    @[Experimental]
+    def sign(message) : Bytes
+      message = message.to_slice
+
+      Bytes.new(SIG_SIZE + message.bytesize).tap do |msgsig|
+        sign_detached message, msgsig[0, SIG_SIZE]
+        message.copy_to msgsig[SIG_SIZE, message.bytesize]
+      end
+    end
+
     # Signs message and returns a detached signature.
     # Verify using `secret_key.public_key.verify_detached(message, sig)`
-    def sign_detached(message)
+    def sign_detached(message) : Bytes
       sign_detached message.to_slice
     end
 
-    def sign_detached(message : Bytes)
-      sig = Bytes.new(SIG_SIZE)
+    def sign_detached(message : Bytes, sig : Bytes? = nil) : Bytes
+      raise ArgumentError.new("expected sig to be #{SIG_SIZE}, got #{sig.try(&.bytesize).inspect}") if sig && sig.bytesize != SIG_SIZE
+      sig ||= Bytes.new(SIG_SIZE)
       @key.readonly do |kslice|
         if LibSodium.crypto_sign_detached(sig, out sig_len, message, message.bytesize, kslice) != 0
           raise Error.new("crypto_sign_detached")

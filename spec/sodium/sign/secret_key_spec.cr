@@ -64,7 +64,16 @@ describe Sodium::Sign::SecretKey do
     key1.seed.should eq key3.seed
   end
 
-  it "signs and verifies" do
+  it "signs and verifies combined" do
+    message = "foo"
+    skey = Sodium::Sign::SecretKey.new
+    sig = skey.sign message
+
+    message2 = skey.public_key.verify_string sig
+    message2.should eq message
+  end
+
+  it "signs and verifies detached" do
     message = "foo"
     skey = Sodium::Sign::SecretKey.new
     sig = skey.sign_detached message

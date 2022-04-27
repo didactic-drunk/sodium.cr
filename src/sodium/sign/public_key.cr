@@ -20,13 +20,37 @@ module Sodium
       end
     end
 
-    # Verify signature made by `secret_key.sign_detached(message)`
+    # Verify signature made by `secret_key.sign(message)`
     # Raises on verification failure.
-    def verify_detached(message, sig : Bytes)
-      verify_detached message.to_slice, sig
+    #
+    # WARNING: returns pointer to message within messagesig (zerocopy)
+    # If you reuse messagesig, `#dup` the returned message
+    # `secret_key.verify(messagesig).dup`
+    @[Experimental]
+    def verify(messagesig) : Bytes
+      messagesig = messagesig.to_slice
+      bs = messagesig.bytesize
+      raise Sodium::Error::VerificationFailed.new("message shorter than SIG_SIZE") unless bs >= SIG_SIZE
+
+      message = messagesig[SIG_SIZE, bs - SIG_SIZE]
+      sig = messagesig[0, SIG_SIZE]
+
+      verify_detached message, sig
+      message
     end
 
-    def verify_detached(message : Bytes, sig : Bytes)
+    @[Experimental]
+    def verify_string(messagesig) : String
+      String.new(verify(messagesig))
+    end
+
+    # Verify signature made by `secret_key.sign_detached(message)`
+    # Raises on verification failure.
+    def verify_detached(message, sig) : Nil
+      verify_detached message.to_slice, sig.to_slice
+    end
+
+    def verify_detached(message : Bytes, sig : Bytes) : Nil
       raise ArgumentError.new("Signature must be #{SIG_SIZE} bytes, got #{sig.bytesize}") if sig.bytesize != SIG_SIZE
 
       v = LibSodium.crypto_sign_verify_detached sig, message, message.bytesize, @bytes
