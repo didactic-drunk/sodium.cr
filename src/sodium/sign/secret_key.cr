@@ -18,12 +18,12 @@ module Sodium
     SIG_SIZE  = LibSodium.crypto_sign_bytes.to_i
     SEED_SIZE = LibSodium.crypto_sign_seedbytes.to_i
 
-    getter public_key : PublicKey
-
     @[Deprecated("Switching to Crypto::Secret.  Use `key.readonly` or `key.readwrite`")]
     delegate_to_slice to: @key
 
     getter key : Crypto::Secret
+    getter public_key = PublicKey.new
+
     @seed : Crypto::Secret?
 
     # Generates a new random secret/public key pair.
@@ -37,40 +37,54 @@ module Sodium
       end
     end
 
-    # Use existing secret and public keys.
-    # Copies secret key to a SecureBuffer.
-    # Recomputes the public key from a secret key if missing.
-    def initialize(bytes : Bytes, pkey : Bytes? = nil, *, erase = false)
-      raise ArgumentError.new("Secret sign key must be #{KEY_SIZE}, got #{bytes.bytesize}") unless bytes.bytesize == KEY_SIZE
 
-      @key = SecureBuffer.new bytes, erase: erase
-      if pk = pkey
-        @public_key = PublicKey.new pk
+    # Copies secret *key* to a `SecureBuffer`
+    def self.copy_from(key : Bytes)
+      new SecureBuffer.copy_from(key)
+    end
+
+    # Copies secret *key* to a `SecureBuffer`
+    # Erases *key*
+    def self.move_from(key : Bytes)
+      new SecureBuffer.move_from(key)
+    end
+
+    # Copies secret *key* to a `SecureBuffer`
+    @[Deprecated("Use .copy_from or .move_from")]
+    def self.new(key : Bytes, erase = false)
+      raise ArgumentError.new("Secret sign key must be #{KEY_SIZE}, got #{key.bytesize}") unless key.bytesize == KEY_SIZE
+
+      if erase
+        move_from key
       else
-        @public_key = PublicKey.new
-        @key.readwrite do |kslice|
-          if LibSodium.crypto_sign_ed25519_sk_to_pk(@public_key.to_slice, kslice) != 0
-            raise Sodium::Error.new("crypto_sign_ed25519_sk_to_pk")
-          end
+        copy_from key
+      end
+    end
+
+    # References existing Crypto::Secret
+    def initialize(@key : Crypto::Secret)
+      # Set @public_key
+      @key.readwrite do |kslice|
+        if LibSodium.crypto_sign_ed25519_sk_to_pk(@public_key.to_slice, kslice) != 0
+          raise Sodium::Error.new("crypto_sign_ed25519_sk_to_pk")
         end
       end
     end
 
     # Derive a new secret/public key pair based on a consistent seed.
-    # Copies seed to a SecureBuffer.
-    def initialize(*, seed : Bytes, erase = false)
+    # Copies seed to a `SecureBuffer`
+    def self.new(*, seed : Bytes, erase = false)
       raise ArgumentError.new("Secret sign seed must be #{SEED_SIZE}, got #{seed.bytesize}") unless seed.bytesize == SEED_SIZE
-      initialize(seed: SecureBuffer.new(seed, erase: erase))
+      new(seed: SecureBuffer.new(seed, erase: erase))
     end
 
     # Derive a new secret/public key pair based on a consistent seed.
-    # References passed SecureBuffer
-    def initialize(*, seed : SecureBuffer)
+    # References passed `SecureBuffer`
+    def initialize(*, seed : Crypto::Secret)
       raise ArgumentError.new("Secret sign seed must be #{SEED_SIZE}, got #{seed.bytesize}") unless seed.bytesize == SEED_SIZE
       @seed = seed
 
       @key = SecureBuffer.new KEY_SIZE
-      @public_key = PublicKey.new
       seed.readonly do |seed_slice|
         @key.readwrite do |kslice|
           if LibSodium.crypto_sign_seed_keypair(@public_key.to_slice, kslice, seed_slice) != 0
@@ -79,6 +93,18 @@ module Sodium
         end
       end
     end
+
+    # :nodoc:
+    def initialize(random : Bool)
+      @key = SecureBuffer.new KEY_SIZE
+      @key.readwrite do |kslice|
+        if LibSodium.crypto_sign_keypair(@public_key.to_slice, kslice) != 0
+          raise Sodium::Error.new("crypto_sign_keypair")
+        end
+      end
+    end
+
+
 
     getter seed : Crypto::Secret do
       SecureBuffer.new(SEED_SIZE).tap do |seed_buf|

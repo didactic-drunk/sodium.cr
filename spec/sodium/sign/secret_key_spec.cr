@@ -31,18 +31,9 @@ end
 
 describe Sodium::Sign::SecretKey do
   it "loads keys" do
-    key1 = Sodium::Sign::SecretKey.new
+    key1 = Sodium::Sign::SecretKey.random
     key2 = key1.key.readonly do |kslice|
-      Sodium::Sign::SecretKey.new kslice, key1.public_key.to_slice
-    end
-    key1.key.should eq key2.key
-    key1.public_key.to_slice.should eq key2.public_key.to_slice
-  end
-
-  it "recomputes the public key" do
-    key1 = Sodium::Sign::SecretKey.new
-    key2 = key1.key.readonly do |kslice|
-      Sodium::Sign::SecretKey.new kslice
+      Sodium::Sign::SecretKey.copy_from kslice
     end
     key1.key.should eq key2.key
     key1.public_key.to_slice.should eq key2.public_key.to_slice
@@ -52,7 +43,7 @@ describe Sodium::Sign::SecretKey do
     seed = Bytes.new Sodium::Sign::SecretKey::SEED_SIZE
     key1 = Sodium::Sign::SecretKey.new seed: seed
     key2 = key1.key.readonly do |kslice|
-      Sodium::Sign::SecretKey.new kslice
+      Sodium::Sign::SecretKey.copy_from kslice
     end
     key3 = Sodium::Sign::SecretKey.new seed: key2.seed
     key1.key.should eq key2.key
@@ -66,7 +57,7 @@ describe Sodium::Sign::SecretKey do
 
   it "signs and verifies combined" do
     message = "foo"
-    skey = Sodium::Sign::SecretKey.new
+    skey = Sodium::Sign::SecretKey.random
     sig = skey.sign message
 
     message2 = skey.public_key.verify_string sig
@@ -75,7 +66,7 @@ describe Sodium::Sign::SecretKey do
 
   it "signs and verifies detached" do
     message = "foo"
-    skey = Sodium::Sign::SecretKey.new
+    skey = Sodium::Sign::SecretKey.random
     sig = skey.sign_detached message
 
     skey.public_key.verify_detached message, sig
@@ -83,7 +74,7 @@ describe Sodium::Sign::SecretKey do
 
   it "signs and fails" do
     message = "foo"
-    skey = Sodium::Sign::SecretKey.new
+    skey = Sodium::Sign::SecretKey.random
     sig = skey.sign_detached message
 
     expect_raises Sodium::Error::VerificationFailed do
@@ -93,7 +84,7 @@ describe Sodium::Sign::SecretKey do
 
   it "to_curve25519" do
     message = "foo"
-    sskey = Sodium::Sign::SecretKey.new
+    sskey = Sodium::Sign::SecretKey.random
     cskey = sskey.to_curve25519
 
     spkey = sskey.public_key
