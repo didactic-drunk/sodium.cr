@@ -10,24 +10,40 @@ module Sodium
 
     # :nodoc:
     # Only used by SecretKey
-    def initialize
-      @bytes = Bytes.new(KEY_SIZE)
+    def self.new
+      new Bytes.new(KEY_SIZE)
     end
 
+    # Maintains reference to *bytes*
     def initialize(@bytes : Bytes)
       if bytes.bytesize != KEY_SIZE
         raise ArgumentError.new("Public key must be #{KEY_SIZE} bytes, got #{bytes.bytesize}")
       end
     end
 
-    # Verify signature made by `secret_key.sign(message)`
+    # Verify and return a copy of the message data
     # Raises on verification failure.
-    #
-    # WARNING: returns pointer to message within messagesig (zerocopy)
-    # If you reuse messagesig, `#dup` the returned message
-    # `secret_key.verify(messagesig).dup`
     @[Experimental]
-    def verify(messagesig) : Bytes
+    def verify(message) : Bytes
+      verify_zc(message).dup
+    end
+
+    # Verify and return a String with the copied message data
+    # Raises on verification failure.
+    @[Experimental]
+    def verify_string(message) : String
+      String.new(verify_zc(message))
+    end
+
+    # Verify and return a zero copy reference to the message data
+    # Raises on verification failure.
+    @[Experimental]
+    def verify_zc(message) : Bytes
+      verify message.to_slice
+    end
+
+    # :nodoc:
+    def verify_zc(messagesig) : Bytes
       messagesig = messagesig.to_slice
       bs = messagesig.bytesize
       raise Sodium::Error::VerificationFailed.new("message shorter than SIG_SIZE") unless bs >= SIG_SIZE
@@ -37,11 +53,6 @@ module Sodium
 
       verify_detached message, sig
       message
-    end
-
-    @[Experimental]
-    def verify_string(messagesig) : String
-      String.new(verify(messagesig))
     end
 
     # Verify signature made by `secret_key.sign_detached(message)`

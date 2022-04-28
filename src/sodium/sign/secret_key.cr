@@ -64,6 +64,7 @@ module Sodium
     end
 
     # Derive a new secret/public key pair based on a consistent seed.
+    # References passed SecureBuffer
     def initialize(*, seed : SecureBuffer)
       raise ArgumentError.new("Secret sign seed must be #{SEED_SIZE}, got #{seed.bytesize}") unless seed.bytesize == SEED_SIZE
       @seed = seed
@@ -79,7 +80,7 @@ module Sodium
       end
     end
 
-    getter seed : Crypto::Secret? do
+    getter seed : Crypto::Secret do
       SecureBuffer.new(SEED_SIZE).tap do |seed_buf|
         @key.readonly do |kslice|
           seed_buf.readwrite do |seed_slice|
@@ -92,8 +93,8 @@ module Sodium
     end
 
     # Signs message and returns a combined signature.
-    # Verify using `secret_key.public_key.verify(messagesig).dup`
-    # See warning about object reuse in `#verify` if you don't `#dup`
+    # Verify using `secret_key.public_key.verify(messagesig)`
+    # Other `verify` methods exist.  Review the docs and choose carefully
     @[Experimental]
     def sign(message) : Bytes
       message = message.to_slice
