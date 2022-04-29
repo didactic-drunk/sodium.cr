@@ -3,11 +3,11 @@ require "../../secure_buffer"
 require "../../nonce"
 
 module Sodium::Cipher::Aead
-  abstract class Chalsa
+  abstract struct Chalsa
     # Encryption key
     getter key : SecureBuffer
 
-    # Initializes with a new random key.
+    @[Deprecated("use .random instead of .new")]
     def initialize
       @key = SecureBuffer.random key_size
     end
@@ -25,10 +25,9 @@ module Sodium::Cipher::Aead
     end
 
     # Encrypts `src` and returns {ciphertext, nonce}
-    def encrypt(src, dst : Bytes? = nil, *, nonce = nil, additional = nil)
-      {Bytes, Nonce}
+    def encrypt(src, dst : Bytes? = nil, *, nonce = nil, additional = nil) : {Bytes, Nonce}
       offset = src.bytesize
-      dst ||= Bytes.new (offset + mac_size)
+      dst ||= Bytes.new(offset + mac_size)
       mac = dst[offset, mac_size]
 
       _, _, nonce = encrypt_detached src.to_slice, dst[0, offset], mac: mac, nonce: nonce, additional: additional
@@ -95,10 +94,16 @@ module Sodium::Cipher::Aead
     # See `spec/sodium/cipher/aead/chalsa_spec.cr` for examples on how to use this class.
     #
     # WARNING: Not validated against test vectors.  You should probably write some before using this class.
-    class {{ key.id }} < Chalsa
+    struct {{ key.id }} < Chalsa
       KEY_SIZE = LibSodium.crypto_aead{{ val.id }}_keybytes.to_i32
       MAC_SIZE = LibSodium.crypto_aead{{ val.id }}_abytes.to_i32
       NONCE_SIZE = LibSodium.crypto_aead{{ val.id }}_npubbytes.to_i32
+
+      # Initializes with a new random key.
+      def self.random
+        key = SecureBuffer.random KEY_SIZE
+        new key
+      end
 
       # `src` and `dst` may be the same object but should not overlap.
       # May supply `mac`, otherwise a new one is returned.
@@ -108,7 +113,7 @@ module Sodium::Cipher::Aead
         nonce ||= Sodium::Nonce.random
         mac ||= Bytes.new MAC_SIZE
 
-        raise ArgumentError.new("src and dst bytesize must be identical") if src.bytesize != dst.bytesize
+        raise ArgumentError.new("src and dst bytesize must be identical #{src.bytesize} != #{dst.bytesize}") if src.bytesize != dst.bytesize
         raise ArgumentError.new("nonce size mismatch, got #{nonce.bytesize}, wanted #{NONCE_SIZE}") unless nonce.bytesize == NONCE_SIZE
         raise ArgumentError.new("mac size mismatch, got #{mac.bytesize}, wanted #{MAC_SIZE}") unless mac.bytesize == MAC_SIZE
 
@@ -130,7 +135,7 @@ module Sodium::Cipher::Aead
       # Must supply `additional` if supplied to #encrypt_detached
       def decrypt_detached(src : Bytes, dst : Bytes? = nil, *, nonce : Sodium::Nonce, mac : Bytes, additional : String | Bytes | Nil = nil) : Bytes
         dst ||= Bytes.new src.bytesize
-        raise ArgumentError.new("src and dst bytesize must be identical") if src.bytesize != dst.bytesize
+        raise ArgumentError.new("src and dst bytesize must be identical #{src.bytesize} != #{dst.bytesize}") if src.bytesize != dst.bytesize
         raise ArgumentError.new("nonce size mismatch, got #{nonce.bytesize}, wanted #{NONCE_SIZE}") unless nonce.bytesize == NONCE_SIZE
         raise ArgumentError.new("mac size mismatch, got #{mac.bytesize}, wanted #{MAC_SIZE}") unless mac.bytesize == MAC_SIZE
 
