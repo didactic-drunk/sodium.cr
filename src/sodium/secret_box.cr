@@ -5,6 +5,9 @@ require "./nonce"
 module Sodium
   # [https://libsodium.gitbook.io/doc/secret-key_cryptography](https://libsodium.gitbook.io/doc/secret-key_cryptography)
   #
+  # WARNING: Only use this class for compatibility with older applications already using SecretBox.
+  # Use `Sodium::Cipher::Aead::XChaCha20Poly1305Ietf` for new applications.
+  #
   # ```
   # box = Sodium::SecretBox.new
   # message = "foobar"
@@ -25,12 +28,30 @@ module Sodium
     # Encryption key
     getter key : Crypto::Secret
 
-    # Generate a new random key held in a SecureBuffer.
+    # Generate a new random key held in a `SecureBuffer`
+    def self.random
+      new SecureBuffer.random(KEY_SIZE)
+    end
+
+    # Copy *key* to a new `SecureBuffer`
+    def self.copy_from(key : Bytes)
+      new SecureBuffer.copy_from(key)
+    end
+
+    # Copy *key* to a new `SecureBuffer`
+    #
+    # Erases *key* after copying
+    def self.move_from(key : Bytes)
+      new SecureBuffer.copy_from(key)
+    end
+
+    # Generate a new random key held in a `SecureBuffer`
+    @[Deprecated("Use .random")]
     def initialize
       @key = SecureBuffer.random KEY_SIZE
     end
 
-    # Use an existing Crypto::Secret.
+    # Use an existing `Crypto::Secret`
     def initialize(@key : Crypto::Secret)
       if @key.bytesize != KEY_SIZE
         raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{@key.bytesize}")
@@ -38,9 +59,10 @@ module Sodium
       @key.readonly
     end
 
-    # Copy bytes to a new SecureBuffer
+    # Copy bytes to a new `SecureBuffer`
     #
     # Optionally erases bytes after copying if erase is set.
+    @[Deprecated("Use .copy_from or .move_from")]
     def initialize(bytes : Bytes, erase = false)
       if bytes.bytesize != KEY_SIZE
         raise ArgumentError.new("Secret key must be #{KEY_SIZE} bytes, got #{bytes.bytesize}")
@@ -78,11 +100,12 @@ module Sodium
     end
 
     # Returns decrypted message as a `String`.
-    #
-    # Optionally supply a destination buffer.
-    def decrypt_string(src, dst : Bytes? = nil, *, nonce : Nonce) : String
-      msg = decrypt src.to_slice, dst, nonce: nonce
-      String.new msg
+    def decrypt_string(src, *, nonce : Nonce) : String
+      dsize = src.bytesize - MAC_SIZE
+      String.new(dsize) do |dst|
+        decrypt src.to_slice, dst.to_slice(dsize), nonce: nonce
+        {dsize, dsize}
+      end
     end
 
     # :nodoc:

@@ -18,7 +18,7 @@ combined_test_vectors = [
 ]
 
 private def box_from_test_vector(vec)
-  box = Sodium::SecretBox.new vec[:key].hexbytes
+  box = Sodium::SecretBox.copy_from vec[:key].hexbytes
   nonce = Sodium::Nonce.new vec[:nonce].hexbytes
   plaintext = vec[:plaintext].hexbytes
   ciphertext = vec[:ciphertext].hexbytes
@@ -28,7 +28,7 @@ end
 
 describe Sodium::SecretBox do
   it "encrypts/decrypts" do
-    box = Sodium::SecretBox.new
+    box = Sodium::SecretBox.random
 
     message = "foobar"
     encrypted, nonce = box.encrypt message
@@ -41,7 +41,7 @@ describe Sodium::SecretBox do
   end
 
   it "can't encrypt twice using the same nonce" do
-    box = Sodium::SecretBox.new
+    box = Sodium::SecretBox.random
 
     message = "foobar"
     encrypted, nonce = box.encrypt message
