@@ -27,16 +27,14 @@ module Sodium
     @seed : Crypto::Secret?
 
     # Generates a new random secret/public key pair.
-    def initialize
-      @key = SecureBuffer.new KEY_SIZE
-      @public_key = PublicKey.new
-      @key.readwrite do |kslice|
-        if LibSodium.crypto_sign_keypair(@public_key.to_slice, kslice) != 0
-          raise Sodium::Error.new("crypto_sign_keypair")
-        end
-      end
+    def self.random
+      new(random: true)
     end
 
+    @[Deprecated("Use .random")]
+    def self.new
+      random
+    end
 
     # Copies secret *key* to a `SecureBuffer`
     def self.copy_from(key : Bytes)
@@ -103,8 +101,6 @@ module Sodium
         end
       end
     end
-
-
 
     getter seed : Crypto::Secret do
       SecureBuffer.new(SEED_SIZE).tap do |seed_buf|
