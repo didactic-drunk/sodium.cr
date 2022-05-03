@@ -28,7 +28,7 @@ end
 {% for name in %w(XChaCha20Poly1305Ietf) %}
   describe Sodium::Cipher::Aead::{{ name.id }} do
     it "encrypts/decrypts in combined mode" do
-      box = Sodium::Cipher::Aead::{{ name.id }}.new
+      box = Sodium::Cipher::Aead::{{ name.id }}.random
 
       message = "foo"
       additional = "bar"
@@ -53,7 +53,7 @@ end
     end
 
     it "encrypts/decrypts in detached mode" do
-      box = Sodium::Cipher::Aead::{{ name.id }}.new
+      box = Sodium::Cipher::Aead::{{ name.id }}.random
 
       message = "foo"
       additional = "bar"
@@ -78,7 +78,7 @@ end
     end
 
     it "can't encrypt twice using the same nonce" do
-      box = Sodium::Cipher::Aead::{{ name.id }}.new
+      box = Sodium::Cipher::Aead::{{ name.id }}.random
 
       message = "foo"
       mac, encrypted, nonce = box.encrypt_detached message

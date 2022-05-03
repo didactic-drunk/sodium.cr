@@ -34,6 +34,17 @@ module Sodium::Cipher::Aead
       {dst, nonce}
     end
 
+    # Decrypts `src` and returns plaintext as a `Crypto::Secret`
+    # Must supply `nonce`
+    # Must supply `additional` if supplied to #encrypt
+    def decrypt_secret(src, dst : Crypto::Secret? = nil, *, nonce : Nonce, additional = nil) : Crypto::Secret
+      dst ||= Sodium::SecureBuffer.new(src.bytesize - mac_size)
+      dst.readwrite do |dslice|
+        decrypt src, dslice, nonce: nonce, additional: additional
+      end
+      dst.readonly
+    end
+
     # Decrypts `src` and returns plaintext
     # Must supply `nonce`
     # Must supply `additional` if supplied to #encrypt
@@ -48,10 +59,12 @@ module Sodium::Cipher::Aead
     # Decrypts `src` and returns plaintext
     # Must supply `nonce`
     # Must supply `additional` if supplied to #encrypt
-    def decrypt_string(src, dst : Bytes? = nil, *, nonce : Nonce, additional = nil) : String
-      buf = decrypt src, dst, nonce: nonce, additional: additional
-      # TODO: optimize
-      String.new buf
+    def decrypt_string(src, *, nonce : Nonce, additional = nil) : String
+      dsize = src.bytesize - mac_size
+      String.new(dsize) do |dst|
+        decrypt src, dst.to_slice(dsize), nonce: nonce, additional: additional
+        {dsize, dsize}
+      end
     end
 
     # Encrypts `src` and returns {mac, ciphertext, nonce}
@@ -69,10 +82,12 @@ module Sodium::Cipher::Aead
     # Decrypts `src` and returns plaintext
     # Must supply `mac` and `nonce`
     # Must supply `additional` if supplied to #encrypt
-    def decrypt_detached_string(src, dst : Bytes? = nil, *, nonce = nil, mac : Bytes? = nil, additional = nil) : String
-      buf = decrypt_detached src.to_slice, dst, mac: mac, nonce: nonce, additional: additional
-      # TODO: optimize
-      String.new buf
+    def decrypt_detached_string(src, *, nonce = nil, mac : Bytes? = nil, additional = nil) : String
+      dsize = src.bytesize
+      String.new(dsize) do |dst|
+        decrypt_detached src.to_slice, dst.to_slice(dsize), mac: mac, nonce: nonce, additional: additional
+        {dsize, dsize}
+      end
     end
 
     abstract def encrypt_detached(src : Bytes, dst : Bytes? = nil, *, nonce : Sodium::Nonce? = nil, mac : Bytes? = nil, additional : String | Bytes | Nil = nil) : {Bytes, Bytes, Sodium::Nonce}
