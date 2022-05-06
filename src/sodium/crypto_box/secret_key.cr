@@ -43,7 +43,7 @@ class Sodium::CryptoBox
     getter public_key : PublicKey
 
     # Returns key
-    delegate_to_slice to: @key
+    #    delegate_to_slice to: @key
 
     @seed : Crypto::Secret?
 
@@ -163,9 +163,12 @@ class Sodium::CryptoBox
     # For authenticated messages use `secret_key.box(recipient_public_key).decrypt`.
     #
     # Optionally supply a destination buffer.
-    def decrypt_string(src, dst : Bytes? = nil) : String
-      msg = decrypt src.to_slice, dst
-      String.new msg
+    def decrypt_string(src) : String
+      dsize = src.bytesize - SEAL_SIZE
+      String.new(dsize) do |dst|
+        decrypt src.to_slice, dst.to_slice(dsize)
+        {dsize, dsize}
+      end
     end
 
     # :nodoc:
