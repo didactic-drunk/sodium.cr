@@ -17,6 +17,14 @@ puts ""
 {% end %}
 puts ""
 
+{% for sk in [Sodium::CryptoBox::SecretKey, Sodium::Sign::SecretKey] %}
+  sk = {{sk.id}}.new
+  pk = sk.public_key
+#  puts "#{sk.class} bytesize #{sk.to_slice.bytesize}"
+  puts "#{pk.class} bytesize #{pk.to_slice.bytesize}"
+{% end %}
+puts ""
+
 {% for name in %w(KEY_SIZE NONCE_SIZE MAC_SIZE) %}
   puts "Sodium::SecretBox::{{ name.id }} #{Sodium::SecretBox::{{ name.id }}}"
 {% end %}
@@ -47,9 +55,8 @@ puts ""
 {% end %}
 puts ""
 
-{% for sk in [Sodium::CryptoBox::SecretKey, Sodium::Sign::SecretKey] %}
-  sk = {{sk.id}}.new
-  pk = sk.public_key
-  puts "#{sk.class} bytesize #{sk.to_slice.bytesize}"
-  puts "#{pk.class} bytesize #{pk.to_slice.bytesize}"
+{% for name in %w(XChaCha20 ChaCha20Ietf ChaCha20 XSalsa20 Salsa20) %}
+  c = Sodium::Cipher::{{name.id}}.random
+#  puts "#{c.class} key_size #{c.key_size}"
+  puts "#{c.class} nonce_size #{c.nonce_size}"
 {% end %}

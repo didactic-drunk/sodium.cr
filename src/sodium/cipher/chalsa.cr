@@ -14,7 +14,7 @@ module Sodium::Cipher
 
     def initialize(key : Crypto::Secret | Bytes, nonce = nil)
       raise ArgumentError.new("key must be #{key_size} bytes, got #{key.bytesize}") if key.bytesize != key_size
-      @key = key.is_a?(Crypto::Secret) ? key : Sodium::SecureBuffer.new(key)
+      @key = key.is_a?(Crypto::Secret) ? key : Sodium::SecureBuffer.copy_from(key)
       self.nonce = nonce if nonce
     end
 
@@ -87,9 +87,7 @@ module Sodium::Cipher
     end
   end
 
-  {% for key, valtup in {"XSalsa20" => {"xsalsa20", false}, "Salsa20" => {"salsa20", false}, "XChaCha20" => {"xchacha20", false}, "ChaCha20Ietf" => {"chacha20_ietf", true}, "ChaCha20" => {"chacha20", false}} %}
-    {% val = valtup[0] %}
-    {% ietf = valtup[1] %}
+  {% for key, val in {"XSalsa20" => "xsalsa20", "Salsa20" => "salsa20", "XChaCha20" => "xchacha20", "ChaCha20Ietf" => "chacha20_ietf", "ChaCha20" => "chacha20"} %}
     # These classes can be used to generate pseudo-random data from a key,
     # or as building blocks for implementing custom constructions, but they
     # are not alternatives to secretbox.
@@ -102,8 +100,8 @@ module Sodium::Cipher
     #
     # WARNING: Not validated against test vectors.  You should probably write some before using this class.
     class {{ key.id }} < Chalsa
-      KEY_SIZE = LibSodium.crypto_stream_chacha20_{{ ietf ? "ietf_".id : "".id }}keybytes.to_i32
-      NONCE_SIZE = LibSodium.crypto_stream_chacha20_{{ ietf ? "ietf_".id : "".id }}noncebytes.to_i32
+      KEY_SIZE = LibSodium.crypto_stream_{{ val.id }}_keybytes.to_i32
+      NONCE_SIZE = LibSodium.crypto_stream_{{ val.id }}_noncebytes.to_i32
 
       def self.random
         new key: Sodium::SecureBuffer.random(KEY_SIZE), nonce: Random::Secure.random_bytes(NONCE_SIZE)
