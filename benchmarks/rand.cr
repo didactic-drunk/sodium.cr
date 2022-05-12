@@ -3,34 +3,33 @@ require "random/pcg32"
 require "random/isaac"
 require "../src/sodium/cipher/chalsa"
 
-pcgrand = Random::PCG32.new 0
-isaacrand = Random::ISAAC.new Bytes.new(32)
+randoms = {
+  "PCG"    => Random::PCG32.new(0),
+  "ISAAC"  => Random::ISAAC.new(Bytes.new(32)),
+  "Secure" => Random::Secure,
+}
 
 ciphers = {{ Sodium::Cipher::Chalsa.subclasses }}.map do |klass|
-  cipher = klass.new.tap do |c|
-    c.key = Bytes.new c.key_size
-    c.nonce = Bytes.new c.nonce_size
-  end
+  key = Bytes.new klass.key_size
+  nonce = Bytes.new klass.nonce_size
+  cipher = klass.new key, nonce
 
   # {short_name, cipher}
   {klass.to_s.split("::").last, cipher}
 end.to_a
-# p ciphers
 
 buf = Bytes.new 1024
 
 Benchmark.ips warmup: 0.5 do |bm|
-  bm.report "PCG32" do
-    pcgrand.random_bytes buf
-  end
-
-  bm.report "ISAAC" do
-    isaacrand.random_bytes buf
-  end
-
-  ciphers.each do |name, cipher|
+  randoms.each do |name, random|
     bm.report "#{name}" do
-      cipher.random_bytes buf
+      random.random_bytes buf
+    end
+  end
+
+  ciphers.each do |name, random|
+    bm.report "#{name}" do
+      random.random_bytes buf
     end
   end
 end

@@ -1,7 +1,8 @@
-       PCG32 606.78k (  1.65µs) (± 1.07%)  0.0B/op   4.19× slower
-       ISAAC 373.63k (  2.68µs) (± 1.95%)  0.0B/op   6.80× slower
-    XSalsa20   1.84M (544.61ns) (± 1.17%)  0.0B/op   1.38× slower
-     Salsa20   2.37M (421.53ns) (± 1.24%)  0.0B/op   1.07× slower
-   XChaCha20   1.88M (530.86ns) (± 1.46%)  0.0B/op   1.35× slower
-ChaCha20Ietf   2.54M (393.65ns) (± 1.22%)  0.0B/op        fastest
-    ChaCha20   2.51M (398.58ns) (± 1.73%)  0.0B/op   1.01× slower
+         PCG   1.29M (776.49ns) (± 1.13%)  0.0B/op   1.07× slower
+       ISAAC 530.69k (  1.88µs) (± 0.98%)  0.0B/op   2.60× slower
+      Secure 318.19k (  3.14µs) (± 2.30%)  0.0B/op   4.33× slower
+    XSalsa20   1.04M (960.42ns) (± 1.34%)  0.0B/op   1.32× slower
+     Salsa20   1.16M (862.14ns) (± 1.29%)  0.0B/op   1.19× slower
+   XChaCha20   1.22M (818.52ns) (± 1.86%)  0.0B/op   1.13× slower
+ChaCha20Ietf   1.38M (726.43ns) (± 1.28%)  0.0B/op   1.00× slower
+    ChaCha20   1.38M (725.47ns) (± 1.33%)  0.0B/op        fastest
