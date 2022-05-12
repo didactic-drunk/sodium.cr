@@ -126,6 +126,14 @@ module Sodium::Cipher
         end
       end
 
+      def self.key_size : Int32
+        KEY_SIZE
+      end
+
+      def self.nonce_size : Int32
+        NONCE_SIZE
+      end
+
       def key_size : Int32
         KEY_SIZE
       end
