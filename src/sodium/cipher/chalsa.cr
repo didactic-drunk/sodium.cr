@@ -6,6 +6,8 @@ module Sodium::Cipher
   #
   # What? They're both dance?
   abstract class Chalsa
+    include Random
+
     getter key : Crypto::Secret
     getter! nonce : Bytes?
 
@@ -42,7 +44,7 @@ module Sodium::Cipher
     end
 
     def random_nonce
-      self.nonce = Random::Secure.random_bytes nonce_size
+      self.nonce = ::Random::Secure.random_bytes nonce_size
     end
 
     # Xor's src with the cipher output and returns a new Slice
@@ -60,17 +62,14 @@ module Sodium::Cipher
 
     # Use as a CSPRNG.
     def random_bytes(bytes : Bytes) : Bytes
-      # TODO: Switch to memset
-      Sodium.memzero bytes
       update bytes, bytes
       bytes
     end
 
-    # Use as a CSPRNG.
-    def random_bytes(size : Int) : Bytes
-      bytes = Bytes.new size
-      update bytes, bytes
-      bytes
+    def next_u : UInt8
+      buf = uninitialized UInt8[1]
+      random_bytes buf.to_slice
+      buf.unsafe_as(UInt8)
     end
 
     # Always returns false. Sadness...
@@ -90,11 +89,22 @@ module Sodium::Cipher
   {% for key, val in {"XSalsa20" => "xsalsa20", "Salsa20" => "salsa20", "XChaCha20" => "xchacha20", "ChaCha20Ietf" => "chacha20_ietf", "ChaCha20" => "chacha20"} %}
     # These classes can be used to generate pseudo-random data from a key,
     # or as building blocks for implementing custom constructions, but they
-    # are not alternatives to secretbox.
+    # are not alternatives to `SecretBox`.
     #
     # See [https://libsodium.gitbook.io/doc/advanced/stream_ciphers](https://libsodium.gitbook.io/doc/advanced/stream_ciphers) for further information.
     #
-    # This class mimicks the OpenSSL::Cipher interface with minor differences.
+    # This class mimicks the `OpenSSL::Cipher` interface with minor differences.
+    #
+    # Also provides a `::Random` interface.
+    # * Lacks forward secrecy.
+    # * ~3x faster than `::Random::Secure`
+    #
+    # Use with caution.  When in doubt use `::Random::Secure`
+    #
+    # Possibly safe uses:
+    # * Test data
+    # * Overwriting storage with random data
+    # * Single player video games (maybe)
     #
     # See `spec/sodium/cipher/chalsa_spec.cr` for examples on how to use this class.
     #
@@ -104,7 +114,7 @@ module Sodium::Cipher
       NONCE_SIZE = LibSodium.crypto_stream_{{ val.id }}_noncebytes.to_i32
 
       def self.random
-        new key: Sodium::SecureBuffer.random(KEY_SIZE), nonce: Random::Secure.random_bytes(NONCE_SIZE)
+        new key: Sodium::SecureBuffer.random(KEY_SIZE), nonce: ::Random::Secure.random_bytes(NONCE_SIZE)
       end
 
       # Xor's src with the cipher output and places in dst.
