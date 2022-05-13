@@ -42,9 +42,6 @@ class Sodium::CryptoBox
     getter key : Crypto::Secret
     getter public_key : PublicKey
 
-    # Returns key
-    #    delegate_to_slice to: @key
-
     @seed : Crypto::Secret?
 
     # Generate a new random secret/public key pair.
