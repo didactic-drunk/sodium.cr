@@ -12,7 +12,7 @@ module Sodium::Cipher
     getter! nonce : Bytes?
 
     # Advanced usage.  Don't touch.
-    property offset = 0
+    property offset = 0_u64
 
     def initialize(key : Crypto::Secret | Bytes, nonce = nil)
       raise ArgumentError.new("key must be #{key_size} bytes, got #{key.bytesize}") if key.bytesize != key_size
