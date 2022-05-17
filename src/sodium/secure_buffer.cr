@@ -7,19 +7,20 @@ module Sodium
   #
   # #initialize returns readonly or readwrite for thread safety
   # When state changes are required (such as using #noaccess) and the buffer is accessed from multiple threads wrap each #readonly/#readwrite block in a lock.
-  class SecureBuffer
+  class SecureBuffer < Crypto::Secret
     include Crypto::Secret::Stateful
 
-    getter bytesize : Int32
+    getter buffer_bytesize : Int32
 
-    def initialize(@bytesize : Int32)
-      @ptr = LibSodium.sodium_malloc @bytesize
-      raise Error::OutOfMemory.new if @ptr.null?
+    def initialize(@buffer_bytesize : Int32)
+      @ptr = LibSodium.sodium_malloc @buffer_bytesize
+      raise Error::OutOfMemory.new("allocating #{@buffer_bytesize}") if @ptr.null?
     end
 
     # Copies bytes to a **readonly** SecureBuffer.
     # Optionally erases bytes after copying if erase is set
     # Returns a **readonly** SecureBuffer.
+    @[Deprecated("Use .copy_from or .move_from")]
     def initialize(bytes : Bytes, erase = false)
       initialize bytes.bytesize
       readwrite do |slice|
@@ -32,7 +33,7 @@ module Sodium
     # :nodoc:
     # For .dup
     def initialize(sbuf : Crypto::Secret)
-      initialize sbuf.bytesize
+      initialize sbuf.buffer_bytesize
 
       # Maybe not thread safe
       sbuf.readonly do |sslice|
@@ -56,18 +57,12 @@ module Sodium
     #
     @[Deprecated("Use the Slice provided within a `readonly` or `readwrite` block")]
     def to_slice : Bytes
-      case @state
-      when State::Noaccess, State::Wiped
-        readonly
-      else
-        # Ok
-      end
-      Slice(UInt8).new @ptr, @bytesize
+      raise NotImplementedError.new
     end
 
     protected def to_slice(& : Bytes -> Nil)
       ro = @state < State::Readonly
-      yield Bytes.new(@ptr, @bytesize, read_only: ro)
+      yield Bytes.new(@ptr, @buffer_bytesize, read_only: ro)
     end
 
     # :nodoc:
