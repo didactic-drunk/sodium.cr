@@ -98,6 +98,9 @@ describe Sodium::Sign::SecretKey do
     end
   end
 
+  pending "combined test vectors" do
+  end
+
   it "RbNaCl detached test vectors" do
     detached_test_vectors.each do |vec|
       seckey, plaintext, signature = sign_from_vec vec

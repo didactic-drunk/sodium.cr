@@ -19,6 +19,13 @@ require "../../../src/sodium/cipher/chalsa"
       cipher2.final.should eq Bytes.new(0)
     end
 
+    it "Random" do
+      cipher = Sodium::Cipher::{{ name.id }}.random
+      cipher.random_bytes(8).should_not eq(cipher.random_bytes(8))
+      r = 3.times.map { cipher.rand(65536) }.sum
+      r.should_not eq(0)
+    end
+
     it "dups" do
       cipher1 = Sodium::Cipher::{{ name.id }}.new Bytes.new(Sodium::Cipher::{{ name.id }}::KEY_SIZE)
       cipher2 = cipher1.dup
