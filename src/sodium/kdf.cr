@@ -7,7 +7,8 @@ module Sodium
   #
   # Usage:
   # ```
-  # kdf = KDF.new
+  # kdf = KDF.random
+  # kdf = KDF.move_key_from bytes
   # subkey_id = 0
   # output_size = 16
   # subkey = kdf.derive "8bytectx", subkey_id, output_size
@@ -18,7 +19,7 @@ module Sodium
   #
   # It's recommended to use a #wipe block to erase the master key when no longer needed
   # ```
-  # kdf = Kdf.new
+  # kdf = Kdf.random
   # ...
   # kdf.wipe do
   #  ### Warning: abnormal exit may not wipe
@@ -41,16 +42,29 @@ module Sodium
 
     getter key : Crypto::Secret
 
+    def self.random
+      new(SecureBuffer.random(KEY_SIZE))
+    end
+
     # Use an existing KDF key.
     #
     # * Copies key to a new SecureBuffer
-    # * Optionally erases bytes after copying if erase is set
-    def initialize(bytes : Bytes, erase = false)
-      if bytes.bytesize != KEY_SIZE
-        raise ArgumentError.new("bytes must be #{KEY_SIZE}, got #{bytes.bytesize}")
-      end
+    def self.copy_key_from(bytes : Bytes)
+      new(SecureBuffer.copy_from(bytes))
+    end
 
-      @key = SecureBuffer.new(bytes, erase).noaccess
+    # Use an existing KDF key.
+    #
+    # * Copies key to a new SecureBuffer
+    # * Erases bytes after copying
+    def self.move_key_from(bytes : Bytes)
+      new(SecureBuffer.move_from(bytes))
+    end
+
+    @[Deprecated("use .copy_key_from or .move_key_from")]
+    def initialize(bytes : Bytes, erase = false)
+      @key = SecureBuffer.new(1)
+      raise NotImplementedError.new("use .copy_key_from or .move_key_from")
     end
 
     # Use an existing KDF Crypto::Secret key.
@@ -61,9 +75,7 @@ module Sodium
       @key.noaccess
     end
 
-    # Generate a new random KDF key.
-    #
-    # Make sure to save kdf.to_slice before kdf goes out of scope.
+    @[Deprecated("use .random")]
     def initialize
       @key = SecureBuffer.random(KEY_SIZE).noaccess
     end

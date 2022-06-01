@@ -5,11 +5,11 @@ CONTEXT = "8_bytess"
 
 describe Sodium::Kdf do
   it "generates master key" do
-    kdf1 = Sodium::Kdf.new
+    kdf1 = Sodium::Kdf.random
 
     # verify loading saved key
     kdf2 = kdf1.key.readonly do |kslice|
-      Sodium::Kdf.new kslice.dup
+      Sodium::Kdf.copy_key_from kslice.dup
     end
 
     kdf1.key.should eq kdf2.key
@@ -21,7 +21,7 @@ describe Sodium::Kdf do
   end
 
   it "generates different keys" do
-    kdf1 = Sodium::Kdf.new
+    kdf1 = Sodium::Kdf.random
     subkey1 = kdf1.derive CONTEXT, 0, 16
     subkey2 = kdf1.derive CONTEXT, 1, 16
     subkey1.should_not eq subkey2
